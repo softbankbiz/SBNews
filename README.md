@@ -116,6 +116,7 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 ログインページで
 
 |企業ID： |root |
+|:---|:---|
 |ユーザーID： |root |
 |パスワード： |root |
 

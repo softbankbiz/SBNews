@@ -66,6 +66,7 @@ CentOS 7系デフォルトのレポジトリにphpの7.2系は含まれていな
 # php -v
 PHP 7.2.8
 
+// php.iniの設定
 # vi /etc/php.ini
 
 expose_php = Off

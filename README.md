@@ -1,2 +1,2 @@
 # SBNews
-Web application for generating newsletter automatically.
+メール配信用ニュースレターの作成を補助するWebアプリケーションです。

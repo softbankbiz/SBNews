@@ -55,10 +55,15 @@ mbstring.substitute_character = non
 
 ### MariaDB
 ```
-Server version: 5.5.56-MariaDB MariaDB Server
+# yum -y install mariadb-server
+# systemctl start mariadb
+# systemctl enable mariadb
+# mysql_secure_installation
 
-// mysql_secure_installation の実行
+# mysql -V
+mysql  Ver 15.1 Distrib 5.5.56-MariaDB, for Linux (x86_64) using readline 5.1
 
+// my.cnfの設定
 # vi /etc/my.cnf
 [mysqld]
 datadir=/var/lib/mysql
@@ -80,6 +85,18 @@ pid-file=/var/run/mariadb/mariadb.pid
 # include all files from the config directory
 #
 !includedir /etc/my.cnf.d
+
+// DBの再起動
+# systemctl restart mariadb
+
+// SBNew用のDatabaseとユーザーを作成、DB名（sbnews_db）／ユーザー名（sbnews_user）は任意で
+# mysql -u root -p
+
+DROP DATABASE IF EXISTS sbnews_db;
+CREATE DATABASE sbnews_db DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE USER 'sbnews_user'@'localhost' IDENTIFIED BY 'XXXXXXXXXXXXXXXX';
+GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 ```
 
 ### SBNews
@@ -95,3 +112,13 @@ pid-file=/var/run/mariadb/mariadb.pid
 ```
 
 ## SBNewsのセットアップ
+インストールが完了したら `http://***your-server-ip-address/sbnews/` にアクセスします。
+ログインページで
+
+|企業ID： |root |
+|ユーザーID： |root |
+|パスワード： |root |
+
+でログインできます。初回ログイン時には、パスワードの変更を求められます。
+
+ログイン後の操作はメニューバーの「ドキュメント」を参照ください。

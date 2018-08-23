@@ -35,7 +35,7 @@ AllowOverride None
 #Require all granted
 </Directory>
 
-// confファイル最終行に追加
+// ファイル最終行に追加
 TraceEnable off
 Header append X-FRAME-OPTIONS "SAMEORIGIN"
 ServerTokens ProductOnly
@@ -45,7 +45,24 @@ ServerSignature off
 # systemctl restart httpd
 ```
 ### PHP
+php7.2系をインストールします。デフォルトのphp(5.4系）がインストールされていないことを確認。
+
 ```
+yum list installed | grep php
+```
+
+もし5.4系がインストールされていたら、php5系のパッケージを削除。
+
+```
+# yum remove php*
+```
+
+CentOS 7系デフォルトのレポジトリにphpの7.2系は含まれていないので、remiレポジトリを追加してインストールする。
+
+```
+# yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+# yum -y install --enablerepo=remi,remi-php72 php php-mbstring php-xml php-xmlrpc php-gd php-pdo php-pecl-mcrypt php-mysqlnd php-pecl-mysql
+
 # php -v
 PHP 7.2.8
 
@@ -64,6 +81,9 @@ mbstring.http_output = pass
 mbstringm.encoding_translation = On
 mbstring.detect_order = auto
 mbstring.substitute_character = non
+
+// Apache再起動
+# systemctl restart httpd
 ```
 
 ### MariaDB
@@ -102,7 +122,7 @@ pid-file=/var/run/mariadb/mariadb.pid
 // DBの再起動
 # systemctl restart mariadb
 
-// SBNew用のDatabaseとユーザーを作成、DB名（sbnews_db）／ユーザー名（sbnews_user）は任意で
+// SBNews用のデータベースとユーザーを作成、DB名（sbnews_db）／ユーザー名（sbnews_user）は任意で
 # mysql -u root -p
 
 DROP DATABASE IF EXISTS sbnews_db;

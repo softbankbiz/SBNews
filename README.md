@@ -115,8 +115,8 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 インストールが完了したら `http://***your-server-ip-address/sbnews/` にアクセスします。
 ログインページで
 
-|企業ID： |root |
 |:---|:---|
+|企業ID： |root |
 |ユーザーID： |root |
 |パスワード： |root |
 

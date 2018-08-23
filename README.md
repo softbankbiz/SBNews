@@ -10,15 +10,25 @@ Google Compute Engineの「centos-7-v20180611」、およびAlibaba Cloudの「C
 
 ### Apache
 ```
+# yum check-update
+# yum -y install httpd
 # httpd -v
 Server version: Apache/2.4.6 (CentOS)
+
+# service httpd start
+# chkconfig httpd on
 
 // ウェルカムページの無効化
 # cd /etc/httpd/conf.d/
 # mv welcome.conf welcome.conf.org
 # mv autoindex.conf autoindex.conf.org
 
-// httpd.conf
+// httpd.confの設定
+# vim /etc/httpd/conf/httpd.conf
+
+ServerAdmin root@localhost // 適宜変更
+ServerName localhost:80    // IPアドレスを入れておく
+
 <Directory "/var/www/html">
 Options FollowSymLinks
 AllowOverride None
@@ -30,6 +40,9 @@ TraceEnable off
 Header append X-FRAME-OPTIONS "SAMEORIGIN"
 ServerTokens ProductOnly
 ServerSignature off
+
+// Apache再起動
+# systemctl restart httpd
 ```
 ### PHP
 ```
@@ -115,8 +128,8 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 インストールが完了したら `http://***your-server-ip-address/sbnews/` にアクセスします。
 ログインページで
 
-|:---|:---|
 |企業ID： |root |
+|:---|:---|
 |ユーザーID： |root |
 |パスワード： |root |
 

@@ -135,14 +135,23 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 
 ### SBNews
 ```
+// SBNews用のドキュメントルート
 # mkdir /var/www/html/sbnews
 # chown apache:apache /var/www/html/sbnews
 # chmod 774 /var/www/html/sbnews
+
+// SBNewsのソース取得
 # cd /var/tmp/
 # wget https://github.com/softbankbiz/SBNews/archive/master.zip
 # unzip SBNews-master.zip
+
+// SBNewsのデプロイ
 # rsync -avP ./SBNews-master/ /var/www/html/sbnews/
 # chown -R apache:apache /var/www/html/sbnews/*
+
+// クローラのスケジュールジョブ設定
+crontab -e
+0 * * * * php -f /var/www/html/sbnews/cron_job.php
 ```
 
 ## SBNewsのセットアップ

@@ -15,10 +15,10 @@ $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : -1;
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex,nofollow" />
 	<title>Setup Configuration</title>
+	<link rel="shortcut icon" href="../favicon.ico" >
 </head>
 <body class="">
 <?php
-
 switch($step) {
 	case -1:
 ?>
@@ -92,35 +92,33 @@ switch($step) {
     $config_file[ 4 ] = "?>";
 
 	if ( ! is_writable(ABSPATH) ) {
-		echo '<code>sbnews_config.php</code>の書き込み権限がありません。手動で作成してください。';
-	} else {
-	if (file_exists( ABSPATH . 'sbnews_config_sample.php')) {
+		die("<code>sbnews_config.php</code>の書き込み権限がありません。手動で作成してください。");
+	} else if (file_exists( ABSPATH . 'sbnews_config_sample.php')) {
 		$path_to_sbnews_config = ABSPATH . 'sbnews_config.php';
-	}
+		$handle = fopen( $path_to_sbnews_config, 'w' );
+		foreach ( $config_file as $line ) {
+			fwrite( $handle, $line );
+		}
+		fclose( $handle );
+		chmod( $path_to_sbnews_config, 0666 );
 
-	$handle = fopen( $path_to_sbnews_config, 'w' );
-	foreach ( $config_file as $line ) {
-		fwrite( $handle, $line );
-	}
-	fclose( $handle );
-	chmod( $path_to_sbnews_config, 0666 );
-
-	// create Database and tables for SBNews //
-	$path_to_sql = dirname( __FILE__ ) . '/sbnews_db_schema.sql';
-
-	if (file_exists($path_to_sql)) {
-		$sql = file_get_contents($path_to_sql);
-		$array = explode("\n", $sql);
-		$array = array_map('trim', $array);
-		$array = array_filter($array, 'strlen');
-		$array = array_values($array);
-		foreach ($array as $key => $value) {
-			if ( ! $mysqli->query($value) ) echo "error at: " . $key . ", " .  $mysqli->error . "<br>";
+		// create Database and tables for SBNews //
+		$path_to_sql = dirname( __FILE__ ) . '/sbnews_db_schema.sql';
+		if (file_exists($path_to_sql)) {
+			$sql = file_get_contents($path_to_sql);
+			$array = explode("\n", $sql);
+			$array = array_map('trim', $array);
+			$array = array_filter($array, 'strlen');
+			$array = array_values($array);
+			foreach ($array as $key => $value) {
+				if ( ! $mysqli->query($value) ) echo "error at: " . $key . ", " .  $mysqli->error . "<br>";
+			}
+		} else {
+			echo "DBスキーマ定義ファイルがありません";
 		}
 	} else {
-		echo "DBスキーマ定義ファイルがありません";
+		die("<code>sbnews_config_sample.php</code>が存在しません。");
 	}
-}
 ?>
 <h1 class="screen-reader-text">SBNewsのセットアップ完了</h1>
 <p><a href="../"><button>利用開始する</button></a></p>
@@ -128,6 +126,6 @@ switch($step) {
 </body>
 </html>
 <?php
-exit;
 }
+exit;
 ?>

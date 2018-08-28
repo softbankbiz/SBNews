@@ -81,7 +81,7 @@ mbstring.http_input = UTF-8
 mbstring.http_output = pass
 mbstringm.encoding_translation = On
 mbstring.detect_order = auto
-mbstring.substitute_character = non
+mbstring.substitute_character = none
 
 // Apache再起動
 # systemctl restart httpd
@@ -135,6 +135,10 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 
 ### SBNews
 ```
+// 必要なツールを用意しておく
+# yum install unzip
+# yum install rsync
+
 // SBNews用のドキュメントルート
 # mkdir /var/www/html/sbnews
 # chown apache:apache /var/www/html/sbnews
@@ -143,7 +147,7 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 // SBNewsのソース取得
 # cd /var/tmp/
 # wget https://github.com/softbankbiz/SBNews/archive/master.zip
-# unzip SBNews-master.zip
+# unzip master.zip
 
 // SBNewsのデプロイ
 # rsync -avP ./SBNews-master/ /var/www/html/sbnews/
@@ -156,7 +160,8 @@ crontab -e
 
 ## SBNewsのセットアップ
 インストールが完了したら `http://***your-server-ip-address/sbnews/` にアクセスします。
-インストール直後は、「SBNewsのセットアップ」ページが開きます。指示に従って「データベース名」「データベースのユーザー名」「データベースのパスワード」を設定してください。
+インストール直後は、「SBNewsのセットアップ」ページが開きます。指示に従って「データベース名」
+「データベースのユーザー名」「データベースのパスワード」を設定してください。
 セットアップが完了したら「利用開始する」ボタンをクリックします。
 
 ログインページが開いたら、

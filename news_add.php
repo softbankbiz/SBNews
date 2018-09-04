@@ -14,6 +14,8 @@ if ($_SESSION['auth'] !== true) {
 } else if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
 	echo '<script>alert("あなたには編集権限がありません。"); location.href = "/' . BASE . '/";</script>';
 	return;
+} else if ($_SESSION['role'] == 'su') {
+	echo '<script>alert("rootユーザーはニュースの追加はできません。\n「管理者ユーザー」でログインしてください。"); location.href = "/' . BASE . '/?page=news_conf";</script>';
 } else {
 	print_header("ニュースの新規追加", $_SESSION);
 	print_mennu($_GET['page'])

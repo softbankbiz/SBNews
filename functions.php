@@ -40,6 +40,12 @@ function gat_Ymd($day) {
 	return date("Y-m-d", strtotime($day));
 }
 
+function get_today() {
+	date_default_timezone_set ("Asia/Tokyo");
+	$today = array(date("Y"), date("m"), date("d"));
+	return $today;
+}
+
 
 /**
  * DBアクセス時に、ログイン用ID/PASSに加え
@@ -282,7 +288,7 @@ function print_header($title, $session) {
 	echo '	</head>';
 	echo '	<body>';
 	echo '		<div class="header">';
-	echo '			<div class="header_title">' . $title . '</div>';
+	echo '			<div class="header_title">SBNews <span>' . $title . '</span></div>';
 	if ($session) {
 	echo '			<div class="login_user">' . $session['user_id'] . '@' . $session['company_id'] . '</div>';
 	}
@@ -349,7 +355,7 @@ function print_mennu($page) {
 
 function print_footer() {
 	echo '		</div>';
-	echo '		<div class="footer">' . 'Powerd by SoftBankBiz@gmail.com' . '</div>';
+	echo '		<div class="footer">' . 'Powerd by SBNews.project' . '</div>';
 	echo '	</body>';
 	echo '</html>';
 }
@@ -366,7 +372,6 @@ function do_fetch($mysqli, $rss_arr, $site_names_arr, $insert_suffix) {
 	foreach($rss_arr as $num => $line) {
 		if($num === 0) { continue; }
 		$rss = explode(",", $line);
-echo $rss[2];
 		try {
 			$rss_result = $feed->load($rss[1]);
 			if (empty($rss_result)) {
@@ -492,8 +497,8 @@ function get_redirected_url($url) {
 
 
 
-function update_watson_res($mysqli, $url, $class_name, $confidence) {
-	$query = 'UPDATE article_candidate SET class_name="' . $class_name . '", confidence=' . $confidence . ' WHERE url="' . $url . '"';
+function update_watson_res($mysqli, $url, $class_name, $confidence, $cid_alias, $cid) {
+	$query = 'UPDATE article_candidate SET class_name="' . $class_name . '", confidence=' . $confidence . ', cid_alias="' . $cid_alias . '", cid="' .  $cid . '" WHERE url="' . $url . '"';
 	$result = $mysqli->query($query);
 	if (!$result) {
 		echo "watson judgement update was failed.<br>";
@@ -595,6 +600,69 @@ function get_classifier_list($mysqli, $company_id) {
 	    die();
 	}
 }
+
+/**
+ * ユーザーリストの取得
+ * $company_idが null の場合は、rootユーザーが全ユーザーを取得することを想定。
+ * @param  mysqliオブジェクト, company_id
+ * @return 成功時は ユーザーリスト
+ */
+function get_users_list($mysqli, $company_id) {
+	if (is_null($company_id)) {
+		$query = "SELECT company_id,user_id,password_expires,role FROM users_list";
+		try {
+			$users_list = $mysqli->query($query);
+		} catch (mysqli_sql_exception $e) {
+		    throw $e;
+		    die();
+		}
+	} else {
+		try {
+			$query = "SELECT user_id,password_expires,role FROM users_list WHERE company_id = ?";
+			$stmt = $mysqli->prepare($query);
+			$stmt->bind_param("s", $company_id);
+			$stmt->execute();
+			$users_list = $stmt->get_result();
+		} catch (mysqli_sql_exception $e) {
+		    throw $e;
+		    die();
+		}
+	}
+	if ($users_list) {
+		return $users_list;
+	} else {
+		return null;
+	}
+}
+
+function get_user($mysqli, $company_id, $target) {
+	try {
+		$query = "SELECT user_id,password_expires,role  FROM users_list WHERE company_id = ? AND user_id = ?";
+		$stmt = $mysqli->prepare($query);
+		$stmt->bind_param("ss", $company_id, $target);
+		$stmt->execute();
+		$user = $stmt->get_result();
+		if ($user) {
+			return $user->fetch_assoc();
+		} else {
+			return null;
+		}
+	} catch (mysqli_sql_exception $e) {
+	    throw $e;
+	    die();
+	}
+}
+
+function translate_role($role) {
+	if ($role == 'admin') {
+		return '管理者';
+	} else if ($role == 'editor') {
+		return '編集者';
+	} else {
+		return null;
+	}
+}
+
 
 /**
 * Returns a string with backslashes before characters that need to be escaped.

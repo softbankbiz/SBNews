@@ -203,7 +203,7 @@ if ($_SESSION['auth'] == true) {
 	
 	SBNewsでは、「RSSが取得したニュース一覧」「記事のクリックログ一覧」「メールの開封ログ一覧」をCSV形式でダウンロードできます。
 	「<a href="<?php echo '/'. BASE .'/' ?>?page=log_mgmt">ログ取得</a>」を開き、取得したいログの項目に、YYYY-MM-DD形式で
-	取得開始日を指定して「ダウンロード」ボタンをクリックします。CSVファイルをダウンロード後、ExcelやAccessなどを利用して、
+	取得開始日と終了日を指定して「ダウンロード」ボタンをクリックします。CSVファイルをダウンロード後、ExcelやAccessなどを利用して、
 	ニュースIDやタイムスタンプなどの属性ごとに集計、分析を行ってください。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/log_mgmt.png"></div>

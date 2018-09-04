@@ -1,18 +1,27 @@
 function check_date_format(id) {
     //alert(id);
-    var year = $("#" + id + "_year").val();
-    var month = $("#" + id + "_month").val();
-    var date = $("#" + id + "_date").val();
-    if ( year === "" || month === "" || date === "") {
+    var year_s = $("#" + id + "_year_s").val();
+    var month_s = $("#" + id + "_month_s").val();
+    var date_s = $("#" + id + "_date_s").val();
+    var year_e = $("#" + id + "_year_e").val();
+    var month_e = $("#" + id + "_month_e").val();
+    var date_e = $("#" + id + "_date_e").val();
+    if ( year_s === "" || month_s === "" || date_s === "" || year_e === "" || month_e === "" || date_e === "") {
         alert("未入力項目があります");
         return false;
-    } else if (! year.match(/20[0-9][0-9]/)) {
+    } else if (! year_s.match(/20[0-9][0-9]/) || ! year_e.match(/20[0-9][0-9]/)) {
         alert("年の書式が違います");
         return false;
-    } else if (! month.match(/0[1-9]/) && ! month.match(/1[0-2]/)) {
+    } else if (! month_s.match(/0[1-9]/) && ! month_s.match(/1[0-2]/)) {
         alert("月の書式が違います");
         return false;
-    } else if (! date.match(/0[1-9]/) && ! date.match(/1[0-9]/) && ! date.match(/2[0-9]/) && ! date.match(/3[0-1]/)) {
+    } else if (! month_e.match(/0[1-9]/) && ! month_e.match(/1[0-2]/)) {
+        alert("月の書式が違います");
+        return false;
+    } else if (! date_s.match(/0[1-9]/) && ! date_s.match(/1[0-9]/) && ! date_s.match(/2[0-9]/) && ! date_s.match(/3[0-1]/)) {
+        alert("日の書式が違います");
+        return false;
+    } else if (! date_e.match(/0[1-9]/) && ! date_e.match(/1[0-9]/) && ! date_e.match(/2[0-9]/) && ! date_e.match(/3[0-1]/)) {
         alert("日の書式が違います");
         return false;
     } else {
@@ -42,6 +51,9 @@ function check_create_user_info() {
   if (!document.create_user_form.company_id.value || !document.create_user_form.user_id.value) {
     alert("入力が不足しています。");
     return false;
+  } else if (document.create_user_form.company_id.value == 'root') {
+    alert("その企業IDは使用できません。");
+    return false;
   } else if (document.create_user_form.company_id.value.length > 20) {
     alert("企業IDは20文字以内にしてください。");
     return false;
@@ -58,6 +70,36 @@ function check_create_user_info() {
     alert("パスワード有効期限の書式が違います。");
     return false;
   } else if (! document.create_user_form.role.value.match(/admin|editor/)) {
+    alert("存在しない役割です。");
+    return false;
+  }  else {
+    return true;
+  }
+}
+
+function check_update_user_info() {
+  if (!document.update_user_form.company_id.value || !document.update_user_form.user_id.value) {
+    alert("入力が不足しています。");
+    return false;
+  } else if (document.create_user_form.company_id.value == 'root') {
+    alert("その企業IDは使用できません。");
+    return false;
+  } else if (document.update_user_form.company_id.value.length > 20) {
+    alert("企業IDは20文字以内にしてください。");
+    return false;
+  } else if (document.update_user_form.user_id.value.length > 20) {
+    alert("ユーザーIDは20文字以内にしてください。");
+    return false;
+  } else if (! document.update_user_form.company_id.value.match(/^[A-Za-z0-9\._]*$/)) {
+    alert("企業IDは英数半角文字にしてください。");
+    return false;
+  } else if (! document.update_user_form.user_id.value.match(/^[A-Za-z0-9\._]*$/)) {
+    alert("ユーザーIDは英数半角文字にしてください。");
+    return false;
+  } else if (! document.update_user_form.password_expires.value.match(/^(2[0-9][0-9]{2})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)) {
+    alert("パスワード有効期限の書式が違います。");
+    return false;
+  } else if (! document.update_user_form.role.value.match(/admin|editor/)) {
     alert("存在しない役割です。");
     return false;
   }  else {

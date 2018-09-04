@@ -12,7 +12,7 @@ if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
 }
 
 if ($_POST["period_day"] && $_POST["period_hour"] && $_POST["fetch_num"] && $_POST["news_id"]) {
-    $query_a = "SELECT category,title,url,site_name FROM article_candidate WHERE class_name = \"採用\" AND created >= ? AND company_id = ? AND news_id = ? ORDER BY confidence DESC LIMIT ?";
+    $query_a = "SELECT category,title,url,site_name,created FROM article_candidate WHERE class_name = \"採用\" AND created >= ? AND company_id = ? AND news_id = ? ORDER BY confidence DESC LIMIT ?";
     $query_b = "SELECT category_data from category_list WHERE category_id = (SELECT category_id FROM preference WHERE company_id = ? AND news_id = ?)";
 } else {
     die("パラメータが足りません");

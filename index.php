@@ -166,16 +166,17 @@ if ($_SESSION['auth'] != true) {
 
 				<div class="menu_content" id="news_conf">
 					<h3>ニュース設定</h3>
-					<table class="ope_table">
+					<table class="ope_table wide">
 						<tr>
 							<th>No</th><th>ニュース ID</th><th></th><th></th><th></th>
 						</tr>
 						<?php
 						$news_id_list = get_news_id($mysqli, $_SESSION['company_id']);
 						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
-							echo '<td colspan="4"> あなたには編集権限がありません。 </td>';
+							echo '<tr><td colspan="4"> あなたには編集権限がありません。 </td></tr>';
 						} else if ($news_id_list->num_rows == 0) {
-							echo '<td colspan="4"> ニュースはありません </td>';						
+							echo '<tr><td colspan="4"> ニュースはありません </td></tr>';
+							echo '<tr><td colspan=3><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';					
 						} else {
 							for ($i = 0; $i < $news_id_list->num_rows; $i++) { 
 								echo '<tr>';
@@ -188,9 +189,10 @@ if ($_SESSION['auth'] != true) {
 									echo '<td><a href="/' . BASE . '/watson_judgement.php?news_id=' . $news_id . '" target="_blank"><button>Watson判定（手動）</button></a></td>';
 								}
 								echo '</tr>';
+								echo '<tr><td colspan=3><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';
 							}
 						}
-						echo '<tr><td colspan=3><a href="/' . BASE . '/news_add.php?page=news_conf"><button>追加</button></a></td></tr>';
+
 						?>
 					</table>
 				</div>
@@ -335,44 +337,70 @@ if ($_SESSION['auth'] != true) {
 
 				<div class="menu_content" id="log_mgmt">
 					<h3>ログ管理</h3>
+					<p class="ope_description">
+						ログを出力する期間を「YYYY-MM-DD」形式で指定してダウンロードしてください。ログ取得の終了時期には、本日の日付をデフォルトで入力しています。
+					</p>
 					<table class="ope_table">
-						<tr>
+						<tr class="bgcolor_gray">
 							<th>No</th><th>ログ名</th><th>取得期間（YYYY-MM-DD）</th>
 						</tr>
-						<tr>
-							<td>1</td>
-							<td>RSSが取得したニュース一覧</td>
+						<tr class="bgcolor_gray">
+							<td rowspan="2">1</td>
+							<td rowspan="2">RSSが取得したニュース一覧</td>
 							<td>
 								<form method="POST" action="<?php echo '/' . BASE . '/' ?>log_manage.php">
-									<input type="text" size="6" name="year" id="log_rss_year"> - 
-									<input type="text" size="3" name="month" id="log_rss_month"> - 
-									<input type="text" size="3" name="date" id="log_rss_date"> 以降すべてを 
+									<input type="text" size="6" name="year_s" id="log_rss_year_s"> - 
+									<input type="text" size="3" name="month_s" id="log_rss_month_s"> - 
+									<input type="text" size="3" name="date_s" id="log_rss_date_s"> 以降 
+							</td>
+						</tr>
+						<tr class="bgcolor_gray">
+							<td>
+									<input type="text" size="6" name="year_e" id="log_rss_year_e" value="<?php echo get_today()[0]; ?>"> - 
+									<input type="text" size="3" name="month_e" id="log_rss_month_e" value="<?php echo get_today()[1]; ?>"> - 
+									<input type="text" size="3" name="date_e" id="log_rss_date_e" value="<?php echo get_today()[2]; ?>"> までを 
 									<input type="hidden" name="cmd" value="log_rss">
 									<input type="submit" value="ダウンロード" onclick="return check_date_format('log_rss')">
 								</form>
 							</td>
 						</tr>
-						<tr>
-							<td>2</td>
-							<td>記事のクリックログ一覧</td>
+
+						<tr class="bgcolor_gray">
+							<td rowspan="2">2</td>
+							<td rowspan="2">記事のクリックログ一覧</td>
 							<td>
 								<form method="POST" action="<?php echo '/' . BASE . '/' ?>log_manage.php">
-									<input type="text" size="6" name="year" id="log_click_year"> - 
-									<input type="text" size="3" name="month" id="log_click_month"> - 
-									<input type="text" size="3" name="date" id="log_click_date"> 以降すべてを 
+									<input type="text" size="6" name="year_s" id="log_click_year_s"> - 
+									<input type="text" size="3" name="month_s" id="log_click_month_s"> - 
+									<input type="text" size="3" name="date_s" id="log_click_date_s"> 以降
+							</td>
+						</tr>
+						<tr class="bgcolor_gray">
+							<td>
+									<input type="text" size="6" name="year_e" id="log_click_year_e" value="<?php echo get_today()[0]; ?>"> - 
+									<input type="text" size="3" name="month_e" id="log_click_month_e" value="<?php echo get_today()[1]; ?>"> - 
+									<input type="text" size="3" name="date_e" id="log_click_date_e" value="<?php echo get_today()[2]; ?>"> までを 
 									<input type="hidden" name="cmd" value="log_click">
 									<input type="submit" value="ダウンロード" onclick="return check_date_format('log_click')">
 								</form>
 							</td>
 						</tr>
-						<tr>
-							<td>3</td>
-							<td>メールの開封ログ一覧</td>
+
+						<tr class="bgcolor_gray">
+							<td rowspan="2">3</td>
+							<td rowspan="2">メールの開封ログ一覧</td>
 							<td>
 								<form method="POST" action="<?php echo '/' . BASE . '/' ?>log_manage.php">
-									<input type="text" size="6" name="year" id="log_access_year"> - 
-									<input type="text" size="3" name="month" id="log_access_month"> - 
-									<input type="text" size="3" name="date" id="log_access_date"> 以降すべてを 
+									<input type="text" size="6" name="year_s" id="log_access_year_s"> - 
+									<input type="text" size="3" name="month_s" id="log_access_month_s"> - 
+									<input type="text" size="3" name="date_s" id="log_access_date_s"> 以降 
+							</td>
+						</tr>
+						<tr class="bgcolor_gray">
+							<td>
+									<input type="text" size="6" name="year_e" id="log_access_year_e" value="<?php echo get_today()[0]; ?>"> - 
+									<input type="text" size="3" name="month_e" id="log_access_month_e" value="<?php echo get_today()[1]; ?>"> - 
+									<input type="text" size="3" name="date_e" id="log_access_date_e" value="<?php echo get_today()[2]; ?>"> までを 
 									<input type="hidden" name="cmd" value="log_access">
 									<input type="submit" value="ダウンロード" onclick="return check_date_format('log_access')">
 								</form>
@@ -414,23 +442,92 @@ if ($_SESSION['auth'] != true) {
 
 				<div class="menu_content" id="admin_menu">
 					<h3>管理者メニュー</h3>
-					<table class="ope_table">
+					
 					<?php 
 					if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
-						echo '<tr><td colspan="6"> あなたには編集権限がありません。 </td></tr>';
-					} else if ($_SESSION['role'] == 'su') {
-						echo '<tr><th>No</th><th>管理項目</th><th></th></tr>';
-						echo '<tr><td>0</td><td>管理者ユーザー</td>';
-						echo '<td><a href="/' . BASE . '/admin/create_user_info.php?page=admin_menu"><button>追加</button></td></tr>';
+						echo '<table class="ope_table">';
+						echo '<tr><td> あなたには編集権限がありません。 </td></tr>';
+						echo '</table>';
 					} else {
-						echo '<tr><th>No</th><th>管理項目</th><th></th></tr>';
-						echo '<tr><td>1</td><td>Watsonアカウント</td>';
-						echo '<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td></tr>';
-						echo '<tr><td>2</td><td>編集者ユーザー</td>';
-						echo '<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=user_account"><button>追加・削除</button></td></tr>';
+						echo '<h4>Watsonアカウント登録</h4>';
+						echo '<p class="ope_description">Watson NLCのユーザネーム／パスワードを登録します。';
+						echo '</p>';
+						echo '<table class="ope_table">';
+						echo '<tr>';
+						echo '<th>Watsonアカウント登録</th>';
+						echo '<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td>';
+						echo '</tr>';
+						echo '</table><br><br><br>';
+						echo '<h4>ユーザー管理</h4>';
+					}
+					if ($_SESSION['role'] == 'su') {
+						echo '<p class="ope_description">rootユーザーであるあなたは、企業IDを指定して、ユーザーを作成できます。';
+						echo '企業IDはWatsonアカウントと1対1で対応するSBNewsの基本単位となります。';
+						echo '追加するユーザーには、ニュースの各種設定を行える「管理者」とニュース作成およびログ管理のみ行える「編集者」のいずれかの役割を付与できます。';
+						echo 'Watson NLCのユーザー名／パスワードは、管理者ユーザーが設定します。';
+						echo '</p>';
+						echo '<table class="ope_table wide">';
+						echo '<tr><th>No</th><th>企業ID</th><th>ユーザーID</th><th>パスワード有効期限</th><th>役割</th><th></th></tr>';
+						$users_list = get_users_list($mysqli, null);
+						if ($users_list) {
+							foreach ($users_list as $num => $user) {
+								if ($user['user_id'] == 'root') { continue; }
+								echo '<tr>';
+								echo '<td>' . $num . '</td>';
+								echo '<td>' . $user['company_id'] . '</td>';
+								echo '<td>' . $user['user_id'] . '</td>';
+								echo '<td>' . explode(' ', $user['password_expires'])[0] . '</td>';
+								echo '<td>' . translate_role($user['role']) . '</td>';
+								echo '<td><a href="/' . BASE . '/user_set.php?page=admin_menu&task=user_edit&target=' . $user['user_id'] . '&company_id=' . $user['company_id'] . '"><button>修正</button></a></td>';
+								if ($user['user_id'] == $_SESSION['user_id']) {
+									echo '<td><button disabled>削除</button></td>';
+								} else {
+									echo '<td><a href="/' . BASE . '/user_set.php?page=admin_menu&task=user_delete&target=' . $user['user_id'] . '&company_id=' . $user['company_id'] . '"><button>削除</button></a></td>';
+								}
+								echo '</tr>';
+							}
+						} else {
+							echo '<tr><td> -- </td><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr>';
+						}
+						echo '<tr><td colspan="5"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
+						//
+						echo '</table>';
+					} else if ($_SESSION['role'] == 'admin') {
+						echo '<p class="ope_description">管理者ユーザーであるあなたは、ニュースの各種設定を行える「管理者ユーザー」、';
+						echo 'またはニュース作成およびログ管理のみ行える「編集者ユーザー」を修正・削除・追加できます。';
+						echo 'ただし、自分自身は削除できません。';
+						echo 'パスワードのリセットは「修正」から行えます。';
+						echo '</p>';
+						echo '<table class="ope_table">';
+						echo '<tr><th>No</th><th>ユーザーID</th><th>パスワード有効期限</th><th>役割</th><th></th></tr>';
+						$users_list = get_users_list($mysqli, $_SESSION['company_id']);
+						if ($users_list) {
+							foreach ($users_list as $num => $user) {
+								if ($user['user_id'] == 'root') { continue; }
+								echo '<tr>';
+								echo '<td>' . ($num+1) . '</td>';
+								echo '<td>' . $user['user_id'] . '</td>';
+								echo '<td>' . explode(' ', $user['password_expires'])[0] . '</td>';
+								echo '<td>' . translate_role($user['role']) . '</td>';
+								echo '<td><a href="/' . BASE . '/user_set.php?page=admin_menu&task=user_edit&target=' . $user['user_id'] . '&company_id=' . $_SESSION['company_id'] . '"><button>修正</button></a></td>';
+								if ($user['user_id'] == $_SESSION['user_id']) {
+									echo '<td><button disabled>削除</button></td>';
+								} else {
+									echo '<td><a href="/' . BASE . '/user_set.php?page=admin_menu&task=user_delete&target=' . $user['user_id'] . '&company_id=' . $_SESSION['company_id'] . '"><button>削除</button></a></td>';
+								}
+								echo '</tr>';
+							}
+						} else {
+							echo '<tr><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr>';
+						}
+						echo '<tr><td colspan="4"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
+						//
+						echo '</table>';
+
+						
 					}
 					?>
-					</table>
+					
 				</div>
 			</div>
 <?php

@@ -6,13 +6,16 @@ $mysqli = getConnection();
 
 session_start();
 
+////////////////// user_id 認証
+if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
+    return;
+}
+
 # 認証済みかどうかのセッション変数を初期化
 if (! isset($_SESSION['auth'])) {
   $_SESSION['auth'] = false;
 }
 
-# エラーメッセージ初期化
-$error = '';
 
 if ($_SESSION['auth'] !== true) {
 	echo '閲覧権限が不足しています。';
@@ -20,28 +23,25 @@ if ($_SESSION['auth'] !== true) {
 } else if (empty($_POST)) {
 	echo 'パラメータが不足しています。';
 	exit();
-} else if ( $_POST['year'] && $_POST['month'] && $_POST['date'] && $_POST['cmd'] ) {
+} else if ( $_POST['year_s'] && $_POST['month_s'] && $_POST['date_s'] && $_POST['year_e'] && $_POST['month_e'] && $_POST['date_e'] && $_POST['cmd'] ) {
 	if ($_POST['cmd'] === "log_rss") {
 		try {
-		    ////////////////// user_id 認証
-		    if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
-		        return;
-		    }
-		    $query = "SELECT title,class_name,url,created,category,confidence,site_name,news_id FROM article_candidate WHERE company_id = ? AND ts > ?";
-		    $period = $_POST['year'] . "-" . $_POST['month'] . "-" . $_POST['date'] . " 00:00:00";
+		    $query = "SELECT title,class_name,url,created,category,confidence,site_name,news_id,cid,cid_alias FROM article_candidate WHERE company_id = ? AND ts > ? AND ts < ?";
+		    $period_s = $_POST['year_s'] . "-" . $_POST['month_s'] . "-" . $_POST['date_s'] . " 00:00:00";
+		    $period_e = $_POST['year_e'] . "-" . $_POST['month_e'] . "-" . $_POST['date_e'] . " 23:59:59";
 		    $stmt = $mysqli->prepare($query);
-			$stmt->bind_param("ss", $_SESSION["company_id"], $period);
+			$stmt->bind_param("sss", $_SESSION["company_id"], $period_s, $period_e);
 			$stmt->execute();
 			$result = $stmt->get_result();
-		    $csv = "title,class_name,url,created,category,confidence,site_name,news_id\r\n";
+		    $csv = "記事タイトル,分類名,url,記事作成日,カテゴリー,確信度,サイト名,ニュースID,分類子,分類子エイリアス\r\n";
 		    while ($row = $result->fetch_assoc()) {
-		    	//$csv .= $row["title"] . "," . $row["class_name"] . "," . $row["url"] . "," . $row["created"] . "," . $row["category"] . "," . $row["confidence"] . "," . $row["site_name"] . "," . $row["news_id"] . "\n";
 		    	$row["title"] = str_replace(',', '', $row["title"]);
 		    	$csv .= implode(",", $row). "\r\n";
 		    }
 		    $csv = pack('C*',0xEF,0xBB,0xBF). $csv;
+		    $filename = explode(' ', $period_s)[0] . '_' . explode(' ', $period_e)[0];
 		    header('Content-Type: application/force-download');
-		    header('Content-Disposition: attachment; filename="log_rss_' . $period . '.csv"');
+		    header('Content-Disposition: attachment; filename="log_rss_' . $filename . '.csv"');
 		    echo trim($csv);
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;
@@ -49,51 +49,52 @@ if ($_SESSION['auth'] !== true) {
 		}
 	} else if ($_POST['cmd'] === "log_click") {
 		try {
-		    ////////////////// user_id 認証
-		    if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
-		        return;
-		    }
-		    $query = "SELECT news_id,url,issue,ts FROM click_counter WHERE company_id = ? AND ts > ?";
-		    $period = $_POST['year'] . "-" . $_POST['month'] . "-" . $_POST['date'] . " 00:00:00";
+		    $query = "SELECT news_id,url,issue,ts FROM click_counter WHERE company_id = ? AND ts > ? AND ts < ?";
+		    $period_s = $_POST['year_s'] . "-" . $_POST['month_s'] . "-" . $_POST['date_s'] . " 00:00:00";
+		    $period_e = $_POST['year_e'] . "-" . $_POST['month_e'] . "-" . $_POST['date_e'] . " 23:59:59";
 		    $stmt = $mysqli->prepare($query);
-			$stmt->bind_param("ss", $_SESSION["company_id"], $period);
+			$stmt->bind_param("sss", $_SESSION["company_id"], $period_s, $period_e);
 			$stmt->execute();
 			$result = $stmt->get_result();
 		    $csv = "ニュースID,url,発行年月日,タイムスタンプ\n";
 		    while ($row = $result->fetch_assoc()) {
 		    	$csv .= implode(",", $row). "\r\n";
 		    }
+		    $csv = pack('C*',0xEF,0xBB,0xBF). $csv;
+		    $filename = explode(' ', $period_s)[0] . '_' . explode(' ', $period_e)[0];
 		    header('Content-Type: application/force-download');
-		    header('Content-Disposition: attachment; filename="log_click_' . $period . '.csv"');
-		    echo $csv;
+		    header('Content-Disposition: attachment; filename="log_click_' . $filename . '.csv"');
+		    echo trim($csv);
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;
 		    die();
 		}
 	} else if ($_POST['cmd'] === "log_access") {
 		try {
-		    ////////////////// user_id 認証
-		    if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
-		        return;
-		    }
-		    $query = "SELECT news_id,issue,ts FROM access_counter WHERE company_id = ? AND ts > ?";
-		    $period = $_POST['year'] . "-" . $_POST['month'] . "-" . $_POST['date'] . " 00:00:00";
+		    $query = "SELECT news_id,issue,ts FROM access_counter WHERE company_id = ? AND ts > ? AND ts < ?";
+		    $period_s = $_POST['year_s'] . "-" . $_POST['month_s'] . "-" . $_POST['date_s'] . " 00:00:00";
+		    $period_e = $_POST['year_e'] . "-" . $_POST['month_e'] . "-" . $_POST['date_e'] . " 23:59:59";
 		    $stmt = $mysqli->prepare($query);
-			$stmt->bind_param("ss", $_SESSION["company_id"], $period);
+			$stmt->bind_param("sss", $_SESSION["company_id"], $period_s, $period_e);
 			$stmt->execute();
 			$result = $stmt->get_result();
 		    $csv = "ニュースID,発行年月日,タイムスタンプ\n";
 		    while ($row = $result->fetch_assoc()) {
 		    	$csv .= implode(",", $row). "\r\n";
 		    }
+		    $csv = pack('C*',0xEF,0xBB,0xBF). $csv;
+		    $filename = explode(' ', $period_s)[0] . '_' . explode(' ', $period_e)[0];
 		    header('Content-Type: application/force-download');
-		    header('Content-Disposition: attachment; filename="log_access_' . $period . '.csv"');
-		    echo $csv;
+		    header('Content-Disposition: attachment; filename="log_access_' . $filename . '.csv"');
+		    echo trim($csv);
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;
 		    die();
 		}
 	}
+} else {
+	echo 'パラメータが不正です。';
+	exit();
 }
 
 exit();

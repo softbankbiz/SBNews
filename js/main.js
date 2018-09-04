@@ -270,7 +270,7 @@ function add_cassette(args) {
             } else if($(element).attr("name") == "article_title") {
                 $(element).val(args[1]);
             } else if($(element).attr("name") == "article_media") {
-                $(element).val(args[3]);
+                $(element).val(args[3] + '（' + args[4].split(' ')[0] + '）');  //$(element).val(args[3]);
             }
         });
     }

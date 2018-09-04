@@ -42,7 +42,7 @@ try {
 			    	$watson_res = dummy_watson();
 			    	if (!empty($watson_res)) {
 						$res = json_decode($watson_res);
-						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"});
+						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, 'dummy_watson', 'dummy_watson');
 						$counter++;
 					} else {
 						echo "No data!";
@@ -69,7 +69,7 @@ try {
 
 					if (!empty($watson_res)) {
 						$res = json_decode($watson_res);
-						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"});
+						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, $cid_alias, $cid);
 						$counter++;
 					} else {
 						echo "No data!";

@@ -26,7 +26,7 @@ if ($_SESSION['auth'] !== true) {
 		        die("Who?");
 		    }
 		    $result = get_configuration($mysqli, $_SESSION["company_id"]);
-		    //var_dump($result);
+		    var_dump($result);
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;
 		    die();
@@ -72,15 +72,8 @@ if ($_SESSION['auth'] !== true) {
 				});
 			</script>
 <?php
-	} else if($_GET["task"] == "user_account") {
-?>
-			<div class="main_area">
-				<h3>SBNewsの管理者または編集者の追加・削除</h3>
-				<p>未実装</p>
-			</div>
-
-
-<?php
+	} else {
+		echo "<br><br>パラメータが不正です。";
 	}
 	print_javascript("others");
 	print_footer();

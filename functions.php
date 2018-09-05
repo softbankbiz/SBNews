@@ -288,7 +288,7 @@ function print_header($title, $session) {
 	echo '	</head>';
 	echo '	<body>';
 	echo '		<div class="header">';
-	echo '			<div class="header_title">SBNews <span>' . $title . '</span></div>';
+	echo '			<div class="header_title">SBNews</div>'; //  <span>' . $title . '</span>
 	if ($session) {
 	echo '			<div class="login_user">' . $session['user_id'] . '@' . $session['company_id'] . '</div>';
 	}

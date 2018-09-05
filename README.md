@@ -64,10 +64,10 @@ CentOS 7系デフォルトのレポジトリにphpの7.2系は含まれていな
 # yum -y install --enablerepo=remi,remi-php72 php php-mbstring php-xml php-xmlrpc php-gd php-pdo php-pecl-mcrypt php-mysqlnd php-pecl-mysql
 
 # php -v
-PHP 7.2.8
+PHP 7.2.9
 
 // php.iniの設定
-# vi /etc/php.ini
+# vim /etc/php.ini
 
 expose_php = Off
 max_execution_time = 3600
@@ -95,10 +95,10 @@ mbstring.substitute_character = none
 # mysql_secure_installation
 
 # mysql -V
-mysql  Ver 15.1 Distrib 5.5.56-MariaDB, for Linux (x86_64) using readline 5.1
+mysql  Ver 15.1 Distrib 5.5.60-MariaDB, for Linux (x86_64) using readline 5.1
 
 // my.cnfの設定
-# vi /etc/my.cnf
+# vim /etc/my.cnf
 [mysqld]
 datadir=/var/lib/mysql
 socket=/var/lib/mysql/mysql.sock
@@ -151,7 +151,7 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 
 // SBNewsのデプロイ
 # rsync -avP ./SBNews-master/ /var/www/html/sbnews/
-# chown -R apache:apache /var/www/html/sbnews/*
+# chown -R apache:apache /var/www/html/sbnews*
 
 // クローラのスケジュールジョブ設定
 crontab -e

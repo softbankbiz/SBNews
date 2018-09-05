@@ -26,7 +26,6 @@ if ($_SESSION['auth'] !== true) {
 		        die("Who?");
 		    }
 		    $result = get_configuration($mysqli, $_SESSION["company_id"]);
-		    var_dump($result);
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;
 		    die();
@@ -45,6 +44,10 @@ if ($_SESSION['auth'] !== true) {
 						<td colspan="2"><button id="submit">登録する</button></td>
 					</tr>
 				</table>
+			</div>
+			<br><br>
+			<div>
+				<a href="/<?php echo BASE; ?>/?page=admin_menu"><button>戻る</button></a>
 			</div>
 			<script>
 				var watson_management = "watson_management.php";

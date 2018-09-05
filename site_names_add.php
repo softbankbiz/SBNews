@@ -19,9 +19,13 @@ if ($_SESSION['auth'] !== true) {
 ?>
 			<div class="main_area">
 				<h3>サイト名リスト追加画面</h3>
+				<p class="ope_description">
+					サイト名リストデータはExcelファイルのままアップロードできます。
+					ファイルを選択すると、即座にアップロードが始まります。
+					Excelファイル名がサイト名リスト IDになります。
+				</p>
 				<table class="conf_table">
 					<tr>
-						<th>サイト名リストデータ（Excelファイル）</th>
 						<td><input type="file" id="add_site_names_data"></td>
 					</tr>
 				</table>

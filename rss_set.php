@@ -20,6 +20,9 @@ if ($_SESSION['auth'] !== true) {
 ?>
 			<div class="main_area">
 				<h3>RSSリスト設定画面</h3>
+        <p class="ope_description">
+          RSSリストを差し替える場合は、同一のファイル名である必要があります。
+        </p>
 				<?php
 				echo '<table class="conf_table">';
 				echo '<tr><th>RSSリスト ID</th><td>' . $_GET['rss_id'] . '</td></tr>';

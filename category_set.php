@@ -19,7 +19,10 @@ if ($_SESSION['auth'] !== true) {
 	print_mennu($_GET['page']);
 ?>
 			<div class="main_area">
-				<h3>カテゴリ リスト設定画面</h3>
+        <h3>カテゴリ リスト設定画面</h3>
+        <p class="ope_description">
+          カテゴリ リストを差し替える場合は、同一のファイル名である必要があります。
+        </p>
 				<?php
 				echo '<table class="conf_table">';
 				echo '<tr><th>カテゴリ リスト ID</th><td>' . $_GET['category_id'] . '</td></tr>';

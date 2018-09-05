@@ -241,9 +241,14 @@ if ($_SESSION['auth'] != true) {
 
 				<div class="menu_content" id="crawler_conf">
 					<h3>クローラ設定</h3>
+					<h4>＜RSSリストの設定＞</h4>
+					<p class="ope_description">
+						ニュースを取得するために登録したRSSリストを表示しています。ファイルの差し替え、削除をするには「設定変更」をクリックします。
+						RSSリストを新規に追加するには「追加」をクリックします。
+					</p>
 					<table class="ope_table">
 						<tr>
-							<th>No</th><th>RSSリスト ID</th><th></th><th></th><th></th><th></th>
+							<th>No</th><th>RSSリスト ID</th><th></th>
 						</tr>
 						<?php
 						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
@@ -272,9 +277,14 @@ if ($_SESSION['auth'] != true) {
 						?>
 					</table>
 
+					<h4>＜カテゴリ リストの設定＞</h4>
+					<p class="ope_description">
+						ニュースをカテゴリに分類するためのカテゴリ リストを表示しています。ファイルの差し替え、削除をするには「設定変更」をクリックします。
+						カテゴリ リストを新規に追加するには「追加」をクリックします。
+					</p>
 					<table class="ope_table">
 						<tr>
-							<th>No</th><th>カテゴリ リスト ID</th><th></th><th></th><th></th><th></th>
+							<th>No</th><th>カテゴリ リスト ID</th><th></th>
 						</tr>
 						<?php
 						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
@@ -303,9 +313,14 @@ if ($_SESSION['auth'] != true) {
 						?>
 					</table>
 
+					<h4>＜サイト名リストの設定＞</h4>
+					<p class="ope_description">
+						ニュースを発行元を表示させるためのサイト名リストを表示しています。ファイルの差し替え、削除をするには「設定変更」をクリックします。
+						サイト名リストを新規に追加するには「追加」をクリックします。
+					</p>
 					<table class="ope_table">
 						<tr>
-							<th>No</th><th>サイト名リスト ID</th><th></th><th></th><th></th><th></th>
+							<th>No</th><th>サイト名リスト ID</th><th></th>
 						</tr>
 						<?php
 						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
@@ -448,8 +463,15 @@ if ($_SESSION['auth'] != true) {
 						echo '<table class="ope_table">';
 						echo '<tr><td> あなたには編集権限がありません。 </td></tr>';
 						echo '</table>';
+					} else if ($_SESSION['role'] == 'su') {
+						echo '<h4>＜Watsonアカウント登録＞</h4>';
+						echo '<p class="ope_description wide">Watson NLCのユーザー名／パスワードは、管理者ユーザーが設定します。</p>';
+						echo '<table class="ope_table">';
+						echo '<tr><td> -- </td></tr>';
+						echo '</table>';
+						echo '<h4>＜ユーザー管理＞</h4>';
 					} else {
-						echo '<h4>Watsonアカウント登録</h4>';
+						echo '<h4>＜Watsonアカウント登録＞</h4>';
 						echo '<p class="ope_description">Watson NLCのユーザネーム／パスワードを登録します。';
 						echo '</p>';
 						echo '<table class="ope_table">';
@@ -458,13 +480,12 @@ if ($_SESSION['auth'] != true) {
 						echo '<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td>';
 						echo '</tr>';
 						echo '</table><br><br><br>';
-						echo '<h4>ユーザー管理</h4>';
+						echo '<h4>＜ユーザー管理＞</h4>';
 					}
 					if ($_SESSION['role'] == 'su') {
-						echo '<p class="ope_description">rootユーザーであるあなたは、企業IDを指定して、ユーザーを作成できます。';
+						echo '<p class="ope_description wide">rootユーザーであるあなたは、企業IDを指定して、ユーザーを作成できます。';
 						echo '企業IDはWatsonアカウントと1対1で対応するSBNewsの基本単位となります。';
 						echo '追加するユーザーには、ニュースの各種設定を行える「管理者」とニュース作成およびログ管理のみ行える「編集者」のいずれかの役割を付与できます。';
-						echo 'Watson NLCのユーザー名／パスワードは、管理者ユーザーが設定します。';
 						echo '</p>';
 						echo '<table class="ope_table wide">';
 						echo '<tr><th>No</th><th>企業ID</th><th>ユーザーID</th><th>パスワード有効期限</th><th>役割</th><th></th></tr>';
@@ -490,7 +511,6 @@ if ($_SESSION['auth'] != true) {
 							echo '<tr><td> -- </td><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr>';
 						}
 						echo '<tr><td colspan="5"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
-						//
 						echo '</table>';
 					} else if ($_SESSION['role'] == 'admin') {
 						echo '<p class="ope_description">管理者ユーザーであるあなたは、ニュースの各種設定を行える「管理者ユーザー」、';
@@ -521,7 +541,6 @@ if ($_SESSION['auth'] != true) {
 							echo '<tr><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr>';
 						}
 						echo '<tr><td colspan="4"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
-						//
 						echo '</table>';
 
 						

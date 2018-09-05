@@ -184,10 +184,12 @@ td, th {
 
 
 
-.main_area > h3 { text-align: left; }
+.main_area > h3, h4 { text-align: left; }
+.main_area > h4 { margin-bottom: 4px; }
 
 .menu_content  { margin: 20px auto; display: none; }
-.menu_content h3, p  { text-align: left; }
+.menu_content h3, h4, p  { text-align: left; }
+.menu_content h4  { margin-bottom: 4px; }
 
 /*
 .menu_content table { border: 1px solid #DDD; margin-bottom: 20px; }
@@ -208,11 +210,14 @@ label {
     border: solid 1px #aaa; /* ラベルのボーダーを指定する */
 }
 
+.color_red { color: red; }
+.small { font-size: small; }
+.left_padding { padding-left: 2em; }
 
-.ope_table { width: 650px; border: 1px solid #DDD; margin-bottom: 20px; font-size: 11pt; }
+.ope_table { width: 650px; border: 1px solid #DDD; margin-bottom: 40px; font-size: 11pt; }
 .ope_table th,td { padding: 10px 10px; }
 
-.ope_description { width: 650px; line-height: 1.4; }
+.ope_description { width: 650px; line-height: 1.4; margin-top: 0; }
 
 .wide { width: 800px; }
 

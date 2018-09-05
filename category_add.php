@@ -19,9 +19,13 @@ if ($_SESSION['auth'] !== true) {
 ?>
 			<div class="main_area">
 				<h3>カテゴリ リスト追加画面</h3>
+				<p class="ope_description">
+					カテゴリ リストデータはExcelファイルのままアップロードできます。
+					ファイルを選択すると、即座にアップロードが始まります。
+					Excelファイル名がカテゴリ リスト IDになります。
+				</p>
 				<table class="conf_table">
 					<tr>
-						<th>カテゴリ リストデータ（Excelファイル）</th>
 						<td><input type="file" id="add_category_data"></td>
 					</tr>
 				</table>

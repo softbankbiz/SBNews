@@ -24,10 +24,9 @@ if ($_SESSION['auth'] !== true) {
 ?>
 			<div class="main_area">
 				<h3>Watson NLC 分類子の追加／削除</h3>
+				<h4>＜分類子を新規に追加＞</h4>
+				<p class="ope_description">トレーニングデータ（CSVファイル、UTF-8）をアップロードすることで分類子を作成します。</p>
 				<table class="conf_table">
-					<tr>
-						<th colspan="3">分類子を新規に追加</th>
-					</tr>
 					<tr>
 						<td>
 							<input type="file" name="training_data" id="training_data">
@@ -43,10 +42,9 @@ if ($_SESSION['auth'] !== true) {
 
 			    <br><br>
 
+				<h4>＜既存の分類子を削除＞</h4>
 				<table class="conf_table">
-					<tr>
-						<th colspan="3">既存の分類子を削除</th>
-					</tr>
+					<p class="ope_description">削除したい分類子の右側の「削除」ボタンをクリックします。削除は即座に反映されます。</p>
 					<?php
 					if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
 				        return;

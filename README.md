@@ -72,6 +72,7 @@ PHP 7.2.9
 expose_php = Off
 max_execution_time = 3600
 max_input_time = 3600
+memory_limit = 2048M
 post_max_size = 20M
 upload_max_filesize = 20M
 date.timezone = "Asia/Tokyo"
@@ -133,7 +134,7 @@ CREATE USER 'sbnews_user'@'localhost' IDENTIFIED BY 'XXXXXXXXXXXXXXXX';
 GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 ```
 
-### SBNews
+### SBNewsインストール
 ```
 // 必要なツールを用意しておく
 # yum install unzip
@@ -156,6 +157,18 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 // クローラのスケジュールジョブ設定
 crontab -e
 0 * * * * php -f /var/www/html/sbnews/cron_job.php
+```
+
+### SBNewsアップデート
+```
+// SBNewsのソース取得
+# cd /var/tmp/
+# wget https://github.com/softbankbiz/SBNews/archive/master.zip
+# unzip master.zip
+
+// SBNewsのデプロイ
+# rsync -avP ./SBNews-master/ /var/www/html/sbnews/
+# chown -R apache:apache /var/www/html/sbnews*
 ```
 
 ## SBNewsのセットアップ

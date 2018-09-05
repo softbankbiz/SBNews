@@ -20,6 +20,9 @@ if ($_SESSION['auth'] !== true) {
 ?>
 			<div class="main_area">
 				<h3>サイト名リスト設定画面</h3>
+        <p class="ope_description">
+          サイト名リストを差し替える場合は、同一のファイル名である必要があります。
+        </p>
 				<?php
 				echo '<table class="conf_table">';
 				echo '<tr><th>サイト名リスト ID</th><td>' . $_GET['site_names_id'] . '</td></tr>';

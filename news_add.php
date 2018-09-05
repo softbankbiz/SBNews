@@ -2,7 +2,6 @@
 
 define('BASE', basename(dirname(__FILE__)));
 require_once dirname(__FILE__) . "/functions.php";
-require_once dirname(__FILE__) . "/sbnews_config.php";
 
 session_start();
 
@@ -28,8 +27,8 @@ if ($_SESSION['auth'] !== true) {
 				    if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
 				        return;
 				    }
-					echo '<tr><th>企業 ID</th><td>' . $_SESSION['company_id'] . '</td></tr>';
-					echo '<tr><th>ニュース ID</th><td><input type="text" size="40" name="news_id" id="news_id"></td></tr>';
+					echo '<tr><th>企業 ID</th><td>' . $_SESSION['company_id'] . '<span class="color_red small left_padding">※変更不可</span></td></tr>';
+					echo '<tr><th>ニュース ID</th><td><input type="text" size="40" name="news_id" id="news_id"><span class="color_red small left_padding">※必須</span></td></tr>';
 					echo '<tr><th>分類子エイリアス</th><td>' . get_cid_alias_as_select($mysqli, null) . '</td></tr>';
 					echo '<tr><th>RSSリスト ID</th><td>' . get_rss_id_as_select($mysqli, null) . '</td></tr>';
 					echo '<tr><th>カテゴリ リスト ID</th><td>' . get_category_id_as_select($mysqli, null) . '</td></tr>';
@@ -50,6 +49,16 @@ if ($_SESSION['auth'] !== true) {
 		<script>
 var news_manage = "news_manage.php";
 document.getElementById('add_news').addEventListener('click', function (evt) {
+	if($("#news_id").val() == '') {
+		alert("ニュース IDを指定してください。");
+		return;
+	} else if($("#default_title").val() == '') {
+		alert("メール件名を指定してください。");
+		return;
+	} else if($("#signature").val() == '') {
+		alert("署名を指定してください。");
+		return;
+	}
 	$.post(news_manage,
     {
         news_id:       $("#news_id").val(),

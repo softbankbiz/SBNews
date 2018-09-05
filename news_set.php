@@ -2,7 +2,6 @@
 
 define('BASE', basename(dirname(__FILE__)));
 require_once dirname(__FILE__) . "/functions.php";
-require_once dirname(__FILE__) . "/sbnews_config.php";
 
 session_start();
 
@@ -24,8 +23,8 @@ if ($_SESSION['auth'] !== true) {
 				<?php
 					$result = get_preference($mysqli, $_SESSION['company_id'], $_GET['news_id']);
 					while ($row = $result->fetch_assoc()) {
-						echo '<tr><th>企業 ID</th><td>' . $_SESSION['company_id'] . '</td></tr>';
-						echo '<tr><th>ニュース ID</th><td>' . $_GET['news_id'] . '</td></tr>';
+						echo '<tr><th>企業 ID</th><td>' . $_SESSION['company_id'] . '<span class="color_red small left_padding">※変更不可</span></td></tr>';
+						echo '<tr><th>ニュース ID</th><td>' . $_GET['news_id'] . '<span class="color_red small left_padding">※変更不可</span></td></tr>';
 						echo '<tr><th>分類子エイリアス</th><td>' . get_cid_alias_as_select($mysqli, $row["cid_alias"]) . '</td></tr>';
 						echo '<tr><th>RSSリスト ID</th><td>' . get_rss_id_as_select($mysqli, $row["rss_id"]) . '</td></tr>';
 						echo '<tr><th>カテゴリ リスト ID</th><td>' . get_category_id_as_select($mysqli, $row["category_id"]) . '</td></tr>';
@@ -47,6 +46,9 @@ if ($_SESSION['auth'] !== true) {
 			<script>
 var news_manage = "news_manage.php";
 document.getElementById('delete_news').addEventListener('click', function (evt) {
+    if(confirm("本当に削除しますか？　この操作は取り消しできません。") == false) {
+        return;
+    };
 	$.post(news_manage,
     {
         news_id: $("#news_id").val(),

@@ -19,9 +19,13 @@ if ($_SESSION['auth'] !== true) {
 ?>
 			<div class="main_area">
 				<h3>RSSリスト追加画面</h3>
+				<p class="ope_description">
+					RSSリストデータはExcelファイルのままアップロードできます。
+					ファイルを選択すると、即座にアップロードが始まります。
+					Excelファイル名がRSSリスト IDになります。
+				</p>
 				<table class="conf_table">
 					<tr>
-						<th>RSSリストデータ（Excelファイル）</th>
 						<td><input type="file" id="add_rss_data"></td>
 					</tr>
 				</table>

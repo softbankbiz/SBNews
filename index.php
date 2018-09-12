@@ -509,7 +509,7 @@ if ($_SESSION['auth'] != true) {
 						<table class="ope_table">
 						<tr>
 						<th>Watsonアカウント登録</th>
-						<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td>
+						<td><a href="<?php echo '/' . BASE . '/' ?>admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td>
 						</tr>
 						</table>
 						<h4>＜ユーザー管理＞</h4>
@@ -546,7 +546,7 @@ if ($_SESSION['auth'] != true) {
 							echo '<tr><td> -- </td><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr>';
 						}
 						?>
-						<tr><td colspan="5"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>
+						<tr><td colspan="5"><a href="<?php echo '/' . BASE . '/' ?>user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>
 						</table>
 					<?php
 					} else if ($_SESSION['role'] == 'admin') {
@@ -590,7 +590,7 @@ if ($_SESSION['auth'] != true) {
 						</p>
 						<table class="ope_table">
 						<tr><th>画像のアップロード</th>
-						<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=image_upload"><button>追加</button></td></tr>
+						<td><a href="<?php echo '/' . BASE . '/' ?>admin_set.php?page=admin_menu&task=image_upload"><button>追加</button></td></tr>
 						</table>
 					<?php
 					}

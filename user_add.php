@@ -66,15 +66,21 @@ if (empty($_POST)) {
 
 } else {
     if ($_POST['company_id'] && $_POST['user_id'] && $_POST['password_expires'] && $_POST['role']) {
+        ////////////////// user_id の重複チェック
+        if (two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
+            print_header("ユーザ情報の登録", null);
+            echo '<script>alert("ユーザーIDが重複しています。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
+            exit;
+        }
+        if (! yyyymmdd_db($_POST['password_expires'])) {
+            print_header("ユーザ情報の登録", null);
+            echo '<script>alert("パスワード有効期限の日付フォーマットが違います。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
+            exit;
+        }
+
         // 初期パスワードはユーザーIDと同一。
         $hash_pass = password_hash($_POST['user_id'], PASSWORD_DEFAULT);
         try {
-            ////////////////// user_id の重複チェック
-            if (two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
-                print_header("ユーザ情報の登録", null);
-                echo '<script>alert("ユーザーIDが重複しています。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
-                return;
-            }
             $query = "INSERT INTO users_list (company_id,user_id,password,password_expires,role) VALUES (?,?,?,?,?)";
             $stmt = $mysqli->prepare($query);
             $stmt->bind_param("sssss", $_POST['company_id'], $_POST['user_id'], $hash_pass, $_POST['password_expires'], $_POST['role']);
@@ -93,7 +99,7 @@ if (empty($_POST)) {
         }
     } else {
         print_header("ユーザ情報の登録", null);
-        echo "入力に誤りがあります。";
+        echo '<script>alert("入力に誤りがあります。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
     }
     print_javascript("others");
     print_footer();

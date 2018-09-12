@@ -3,14 +3,14 @@
 /**********************************************
  メルマガのトップに表示させるタイトル画像のURL。
  **********************************************/
-var title_image_url = "images/title_image.png";
+var title_image_url = "";
 
 /**********************************************
  カテゴリ用のアイコン画像が複数格納されているディレクトリのURL。
  画像ファイル名「robot.png」などは、MySQLの「category_list」で
  指定。
  **********************************************/
-var category_icon_url = "images/category_icon/";
+var category_icon_url = "";
 
 /**********************************************
  注目記事に付けるアイコン画像のURL。
@@ -77,6 +77,13 @@ $( function() {
         update: function( event, ui ) { localStorage.setItem("autosave_N", document.body.innerHTML); }
     });
 
+    // 画像のURL
+    var company_id = $("#_company_id").val();
+    var news_id = $("#_news_id").val();
+    title_image_url = "images/" + company_id + "/" + news_id + "/title_image.png";
+    category_icon_url = "images/" + company_id + "/" + news_id + "/";
+
+
     /**********************************************
      AJAXを使ってサーバーから設定情報を取得。
     ***********************************************/
@@ -93,7 +100,7 @@ $( function() {
             $("#subject").val(args["default_title"]);
 
             // 署名をセット
-            signature = '<div>' + args["signature"] + '</div>';
+            signature = '<div>' + convert_br(escape_html(args["signature"])) + '</div>';
 
             // カテゴリのリストをセット
             for(var i=0; i<args["category_name"].length; i++) {
@@ -522,7 +529,7 @@ function preview() {
                             setErrorColor(divs[2]);
                         } else {
                             buffer += '<div name="wrapper" style="margin-top:0px;width:90%;float:left">';
-                            buffer += '<div name="title" style="font-size:13pt;line-height:1.1;font-weight:700;">' + main_url + $(divs[2].firstElementChild).val() + '</a></div>';
+                            buffer += '<div name="title" style="font-size:13pt;line-height:1.1;font-weight:700;">' + main_url + escape_html($(divs[2].firstElementChild).val()) + '</a></div>';
                             setDefaultColor(divs[2]);
                         }
                     }
@@ -535,7 +542,7 @@ function preview() {
                         } else {
                             // 要ログイン
                             buffer += '<div name="media" style="font-size:9pt;color:rgb(70,70,70);text-align:right;margin-top:0px;font-weight:bold;">';
-                            buffer += '<span style="margin-right:6px;">' + $(divs[3].firstElementChild).val() + '</span>';
+                            buffer += '<span style="margin-right:6px;">' + escape_html($(divs[3].firstElementChild).val()) + '</span>';
                             if($(divs[4].firstElementChild).prop('checked')) {
                                 buffer += '<img src="' + req_login_url + '" style="vertical-align:bottom;height:20px;" alt="要ログイン" />';
                             }
@@ -608,7 +615,7 @@ function getMailheader() {
 }
 
 function getSubject() {
-    var subject = $("#subject").val();
+    var subject = escape_html($("#subject").val());
     var y = new Date().getFullYear();
     var m = new Date().getMonth() + 1;
     var d = new Date().getDate();
@@ -619,7 +626,7 @@ function getSubject() {
 }
 
 function getMemo() {
-  var memo = $("#memo").val();
+  var memo = escape_html($("#memo").val());
   if(memo) {
     return '<div style="color:rgb(0,0,0);font-family:Avenir,Helvetica,Arial,Verdana,Roboto,YuGothic,Meiryo,sans-serif;font-size:13.3333px;width:600px;margin:0px 0px 1em;padding:0px"><b style="color:rgb(34,34,34);font-family:arial,sans-serif;font-size:14px">' +
            memo + '</b><br></div>';
@@ -718,6 +725,34 @@ function copy_subject() {
 
 function copy_body() {
     return;
+}
+
+
+function escape_html(string) {
+  if(typeof string !== 'string') {
+    return string;
+  }
+  return string.replace(/[&'`"<>]/g, function(match) {
+    return {
+      '&': '&amp;',
+      "'": '&#x27;',
+      '`': '&#x60;',
+      '"': '&quot;',
+      '<': '&lt;',
+      '>': '&gt;',
+    }[match];
+  });
+}
+
+function convert_br(string) {
+    if(typeof string !== 'string') {
+        return string;
+    }
+    if(string.match(/&lt;br&gt;/g)) {
+        return string.replace(/&lt;br&gt;/g, '<br>');
+    } else {
+        return string.replace(/\n/g, '<br>');
+    }
 }
 
 

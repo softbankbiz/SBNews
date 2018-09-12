@@ -77,6 +77,7 @@ if ($_SESSION['auth'] !== true) {
 			var watson_management = "watson_management.php";
 
 			function delete_cid(_cid, _cid_alias) {
+				if (! confirm('本当に削除しますか？')) { return; }
 				$.post(watson_management,
 			    {
 			        cmd:       "delete",

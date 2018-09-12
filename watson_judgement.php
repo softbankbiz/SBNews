@@ -47,10 +47,10 @@ if ($_SESSION['auth'] !== true) {
 						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, 'dummy_watson', 'dummy_watson');
 						$counter++;
 					} else {
-						echo "No data!";
+						//echo "No data!";
 					}
 				}
-				echo "Dummy Watson Judgemant had " . $counter . " updated.<br>";
+				echo "Dummy Watson Judgemant had " . $counter . " updated.";
 		    } else {
 		    	$result = get_configuration($mysqli, $_SESSION["company_id"]);
 		    	$w_username = $result["w_username"];
@@ -73,7 +73,7 @@ if ($_SESSION['auth'] !== true) {
 						echo "No data!";
 					}
 				}
-				echo "Watson Judgemant had " . $counter . " updated.<br>";
+				echo "Watson Judgemant had " . $counter . " updated.";
 		    }
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;

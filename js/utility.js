@@ -1,5 +1,9 @@
+function delete_confirm() {
+  if (! confirm('本当に削除しますか？')) { return; }
+}
+
 function check_date_format(id) {
-    //alert(id);
+    //return true;
     var year_s = $("#" + id + "_year_s").val();
     var month_s = $("#" + id + "_month_s").val();
     var date_s = $("#" + id + "_date_s").val();
@@ -48,6 +52,8 @@ function check_change_password() {
 }
 
 function check_create_user_info() {
+  //return true;
+
   if (!document.create_user_form.company_id.value || !document.create_user_form.user_id.value) {
     alert("入力が不足しています。");
     return false;

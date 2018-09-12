@@ -8,7 +8,7 @@ session_start();
 
 ////////////////// user_id 認証
 if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
-    return;
+    exit;
 }
 
 # 認証済みかどうかのセッション変数を初期化
@@ -19,11 +19,15 @@ if (! isset($_SESSION['auth'])) {
 
 if ($_SESSION['auth'] !== true) {
 	echo '閲覧権限が不足しています。';
-	exit();
+	exit;
 } else if (empty($_POST)) {
 	echo 'パラメータが不足しています。';
-	exit();
+	exit;
 } else if ( $_POST['year_s'] && $_POST['month_s'] && $_POST['date_s'] && $_POST['year_e'] && $_POST['month_e'] && $_POST['date_e'] && $_POST['cmd'] ) {
+	if ( ! yyyymmdd($_POST['year_s'], $_POST['month_s'], $_POST['date_s']) || ! yyyymmdd($_POST['year_e'], $_POST['month_e'], $_POST['date_e']) ) {
+		echo '日付のフォーマットが違っています。';
+		exit;
+	}
 	if ($_POST['cmd'] === "log_rss") {
 		try {
 		    $query = "SELECT title,class_name,url,created,category,confidence,site_name,news_id,cid,cid_alias FROM article_candidate WHERE company_id = ? AND ts > ? AND ts < ?";

@@ -12,6 +12,18 @@ function getConnection() {
 }
 
 
+/**
+ * クロスサイトスクリプティング対策
+ * htmlspecialcharsのラッパー関数
+ */
+function h($str) {
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
+
+/**
+ * Watson NLC用の入力チェック関数
+ */
 function nlc_text($s) {
 	$chars = array(
 		chr(0x00),chr(0x01),chr(0x02),chr(0x03),chr(0x04),chr(0x05),chr(0x06),chr(0x07),chr(0x08),chr(0x09),
@@ -21,6 +33,53 @@ function nlc_text($s) {
 	);
 	$s = str_replace($chars, "", $s);
 	return substr( $s, 0, 1024);
+}
+
+/**
+ * ログ出力用の日付フォーマットチェック
+ */
+function yyyymmdd($y, $m, $d){
+	$date = $y . '/' . $m . '/' . $d;
+    //書式
+        //2012/1/1
+    //年
+        //4桁整数     1000-9999
+    //月
+        //1桁の場合は 01-09
+        //2桁の場合は 10の位が1  1の位が0-2
+    //日
+        //1桁の場合は 01～09
+        //2桁の場合は 10の位が1と2  1の位が0-9
+        //2桁の場合は 10の位が3     1の位が0が1
+ 
+    if (preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * BD入力用の日付フォーマットチェック
+ */
+function yyyymmdd_db($date){
+    //書式
+        //2012-1-1
+    //年
+        //4桁整数     1000-9999
+    //月
+        //1桁の場合は 01-09
+        //2桁の場合は 10の位が1  1の位が0-2
+    //日
+        //1桁の場合は 01～09
+        //2桁の場合は 10の位が1と2  1の位が0-9
+        //2桁の場合は 10の位が3     1の位が0が1
+ 
+    if (preg_match('/^([1-9][0-9]{3})-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -103,6 +162,34 @@ define('FETCH_NUM_LIST',
 		array("10","20","30","40","50")
 	);
 
+
+/**
+ * 画像アップロードで使う<select>作成用関数
+ */
+function get_news_id_as_select($mysqli, $news_id, $label) {
+	$query = 'SELECT news_id from preference WHERE company_id ="' . $_SESSION['company_id'] . '"';
+	try {
+		$buf = '<select name="top_news_id" id="' . $label . '"><option> -- 未選択 -- </option>';
+		$result = $mysqli->query($query);
+		while( $news_id_from_db = $result->fetch_array(MYSQLI_NUM)[0] ) {
+			if ($news_id_from_db === $news_id) {
+				$buf .= '<option selected>' . $news_id_from_db . '</option>';
+			} else {
+				$buf .= '<option>' . $news_id_from_db . '</option>';
+			}
+		}
+		$result->free();
+		$buf .= '</select>';
+		return $buf;
+	} catch (mysqli_sql_exception $e) {
+	    throw $e;
+	    die();
+	}
+}
+
+/**
+ * set_news.phpでつかう<select>作成用関数
+ */
 function get_cid_alias_as_select($mysqli, $cid_alias) {
 	try {
 		$result = get_classifier_list($mysqli, $_SESSION["company_id"]);
@@ -417,14 +504,14 @@ function do_fetch($mysqli, $rss_arr, $site_names_arr, $insert_suffix) {
 				}
 			}
 		} catch(Exception $e) {
-			echo '捕捉した例外 : ' . $e->getMessage() . " : " . $rss[1] . "<br>";
+			//echo '捕捉した例外 : ' . $e->getMessage() . " : " . $rss[1] . "<br>";
 		}
 	}
 
 	$timedistance = time() - $start;
 	$minutes = intdiv($timedistance, 60);
 	$seconds = $timedistance % 60;
-	echo "<br><br>Finished, " . $counter . " lines inserted. " . $minutes . " min " . $seconds . " sec.<br><br><br>";
+	echo "Finished, " . $counter . " lines inserted. " . $minutes . " min " . $seconds . " sec.";
 	//$mysqli->close();
 }
 
@@ -484,7 +571,7 @@ function get_redirected_url($url) {
 		if (curl_errno($curl) === 0 && curl_getinfo($curl, CURLINFO_HTTP_CODE) === 200) {
 			return $url_r;
 		} else {
-			echo '>>>>>>リンク先に到達できない : ' . $url_r . ' <br>';
+			//echo '>>>>>>リンク先に到達できない : ' . $url_r . ' <br>';
 			return null;
 		}
 		
@@ -501,7 +588,7 @@ function update_watson_res($mysqli, $url, $class_name, $confidence, $cid_alias, 
 	$query = 'UPDATE article_candidate SET class_name="' . $class_name . '", confidence=' . $confidence . ', cid_alias="' . $cid_alias . '", cid="' .  $cid . '" WHERE url="' . $url . '"';
 	$result = $mysqli->query($query);
 	if (!$result) {
-		echo "watson judgement update was failed.<br>";
+		//echo "watson judgement update was failed.<br>";
 	}
 }
 

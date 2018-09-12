@@ -68,13 +68,13 @@ if (empty($_POST)) {
 
 <?php
     } else if($_GET["task"] == "user_delete" && $_GET["target"] && $_GET["company_id"]) {
+        ////////////////// user_id の重複チェック
+        if (! two_step_auth($mysqli, $_GET["company_id"], $_GET["target"])) {
+            print_header("ユーザの修正／削除", null);
+            echo '<script>alert("そのユーザーIDは存在しません。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
+            exit;
+        }
         try {
-            ////////////////// user_id の重複チェック
-            if (! two_step_auth($mysqli, $_GET["company_id"], $_GET["target"])) {
-                print_header("ユーザの修正／削除", null);
-                echo '<script>alert("そのユーザーIDは存在しません。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
-                return;
-            }
             $query = "DELETE FROM users_list WHERE company_id = ? AND user_id = ?";
             $stmt = $mysqli->prepare($query);
             $stmt->bind_param("ss", $_GET["company_id"], $_GET["target"]);
@@ -94,13 +94,18 @@ if (empty($_POST)) {
     }
 } else {
     if ($_POST['company_id'] && $_POST['user_id'] && $_POST['password_expires'] && $_POST['role'] && $_POST['password_reset']) {
+        ////////////////// user_id の重複チェック
+        if (! two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
+            print_header("ユーザの修正／削除", null);
+            echo '<script>alert("そのユーザーIDは存在しません。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
+            exit;
+        }
+        if (! yyyymmdd_db($_POST['password_expires'])) {
+            print_header("ユーザの修正／削除", null);
+            echo '<script>alert("パスワード有効期限の日付フォーマットが違います。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
+            exit;
+        }
         try {
-            ////////////////// user_id の重複チェック
-            if (! two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
-                print_header("ユーザの修正／削除", null);
-                echo '<script>alert("そのユーザーIDは存在しません。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
-                return;
-            }
             if ($_POST['password_reset'] == 'yes') {
                 // パスワードをユーザーIDにリセット。
                 $hash_pass = password_hash($_POST['user_id'], PASSWORD_DEFAULT);

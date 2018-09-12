@@ -90,6 +90,7 @@ mbstring.substitute_character = none
 
 ### MariaDB
 ```
+# curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 # yum -y install mariadb-server
 # systemctl start mariadb
 # systemctl enable mariadb
@@ -172,7 +173,7 @@ crontab -e
 ```
 
 ## SBNewsのセットアップ
-インストールが完了したら `http://***your-server-ip-address/sbnews/` にアクセスします。
+インストールが完了したら `http://***your-server-ip-address***/sbnews/` にアクセスします。
 インストール直後は、「SBNewsのセットアップ」ページが開きます。指示に従って「データベース名」
 「データベースのユーザー名」「データベースのパスワード」を設定してください。
 セットアップが完了したら「利用開始する」ボタンをクリックします。

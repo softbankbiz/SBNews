@@ -5,7 +5,7 @@ define( 'ABSPATH', dirname(__FILE__) . '/' );
 
 /*
  * If sbnews_config.php exists in the root, load sbnews_config.php. 
- * If sbnews_config.php does not exist, initiate loading the setup process.
+ * If not exist, initiate loading the setup process.
  */
 if ( file_exists( ABSPATH . 'sbnews_config.php') ) {
 
@@ -18,7 +18,6 @@ if ( file_exists( ABSPATH . 'sbnews_config.php') ) {
 		exit;
 	}
 }
-
 
 
 define('BASE', basename(dirname(__FILE__)));
@@ -39,13 +38,13 @@ if ($_POST) {
 		echo "<br><br>入力項目が不足しています。<br><br>";
 		echo '<a href="/' . BASE . '/"><button>戻る</button></a>';
 		print_footer();
-		return;
+		exit;
 	} else {
 		try {
 			////////////////// user_id 認証
-		    if (!two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {  //|| mb_strwidth($_POST['password']) > 12) {
+		    if (!two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
 		    	echo '<script>alert("あなたは登録されていません。"); location.href = "/' . BASE . '/";</script>';
-		        return;
+		        exit;
 		    }
 
 		    $query = "SELECT password,password_expires,role from users_list WHERE company_id = ? AND user_id = ?";
@@ -65,8 +64,8 @@ if ($_POST) {
 				print_header("SBNews ログイン", null);
 				echo '<script src="js/utility.js"></script>';
 				echo '<div class="login">';
-				echo "<div class=\"reader-text\">ログインページ</div>";
-				echo "<p>初回ログインです。パスワードを変更してください。<br>パスワードは英数半角文字で6文字以上かつ12文字以内でお願いします。</p>";
+				echo '<div class="reader-text">ログインページ</div>';
+				echo '<p>初回ログインです。パスワードを変更してください。<br>パスワードは英数半角文字で6文字以上かつ12文字以内でお願いします。</p>';
 				echo '<form action="change_password.php" method="post" name="change_password_form">';
 				echo '<table class="form-table">';
 				echo '<input type="hidden" name="company_id" value="' . $_POST['company_id'] . '">';
@@ -78,7 +77,8 @@ if ($_POST) {
 				echo '</form>';
 				echo '</div>';
 				print_footer();
-				return;
+				exit;
+
 			// ログイン成功
 			} else if (password_verify($_POST["password"], $password)) {
 				// Password 有効期限のチェク
@@ -87,7 +87,7 @@ if ($_POST) {
 				
 				if ($now >= $date_db) {
 					echo '<script>alert("パスワードの有効期限が切れています。"); location.href = "/' . BASE . '/";</script>';
-					return;
+					exit;
 				}
 
 		        // セッション固定化攻撃対策(セッションIDを変更)
@@ -105,7 +105,7 @@ if ($_POST) {
 		    	print_header("SBNews ログイン", null);
 		        echo '<script>alert("認証に失敗しました。"); location.href = "/' . BASE . '/";</script>';
 		        print_footer();
-		        return;
+		        exit;
 		    }
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;
@@ -184,18 +184,44 @@ if ($_SESSION['auth'] != true) {
 								$news_id = $news_id_list->fetch_array(MYSQLI_NUM)[0];
 								if (isset($news_id)) {
 									echo '<td>' . $news_id . '</td>';
-									echo '<td><a href="/' . BASE . '/news_set.php?page=news_conf&news_id=' . $news_id . '"><button>設定変更</button></a></td>';
-									echo '<td><a href="/' . BASE . '/fetch_contents.php?news_id=' . $news_id . '" target="_blank"><button>ニュース取得（手動）</button></a></td>';
-									echo '<td><a href="/' . BASE . '/watson_judgement.php?news_id=' . $news_id . '" target="_blank"><button>Watson判定（手動）</button></a></td>';
+									echo '<td><a href="/' . BASE . '/news_set.php?page=news_conf&news_id=' . $news_id . '"><button>設定変更・削除</button></a></td>';
+									echo '<td><button onclick="update_news(\'' . $news_id . '\')">ニュース更新（手動）</button></td>';
+									echo '<td><img src="images/bx_loader.gif" class="bx_loader" style="display: none;" id="bx_loader"></td>';
+									//echo '<td><a href="/' . BASE . '/fetch_contents.php?news_id=' . $news_id . '" target="_blank"><button>ニュース取得（手動）</button></a></td>';
+									//echo '<td><a href="/' . BASE . '/watson_judgement.php?news_id=' . $news_id . '" target="_blank"><button>Watson判定（手動）</button></a></td>';
 								}
 								echo '</tr>';
-								echo '<tr><td colspan=3><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';
+								echo '<tr><td colspan="5"><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';
 							}
 						}
-
 						?>
 					</table>
 				</div>
+				<script>
+				function update_news(_news_id) {
+					var msg = '';
+					$("#bx_loader").css("display","block");
+					$.get('fetch_contents.php', 
+						{
+				        	news_id: _news_id
+				        },
+				        function(data){
+				        	msg += data + '\n\n';
+				        	$.get('watson_judgement.php', 
+								{
+						        	news_id: _news_id
+						        },
+						        function(data){
+						        	msg += data;
+						        	alert(msg);
+						        	$("#bx_loader").css("display","none");
+						    	}
+					    	);
+				    	}
+				    );
+				}
+				</script>
+
 
 				<div class="menu_content" id="watson_conf">
 					<h3>Watson設定</h3>
@@ -206,7 +232,9 @@ if ($_SESSION['auth'] != true) {
 						<?php
 						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
 							echo '<tr><td colspan="6"> あなたには編集権限がありません。 </td></tr>';
-						} else {
+
+						// Watson NLC に問い合わせると遅いので、このページだけURLパラメータを見る
+						} else if ($_GET['page'] == 'watson_conf') {
 							$result = get_classifier_list($mysqli, $_SESSION["company_id"]);
 							$config = get_configuration($mysqli, $_SESSION["company_id"]);
 							$w_username = $config["w_username"];
@@ -232,7 +260,6 @@ if ($_SESSION['auth'] != true) {
 								echo '<td> -- </td>';
 								echo '</tr>';
 							}
-							
 							echo '<tr><td colspan=3><a href="/' . BASE . '/watson_add.php?page=watson_conf"><button>分類子を追加／削除</button></a></td></tr>';
 						}
 						?>
@@ -460,35 +487,43 @@ if ($_SESSION['auth'] != true) {
 					
 					<?php 
 					if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
-						echo '<table class="ope_table">';
-						echo '<tr><td> あなたには編集権限がありません。 </td></tr>';
-						echo '</table>';
+					?>
+						<table class="ope_table">
+						<tr><td> あなたには編集権限がありません。 </td></tr>
+						</table>
+					<?php
 					} else if ($_SESSION['role'] == 'su') {
-						echo '<h4>＜Watsonアカウント登録＞</h4>';
-						echo '<p class="ope_description wide">Watson NLCのユーザー名／パスワードは、管理者ユーザーが設定します。</p>';
-						echo '<table class="ope_table">';
-						echo '<tr><td> -- </td></tr>';
-						echo '</table>';
-						echo '<h4>＜ユーザー管理＞</h4>';
+					?>
+						<h4>＜Watsonアカウント登録＞</h4>
+						<p class="ope_description wide">Watson NLCのユーザー名／パスワードは、管理者ユーザーが設定します。</p>
+						<table class="ope_table">
+						<tr><td> -- </td></tr>
+						</table>
+						<h4>＜ユーザー管理＞</h4>
+					<?php
 					} else {
-						echo '<h4>＜Watsonアカウント登録＞</h4>';
-						echo '<p class="ope_description">Watson NLCのユーザネーム／パスワードを登録します。';
-						echo '</p>';
-						echo '<table class="ope_table">';
-						echo '<tr>';
-						echo '<th>Watsonアカウント登録</th>';
-						echo '<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td>';
-						echo '</tr>';
-						echo '</table><br><br><br>';
-						echo '<h4>＜ユーザー管理＞</h4>';
+					?>
+						<h4>＜Watsonアカウント登録＞</h4>
+						<p class="ope_description">Watson NLCのユーザネーム／パスワードを登録します。
+						</p>
+						<table class="ope_table">
+						<tr>
+						<th>Watsonアカウント登録</th>
+						<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td>
+						</tr>
+						</table>
+						<h4>＜ユーザー管理＞</h4>
+					<?php
 					}
 					if ($_SESSION['role'] == 'su') {
-						echo '<p class="ope_description wide">rootユーザーであるあなたは、企業IDを指定して、ユーザーを作成できます。';
-						echo '企業IDはWatsonアカウントと1対1で対応するSBNewsの基本単位となります。';
-						echo '追加するユーザーには、ニュースの各種設定を行える「管理者」とニュース作成およびログ管理のみ行える「編集者」のいずれかの役割を付与できます。';
-						echo '</p>';
-						echo '<table class="ope_table wide">';
-						echo '<tr><th>No</th><th>企業ID</th><th>ユーザーID</th><th>パスワード有効期限</th><th>役割</th><th></th></tr>';
+					?>
+						<p class="ope_description wide">rootユーザーであるあなたは、企業IDを指定して、ユーザーを作成できます。
+						企業IDはWatsonアカウントと1対1で対応するSBNewsの基本単位となります。
+						追加するユーザーには、ニュースの各種設定を行える「管理者」とニュース作成およびログ管理のみ行える「編集者」のいずれかの役割を付与できます。
+						</p>
+						<table class="ope_table wide">
+						<tr><th>No</th><th>企業ID</th><th>ユーザーID</th><th>パスワード有効期限</th><th>役割</th><th></th></tr>
+						<?php
 						$users_list = get_users_list($mysqli, null);
 						if ($users_list) {
 							foreach ($users_list as $num => $user) {
@@ -510,16 +545,20 @@ if ($_SESSION['auth'] != true) {
 						} else {
 							echo '<tr><td> -- </td><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr>';
 						}
-						echo '<tr><td colspan="5"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
-						echo '</table>';
+						?>
+						<tr><td colspan="5"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>
+						</table>
+					<?php
 					} else if ($_SESSION['role'] == 'admin') {
-						echo '<p class="ope_description">管理者ユーザーであるあなたは、ニュースの各種設定を行える「管理者ユーザー」、';
-						echo 'またはニュース作成およびログ管理のみ行える「編集者ユーザー」を修正・削除・追加できます。';
-						echo 'ただし、自分自身は削除できません。';
-						echo 'パスワードのリセットは「修正」から行えます。';
-						echo '</p>';
-						echo '<table class="ope_table">';
-						echo '<tr><th>No</th><th>ユーザーID</th><th>パスワード有効期限</th><th>役割</th><th></th></tr>';
+					?>
+						<p class="ope_description">管理者ユーザーであるあなたは、ニュースの各種設定を行える「管理者ユーザー」、
+						またはニュース作成およびログ管理のみ行える「編集者ユーザー」を修正・削除・追加できます。
+						ただし、自分自身は削除できません。
+						パスワードのリセットは「修正」から行えます。
+						</p>
+						<table class="ope_table">
+						<tr><th>No</th><th>ユーザーID</th><th>パスワード有効期限</th><th>役割</th><th></th></tr>
+					<?php
 						$users_list = get_users_list($mysqli, $_SESSION['company_id']);
 						if ($users_list) {
 							foreach ($users_list as $num => $user) {
@@ -541,12 +580,21 @@ if ($_SESSION['auth'] != true) {
 							echo '<tr><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr>';
 						}
 						echo '<tr><td colspan="4"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
-						echo '</table>';
-
-						
+						echo '</table>';				
+					}
+					if ($_SESSION['role'] == 'admin') {
+					?>
+						<h4>＜画像の管理＞</h4>
+						<p class="ope_description">
+						ニュースに使用するトップ画像、カテゴリアイコンをアップロードします。
+						</p>
+						<table class="ope_table">
+						<tr><th>画像のアップロード</th>
+						<td><a href="/' . BASE . '/admin_set.php?page=admin_menu&task=image_upload"><button>追加</button></td></tr>
+						</table>
+					<?php
 					}
 					?>
-					
 				</div>
 			</div>
 <?php

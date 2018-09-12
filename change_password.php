@@ -10,13 +10,13 @@ if (! empty($_POST)) {
     if ($_POST['company_id'] && $_POST['user_id'] && $_POST['password_01'] && $_POST['password_02']) {
     	if ($_POST['password_01'] != $_POST['password_02']) {
             echo '<script>alert("パスワードが一致しません。"); location.href = "/' . BASE . '/";</script>';
-    		return;
+    		exit;
     	} else if (mb_strwidth($_POST['password_01']) > 12 || mb_strwidth($_POST['password_02']) > 12) {
             echo '<script>alert("パスワードが不正です。"); location.href = "/' . BASE . '/";</script>';
-            return;
+            exit;
         } else if (! two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
             echo '<script>alert("ユーザーとして認証できません。"); location.href = "/' . BASE . '/";</script>';
-            return;
+            exit;
         }
     	$hash_pass = password_hash($_POST['password_01'], PASSWORD_DEFAULT);
     	try {

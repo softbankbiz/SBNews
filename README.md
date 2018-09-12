@@ -97,7 +97,7 @@ mbstring.substitute_character = none
 # mysql_secure_installation
 
 # mysql -V
-mysql  Ver 15.1 Distrib 5.5.60-MariaDB, for Linux (x86_64) using readline 5.1
+mysql  Ver 15.1 Distrib 10.3.9-MariaDB, for Linux (x86_64) using readline 5.1
 
 // my.cnfの設定
 # vim /etc/my.cnf
@@ -152,8 +152,8 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 # unzip master.zip
 
 // SBNewsのデプロイ
-# rsync -avP ./SBNews-master/ /var/www/html/sbnews/
-# chown -R apache:apache /var/www/html/sbnews*
+# rsync -avrP ./SBNews-master/ /var/www/html/sbnews/
+# chown -R apache:apache /var/www/html/sbnews
 
 // クローラのスケジュールジョブ設定
 crontab -e
@@ -168,8 +168,8 @@ crontab -e
 # unzip master.zip
 
 // SBNewsのデプロイ
-# rsync -avP ./SBNews-master/ /var/www/html/sbnews/
-# chown -R apache:apache /var/www/html/sbnews*
+# rsync -avrP ./SBNews-master/ /var/www/html/sbnews/
+# chown -R apache:apache /var/www/html/sbnews
 ```
 
 ## SBNewsのセットアップ

@@ -8,6 +8,26 @@ SBNewsはLAMPスタック上で稼働する汎用的なWebアプリケーショ�
 Alibaba CloudのOSイメージ：「CentOS 7.4 64bit(セキュリティ強化)」。
 ファイアウォール設定で「TCP:80」のプロトコル／ポートを許可。
 
+### SELinux
+SELinuxが有効かチェック。「enforcing」になっていなければ、下記の設定ファイルを修正して、サーバを再起動。
+さらにsemanageコマンドのインストール。
+
+```
+# getenforce
+disabled   //SELinux無効なので下記の config を修正
+
+# vi /etc/selinux/config
+
+SELINUX=enforcing
+
+# reboot    // サーバの再起動
+
+# yum provides /usr/sbin/semanage    // パッケージ名を確認する
+policycoreutils-python-2.5-22.el7.x86_64 : SELinux policy core python utilities
+
+# yum -y install policycoreutils-python-2.5-22.el7.x86_64
+```
+
 ### Apache
 ```
 # yum check-update
@@ -155,6 +175,15 @@ GRANT ALL ON sbnews_db.* TO 'sbnews_user'@'localhost';
 # rsync -avrP ./SBNews-master/ /var/www/html/sbnews/
 # chown -R apache:apache /var/www/html/sbnews
 
+// SELinuxの設定
+# semanage fcontext -a -t httpd_sys_rw_content_t /var/www/html/sbnews
+# restorecon -v /var/www/html/sbnews
+# semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/sbnews/images(/.*)?"
+# restorecon -R -v /var/www/html/sbnews/images
+
+# cat /etc/selinux/targeted/contexts/files/file_contexts.local  // 設定内容確認
+# reboot  // サーバ再起動
+
 // クローラのスケジュールジョブ設定
 crontab -e
 0 * * * * php -f /var/www/html/sbnews/cron_job.php
@@ -176,6 +205,7 @@ crontab -e
 インストールが完了したら `http://***your-server-ip-address***/sbnews/` にアクセスします。
 インストール直後は、「SBNewsのセットアップ」ページが開きます。指示に従って「データベース名」
 「データベースのユーザー名」「データベースのパスワード」を設定してください。
+「書き込み権限がない」と言われたら、SELinuxの設定を確認します。
 セットアップが完了したら「利用開始する」ボタンをクリックします。
 
 ログインページが開いたら、

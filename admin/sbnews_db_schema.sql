@@ -11,7 +11,7 @@ CREATE INDEX index_rss_list ON rss_list (company_id);
 DROP TABLE IF EXISTS site_names_list;
 CREATE TABLE site_names_list (site_names_id VARCHAR(80) NOT NULL, site_names_data TEXT NOT NULL, company_id VARCHAR(20) NOT NULL);
 DROP TABLE IF EXISTS click_counter;
-CREATE TABLE click_counter (company_id VARCHAR(20) NOT NULL, news_id VARCHAR(100) NOT NULL, url VARCHAR(1024) NOT NULL, issue CHAR(10) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE click_counter (company_id VARCHAR(20) NOT NULL, news_id VARCHAR(100) NOT NULL, url VARCHAR(1024) NOT NULL, issue CHAR(10) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP, title VARCHAR(100));
 CREATE INDEX index_click_counter ON click_counter (company_id,news_id,issue);
 DROP TABLE IF EXISTS access_counter;
 CREATE TABLE access_counter (company_id VARCHAR(20) NOT NULL, news_id VARCHAR(100) NOT NULL, issue CHAR(10) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);

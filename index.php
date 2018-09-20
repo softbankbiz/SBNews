@@ -155,7 +155,7 @@ if ($_SESSION['auth'] != true) {
 								if (isset($news_id)) {
 									echo '<td>' . $news_id . '</td>';
 									echo '<td>' . get_news_ts($mysqli, $news_id, $_SESSION['company_id']) . '</td>';
-									echo '<td><a href="/' . BASE . '/news_maker.php?news_id=' . $news_id . '"><button>ニュース作成</button></a></td>';
+									echo '<td><a href="/' . BASE . '/news_maker.php?news_id=' . urlencode($news_id) . '"><button>ニュース作成</button></a></td>';
 								}
 								echo '</tr>';
 							}
@@ -184,7 +184,7 @@ if ($_SESSION['auth'] != true) {
 								$news_id = $news_id_list->fetch_array(MYSQLI_NUM)[0];
 								if (isset($news_id)) {
 									echo '<td>' . $news_id . '</td>';
-									echo '<td><a href="/' . BASE . '/news_set.php?page=news_conf&news_id=' . $news_id . '"><button>設定変更・削除</button></a></td>';
+									echo '<td><a href="/' . BASE . '/news_set.php?page=news_conf&news_id=' . urlencode($news_id) . '"><button>設定変更・削除</button></a></td>';
 									echo '<td><button onclick="update_news(\'' . $news_id . '\')">ニュース更新（手動）</button></td>';
 									echo '<td><img src="images/bx_loader.gif" class="bx_loader" style="display: none;" id="bx_loader"></td>';
 									//echo '<td><a href="/' . BASE . '/fetch_contents.php?news_id=' . $news_id . '" target="_blank"><button>ニュース取得（手動）</button></a></td>';
@@ -291,7 +291,7 @@ if ($_SESSION['auth'] != true) {
 									$row_rss = $result_rss->fetch_array(MYSQLI_ASSOC);
 									if (isset($row_rss["rss_id"])) {
 										echo '<td>' . $row_rss["rss_id"] . '</td>';
-										echo '<td><a href="/' . BASE . '/rss_set.php?page=crawler_conf&rss_id=' . $row_rss["rss_id"] . '"><button>設定変更</button></a></td>';
+										echo '<td><a href="/' . BASE . '/rss_set.php?page=crawler_conf&rss_id=' . urlencode($row_rss["rss_id"]) . '"><button>設定変更</button></a></td>';
 									}
 									echo '</tr>';
 								}
@@ -327,7 +327,7 @@ if ($_SESSION['auth'] != true) {
 									$row_cat = $result_cat->fetch_array(MYSQLI_ASSOC);
 									if (isset($row_cat["category_id"])) {
 										echo '<td>' . $row_cat["category_id"] . '</td>';
-										echo '<td><a href="/' . BASE . '/category_set.php?page=crawler_conf&category_id=' . $row_cat["category_id"] . '"><button>設定変更</button></a></td>';
+										echo '<td><a href="/' . BASE . '/category_set.php?page=crawler_conf&category_id=' . urlencode($row_cat["category_id"]) . '"><button>設定変更</button></a></td>';
 									}
 									echo '</tr>';
 								}
@@ -363,7 +363,7 @@ if ($_SESSION['auth'] != true) {
 									$row_site = $result_site->fetch_array(MYSQLI_ASSOC);
 									if (isset($row_site["site_names_id"])) {
 										echo '<td>' . $row_site["site_names_id"] . '</td>';
-										echo '<td><a href="/' . BASE . '/site_names_set.php?page=crawler_conf&site_names_id=' . $row_site["site_names_id"] . '"><button>設定変更</button></a></td>';
+										echo '<td><a href="/' . BASE . '/site_names_set.php?page=crawler_conf&site_names_id=' . urlencode($row_site["site_names_id"]) . '"><button>設定変更</button></a></td>';
 									}
 									echo '</tr>';
 								}

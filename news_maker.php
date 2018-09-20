@@ -56,6 +56,7 @@ if (! isset($_SESSION['auth'])) {
 		            </ul>
 					<ul class="add_button">
 						<li>
+							<button onclick="create_category()">カテゴリーを新規作成</button>
 							<button onclick="add_category()">カテゴリーを追加</button>
 							<button onclick="add_cassette()">記事を追加</button>
 						</li>
@@ -67,7 +68,7 @@ if (! isset($_SESSION['auth'])) {
 									<option>-- カテゴリを選ぶ --</option>
 								</select>
 								<span class="delete_button">
-									<button onclick="remove(this)">削除</button>
+									<button onclick="remove_cassette(this)">削除</button>
 								</span>
 							</div>
 						</li>
@@ -130,13 +131,14 @@ if (! isset($_SESSION['auth'])) {
 									</div>
 								</div>
 								<span class="delete_button">
-									<button onclick="remove(this)">削除</button>
+									<button onclick="remove_cassette(this)">削除</button>
 								</span>
 							</div>
 						</li>
 					</ul>
 					<ul class="add_button">
 						<li>
+							<button onclick="create_category()">カテゴリーを新規作成</button>
 		                    <button onclick="add_category()">カテゴリーを追加</button>
 		                    <button onclick="add_cassette()">記事を追加</button>
 		                </li>

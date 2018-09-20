@@ -36,13 +36,14 @@ if ($_POST["ranking_issue_list"] == 'exec' && $_POST["news_id"]) {
 // 指定した発行号のランキングデータ取得
 } else if ($_POST["issue"] && $_POST["news_id"]) {
 	$query = "SELECT DISTINCT(url) AS unique_url, " .
-	         "(SELECT title FROM article_candidate WHERE url = unique_url AND company_id = ? AND news_id = ?) AS unique_title, " .
+	         //"(SELECT title FROM article_candidate WHERE url = unique_url AND company_id = ? AND news_id = ?) AS unique_title, " .
+			 "title AS unique_title, " .
 	         "(SELECT count(unique_url) FROM click_counter WHERE url = unique_url AND issue = ? AND company_id = ? AND news_id = ?) AS cnt " .
-	         "FROM click_counter WHERE issue = ? AND company_id = ? AND news_id = ? ORDER BY cnt DESC LIMIT 10";
+	         "FROM click_counter WHERE issue = ? AND company_id = ? AND news_id = ? ORDER BY cnt DESC";
 	try {
     	$stmt = $mysqli->prepare($query);
-	    $stmt->bind_param("ssssssss",
-	    	              $_SESSION["company_id"], $_POST["news_id"], $_POST["issue"], $_SESSION["company_id"],
+	    $stmt->bind_param("ssssss",
+	    	              $_POST["issue"], $_SESSION["company_id"],
 	    	              $_POST["news_id"], $_POST["issue"], $_SESSION["company_id"], $_POST["news_id"]);
 	    $stmt->execute();
 	    $result = $stmt->get_result();

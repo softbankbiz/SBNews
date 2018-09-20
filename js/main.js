@@ -15,12 +15,12 @@ var category_icon_url = "";
 /**********************************************
  注目記事に付けるアイコン画像のURL。
  **********************************************/
-var check_icon_url = "images/category_icon/checkmark.png";
+var check_icon_url = "images/common_icon/checkmark.png";
 
 /**********************************************
  要ログイン記事に付けるアイコン画像のURL。
  **********************************************/
-var req_login_url = "images/category_icon/req_login.png";
+var req_login_url = "images/common_icon/req_login.png";
 
 /**********************************************
  クリックカウント用のURL。
@@ -64,7 +64,7 @@ var signature = '';
 var period_day_list = [["-1 day","1日前"], ["-2 day","2日前"], ["-3 day","3日前"], ["-4 day","4日前"], ["-5 day","5日前"], ["-6 day","6日前"], ["-7 day","7日前"]];
 var period_hour_list = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
 var fetch_num_list = ["10","20","30","40","50"];
-
+var ranking_length = 0;
 
 
 /**********************************************
@@ -74,7 +74,7 @@ $( function() {
     // set sortable
     $( "#sortable" ).sortable({
         disabled: false,
-        update: function( event, ui ) { localStorage.setItem("autosave_N", document.body.innerHTML); }
+        update: function( event, ui ) {}
     });
 
     // 画像のURL
@@ -250,11 +250,18 @@ function setElements(arr) {
     }
 }
 
+function create_category() {
+    //alert("here");
+    var new_category = prompt("新規追加したいカテゴリ名を入力してください", "");
+    //alert(new_category);
+    $("#category_list").append('<option>' + new_category + '</option>');
+    add_category(new_category);
+}
 function add_category(arg) {
     var cont_category = $("#tmpl_category").clone(false).removeAttr("id");
     $(cont_category).removeClass("invisible");
     $("#sortable").append(cont_category);
-    localStorage.setItem("autosave_N", document.body.innerHTML);
+
     if(arg) {
         $(cont_category).find("option").each(function(index,element){
             if($(element).text() == arg) {
@@ -277,15 +284,14 @@ function add_cassette(args) {
             } else if($(element).attr("name") == "article_title") {
                 $(element).val(args[1]);
             } else if($(element).attr("name") == "article_media") {
-                $(element).val(args[3] + '（' + args[4].split(' ')[0] + '）');  //$(element).val(args[3]);
+                $(element).val(args[3] + '（' + args[4].split(' ')[0] + '）');
             }
         });
     }
 }
 
-function remove(elm) {
+function remove_cassette(elm) {
     $(elm).parent().parent().parent().remove();
-    localStorage.setItem("autosave_N", document.body.innerHTML);
 }
 
 
@@ -309,6 +315,7 @@ function gen_ranking() {
                 //alert(data);
                 /////////////
                 var ranking = JSON.parse(data);
+                ranking_length = ranking.length;
                 var buf = '<div class="operation">▼タイトルや順位を確認・編集▼</div>';
                 buf += '<table id="rankingtable" class="rankingtable">';
                 buf += '<tr><th>No</th><th>URL／記事名</th><th>PV</th><th>削除</th></tr>';
@@ -321,7 +328,7 @@ function gen_ranking() {
                     buf += '</tr>';
                     buf += '<tr>';
                     buf += '<td>';
-                    buf += '<input id="title_' + (i+1) + '" type="text" value="' + ranking[i][1] + '" size="70" onchange="aotoSave_R(this)"></td>';
+                    buf += '<input id="title_' + (i+1) + '" type="text" value="' + ranking[i][1] + '" size="70"></td>';
                     buf += '</tr>';
                 }
                 buf += '</table>';
@@ -341,10 +348,11 @@ function gen_ranking() {
  取得しておく。
  ***********************************************/
 function rebuilt() {
-    $("#rankingtable tr").attr("style","");  // いったんすべてを可視化
+    //$("#rankingtable tr").attr("style","");  // いったんすべてを可視化
+    ranking_length = (current_num - 1) / 2;
     $("#rankingtable tr").each(function(i, val) {
         // 2行で1レコード、1行目はタイトル行、なので1〜10行が対象となる
-        if(i > 0 &&i < 11) {
+        if(i > 0 && i < current_num) {
             // 奇数行にはURLとPV数のIDを振る
             if (i % 2 === 1) {
                 val.children[1].children[0].setAttribute("id", "url_" + (Math.floor(i/2)+1));
@@ -353,10 +361,12 @@ function rebuilt() {
             } else if (i % 2 === 0) {
                 val.children[0].children[0].setAttribute("id", "title_" + (i/2));
             }
+        }
         // 11行目以降は不可視
+        /*
         } else {
             val.setAttribute("style", "display:none");
-        }
+        }*/
     });
     $(".deleteButton").click(function () {
         $(this).parent().parent().next().remove();
@@ -371,7 +381,6 @@ function rebuilt() {
         $(this).parent().parent().removeClass("hilite");
         $(this).parent().parent().next().removeClass("hilite");
     });
-    localStorage.setItem("autosave_N", document.body.innerHTML);
 }
 
 function setErrorColor(elm) {
@@ -493,20 +502,22 @@ function preview() {
                         } else {
                             // company_id, news_id, url, issue
                             main_url = '<a href="' + redirect_url + '?url=' + $(divs[1].firstElementChild).val() +
-                                       '&company_id=' + $("#_company_id").val() + '&news_id=' + $("#_news_id").val() + '&issue=' + issue +
+                                       '&company_id=' + encodeURI($("#_company_id").val()) + '&news_id=' + encodeURI($("#_news_id").val()) + '&issue=' + issue +
+                                       '&title=' + encodeURI($(divs[2].firstElementChild).val()) +
                                        '" target="_blank" style="color:blue;text-decoration:underline;" name="url">';
                             setDefaultColor(divs[1]);
                         }
                     }
 
                     buffer += '<div name="elem" style="width:100%">';
+                    // set category icon 
                     if(!isSameCategory) {
                         if(isTop > 1) {
                             buffer += '<hr style="border-top:1px solid #ccc;margin: 10px 40px;width:520px"></hr>';
                         }
                         buffer += '<div name="category" value="' + category  + '" style="float:none;width:150px;height:30px;">';
-                        if(category_icon[category] === "base_icon.png") {
-                            buffer += '<div alt="' + category + '" style=\'width:150px;height:30px;background-image:url("images/category_icon/base_icon.png");background-repeat:no-repeat;background-position: left center;\'><span style="padding-left:26px;font-size:large;font-weight:bold;">' + category + '</span></div></div>';
+                        if(category_icon[category] === "base_icon.png" || category_icon[category] !== null) {
+                            buffer += '<div alt="' + category + '" style=\'width:500px;height:30px;background-image:url("images/common_icon/base_icon.png");background-repeat:no-repeat;background-position: left center;\'><span style="padding-left:26px;font-size:large;font-weight:bold;">' + category + '</span></div></div>';
                         } else {
                             buffer += '<img src="' + category_icon_url + category_icon[category] + '" alt="' + category + '" style="width:100%;height:100%;" /></div>';
                         }
@@ -544,7 +555,7 @@ function preview() {
                             buffer += '<div name="media" style="font-size:9pt;color:rgb(70,70,70);text-align:right;margin-top:0px;font-weight:bold;">';
                             buffer += '<span style="margin-right:6px;">' + escape_html($(divs[3].firstElementChild).val()) + '</span>';
                             if($(divs[4].firstElementChild).prop('checked')) {
-                                buffer += '<img src="' + req_login_url + '" style="vertical-align:bottom;height:20px;" alt="要ログイン" />';
+                                buffer += '<img src="' + req_login_url + '" style="vertical-align:bottom;height:26px;" alt="要ログイン" />';
                             }
                             buffer += '</div>';
                             setDefaultColor(divs[3]);
@@ -666,8 +677,8 @@ var headofranking_b = '</div>' +
 function getRanking() {
     var buffer = '';
     var ranking = 0;
-    for(var i=1; i<6; i++) {
-        if(i === 2 || i === 4) {
+    for(var i=1; i<(ranking_length+1); i++) {
+        if(i % 2 === 0) {
             buffer += '<tr style="margin:1px 0 1px 0;background-color:#eee;">';
         } else {
             buffer += '<tr style=""margin:1px 0 1px 0;background-color:#fff;">';
@@ -676,8 +687,8 @@ function getRanking() {
         buffer += '<td style="border-left:1px solid #fff;border-right:1px solid #fff;width:86%;padding:0.5%;text-align:left;">';
         if($("#title_" + i).length !== 0) {
             buffer += '<a href="' + redirect_url + '?url=' + $("#url_" + i).text() +
-                      '&company_id=' + $("#_company_id").val() +
-                      '&news_id=' + $("#_news_id").val() +'&issue=' + $("#target_issue").val() +
+                      '&company_id=' + encodeURI($("#_company_id").val()) +
+                      '&news_id=' + encodeURI($("#_news_id").val()) +'&issue=' + $("#target_issue").val() +
                       '" target="_blank" style="text-decoration:none;">';
             buffer += $("#title_" + i).val() + '</a></td><td style="width:8%;padding:0.5%;text-align:right;">' + $("#num_" + i).text() + '</td></tr>';
         } else {
@@ -707,8 +718,8 @@ function getFooter() {
     if ( d < 10 ) { d = '0' + d; }
 
     var acImageUrl = '<img src="' + access_counter_url +
-                           '?company_id=' + $("#_company_id").val() +
-                           '&news_id=' + $("#_news_id").val() +
+                           '?company_id=' + encodeURI($("#_company_id").val()) +
+                           '&news_id=' + encodeURI($("#_news_id").val()) +
                            '&issue=' + issue + '" style="display:none;">';
 
     var buffer = '';

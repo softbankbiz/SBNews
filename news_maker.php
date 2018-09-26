@@ -149,7 +149,7 @@ if (! isset($_SESSION['auth'])) {
 					<h2>Step_4　ランキングを作成</h2>
 					<div id="Step_2" class="edit_area">
 						<div class="operation">▼発行号を指定する▼</div>
-						<select id="target_issue">
+						<select id="target_issue" style="margin-right:20px;">
 						</select>
 						<button onclick="gen_ranking()">この発行号でランキングを生成</button>
 						<div id="ranking_area"></div>
@@ -159,7 +159,13 @@ if (! isset($_SESSION['auth'])) {
 				<div class="operation">
 					<h2>Step_5　プレビューを確認</h2>
 					<div id="Step_3" class="edit_area">
-						<button onclick="preview()">プレビュー</button>
+						<div>
+							<button onclick="preview()">プレビュー</button>
+							<select id="pv_style" style="margin-left:20px;">
+								<option value="kr">並び順：記事→ランキング</option>
+								<option value="rk">並び順：ランキング→記事</option>
+							</select>
+						</div>
 						<div class="small_cap">件名</div>
 						<div id="preview_subject"></div>
 						<div class="small_cap">本文</div>

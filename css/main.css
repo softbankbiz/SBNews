@@ -87,7 +87,7 @@ background: linear-gradient(to bottom, #afafaf 0%,#edf1f7 5%,#bfbfbf 25%,#afafaf
 
 button { line-height: 1.4; }
 
-
+select { height: 1.6em; }
 
 /**************** index.php *******************/
 

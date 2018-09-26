@@ -1,4 +1,3 @@
-/*  FY17 2018/06/01...  */
 
 /**********************************************
  メルマガのトップに表示させるタイトル画像のURL。
@@ -275,7 +274,7 @@ function add_cassette(args) {
     var cont_cassette = $("#tmpl_cassette").clone(false).removeAttr("id");
     $(cont_cassette).removeClass("invisible");
     $("#sortable").append(cont_cassette);
-    localStorage.setItem("autosave_N", document.body.innerHTML);
+
     if(args) {
         var fyi_flag = [false, false, false];
         $(cont_cassette).find("input").each(function(index,element){
@@ -348,7 +347,7 @@ function gen_ranking() {
  取得しておく。
  ***********************************************/
 function rebuilt() {
-    //$("#rankingtable tr").attr("style","");  // いったんすべてを可視化
+    var current_num = ($("#rankingtable tr").length);
     ranking_length = (current_num - 1) / 2;
     $("#rankingtable tr").each(function(i, val) {
         // 2行で1レコード、1行目はタイトル行、なので1〜10行が対象となる
@@ -362,11 +361,6 @@ function rebuilt() {
                 val.children[0].children[0].setAttribute("id", "title_" + (i/2));
             }
         }
-        // 11行目以降は不可視
-        /*
-        } else {
-            val.setAttribute("style", "display:none");
-        }*/
     });
     $(".deleteButton").click(function () {
         $(this).parent().parent().next().remove();
@@ -500,7 +494,6 @@ function preview() {
                             error_collection['url_reg'] += 1;
                             setErrorColor(divs[1]);
                         } else {
-                            // company_id, news_id, url, issue
                             main_url = '<a href="' + redirect_url + '?url=' + $(divs[1].firstElementChild).val() +
                                        '&company_id=' + encodeURI($("#_company_id").val()) + '&news_id=' + encodeURI($("#_news_id").val()) + '&issue=' + issue +
                                        '&title=' + encodeURI($(divs[2].firstElementChild).val()) +
@@ -576,11 +569,9 @@ function preview() {
     }
 
     if($("#ranking_area").html() === '') {
-        //alert($("#target_issue").val());
         if($("#target_issue").val() !== 'no-data') {
             error_collection['ranking_area'] += 1;
         }
-        //alert(error_collection['ranking_area']);
     }
     show_results(error_collection, buffer);
 }
@@ -610,8 +601,13 @@ function show_results(e_col, buffer) {
     } else {
         $("#preview_subject").html(getSubject());
         if($("#target_issue").val() !== 'no-data') {
-            $("#preview_area").html(
-                getMailheader() + getMemo() + buffer + headofranking_a + getRankingDate() + headofranking_b + getRanking() + getFooter() );
+            if($("#pv_style").val() === 'kr') {
+                $("#preview_area").html(
+                     getMailheader() + getMemo() + buffer + headofranking_a + getRankingDate() + headofranking_b + getRanking() + getFooter() );   
+            } else if($("#pv_style").val() === 'rk') {
+                $("#preview_area").html(
+                     getMailheader() + getMemo() + headofranking_a + getRankingDate() + headofranking_b + getRanking() + buffer + getFooter() );
+            }
         } else {
             $("#preview_area").html(
                 getMailheader() + getMemo() + buffer + getFooter() );
@@ -662,12 +658,12 @@ function getRankingDate() {
     } else {
         d = y_m_d[2];
     }
-    return '【' + m + '月' + d + '日のアクセスランキングTOP5】';
+    return '【' + m + '月' + d + '日のアクセスランキング】';
 }
 
 
 var headofranking_b = '</div>' +
-                        '<table style="width:100%;font-size:9pt;margin-top:6px;border-collapse: collapse;line-height:1.2;">' +
+                        '<table style="width:100%;font-size:9pt;margin-top:6px;margin-bottom:30px;border-collapse: collapse;line-height:1.2;">' +
                         '<tr style="text-align:center;margin:1px 0 1px 0;background-color:#ccc;">' +
                         '<td style="width:6%;padding:0.5%;">順位</td>' +
                         '<td style="border-left:1px solid #fff;border-right:1px solid #fff;width:86%;padding:0.5%;">記事</td>' +
@@ -689,13 +685,10 @@ function getRanking() {
             buffer += '<a href="' + redirect_url + '?url=' + $("#url_" + i).text() +
                       '&company_id=' + encodeURI($("#_company_id").val()) +
                       '&news_id=' + encodeURI($("#_news_id").val()) +'&issue=' + $("#target_issue").val() +
+                      '&title=' + encodeURI($("#title_" + i).val()) +
                       '" target="_blank" style="text-decoration:none;">';
             buffer += $("#title_" + i).val() + '</a></td><td style="width:8%;padding:0.5%;text-align:right;">' + $("#num_" + i).text() + '</td></tr>';
         } else {
-            /*buffer += '<a href="' + redirect_url + '?url=' + $("#url_" + i).text() +
-                      '&company_id=' + $("#_company_id").val() +
-                      '&news_id=' + $("#_news_id").val() +'&issue=' + $("#target_issue").val() +
-                      '" target="_blank" style="text-decoration:none;">';*/
             buffer += ' -- </td><td style="width:8%;padding:0.5%;text-align:right;"> -- </td></tr>';
         }
     }
@@ -765,10 +758,6 @@ function convert_br(string) {
         return string.replace(/\n/g, '<br>');
     }
 }
-
-
-/////////////////////////////////////////////////////
-
 
 
 

@@ -71,7 +71,7 @@ document.getElementById('add_category_data').addEventListener('change', function
     var file = _file;
     var workbook = _workbook;
     return {
-      toCsv() {
+      toCsv: function() {
         var result = [];
         workbook.SheetNames.forEach(function(sheetName) {
           var csv = XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]);
@@ -89,7 +89,7 @@ document.getElementById('add_category_data').addEventListener('change', function
     var reader = new FileReader();
     reader.onload = function(e) {
       var data = e.target.result;
-      var arr = handleCodePoints(new Uint8Array(data));
+      var arr = handleCodePoints2(new Uint8Array(data));
       if (typeof onload == 'function') {
         onload(e, new ExcelJs.File(file, XLSX.read(btoa(arr), {type: 'base64'})));
       }
@@ -98,6 +98,14 @@ document.getElementById('add_category_data').addEventListener('change', function
   };
 })(window, window.document);
 
+function handleCodePoints2(byteArray) {
+	var binStr = '';
+	for (var p = 0; p < byteArray.length; p++) {
+		binStr += String.fromCharCode(byteArray[p]);
+	}
+	return binStr;
+}
+/*
 function handleCodePoints(array) {
   var CHUNK_SIZE = 0x8000;
   var index = 0;
@@ -110,7 +118,7 @@ function handleCodePoints(array) {
     index += CHUNK_SIZE;
   }
   return result;
-}
+}*/
 			</script>
 
 <?php

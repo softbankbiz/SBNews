@@ -186,13 +186,12 @@ if ($_SESSION['auth'] != true) {
 									echo '<td>' . $news_id . '</td>';
 									echo '<td><a href="/' . BASE . '/news_set.php?page=news_conf&news_id=' . urlencode($news_id) . '"><button>設定変更・削除</button></a></td>';
 									echo '<td><button onclick="update_news(\'' . $news_id . '\')">ニュース更新（手動）</button></td>';
-									echo '<td><img src="images/bx_loader.gif" class="bx_loader" style="display: none;" id="bx_loader"></td>';
-									//echo '<td><a href="/' . BASE . '/fetch_contents.php?news_id=' . $news_id . '" target="_blank"><button>ニュース取得（手動）</button></a></td>';
-									//echo '<td><a href="/' . BASE . '/watson_judgement.php?news_id=' . $news_id . '" target="_blank"><button>Watson判定（手動）</button></a></td>';
+									echo '<td><img src="images/bx_loader.gif" class="bx_loader" style="display: none;" id="bx_loader' . $news_id . '"></td>';
 								}
 								echo '</tr>';
-								echo '<tr><td colspan="5"><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';
+
 							}
+							echo '<tr><td colspan="5"><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';
 						}
 						?>
 					</table>
@@ -200,7 +199,7 @@ if ($_SESSION['auth'] != true) {
 				<script>
 				function update_news(_news_id) {
 					var msg = '';
-					$("#bx_loader").css("display","block");
+					$("#bx_loader" + _news_id).css("display","block");
 					$.get('fetch_contents.php', 
 						{
 				        	news_id: _news_id
@@ -214,7 +213,7 @@ if ($_SESSION['auth'] != true) {
 						        function(data){
 						        	msg += data;
 						        	alert(msg);
-						        	$("#bx_loader").css("display","none");
+						        	$("#bx_loader" + _news_id).css("display","none");
 						    	}
 					    	);
 				    	}

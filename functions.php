@@ -584,8 +584,8 @@ function get_redirected_url($url) {
 
 
 
-function update_watson_res($mysqli, $url, $class_name, $confidence, $cid_alias, $cid) {
-	$query = 'UPDATE article_candidate SET class_name="' . $class_name . '", confidence=' . $confidence . ', cid_alias="' . $cid_alias . '", cid="' .  $cid . '" WHERE url="' . $url . '"';
+function update_watson_res($mysqli, $url, $class_name, $confidence, $cid_alias, $cid, $news_id) {
+	$query = 'UPDATE article_candidate SET class_name="' . $class_name . '", confidence=' . $confidence . ', cid_alias="' . $cid_alias . '", cid="' .  $cid . '" WHERE url="' . $url . '" AND news_id="' . $news_id . '"';
 	$result = $mysqli->query($query);
 	if (!$result) {
 		//echo "watson judgement update was failed.<br>";

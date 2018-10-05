@@ -81,6 +81,13 @@ $( function() {
     var news_id = $("#_news_id").val();
     title_image_url = "images/" + company_id + "/" + news_id + "/title_image.png";
     category_icon_url = "images/" + company_id + "/" + news_id + "/";
+    
+    // オリジナルのトップ画像がなければ、デフォルトを表示させる
+    var title_image = new Image();
+    title_image.src = title_image_url;
+    title_image.onerror = function() {
+        title_image_url = "images/common_icon/title_image.png";
+    }
 
 
     /**********************************************

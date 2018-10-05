@@ -19,15 +19,15 @@ h2 { margin: 40px 0 10px 0; font-size: 12pt; }
 
 .ui-sortable, .add_button { list-style-type: none; margin: 20px; padding: 0; width: 800px; }
 .ui-sortable-handle { margin-bottom: 8px; padding: 0.4em; font-size: 12px; border: solid 1px #BBB; position: relative; }
-	.ui-sortable-handle div { background-color: #FFF; width: 100%; margin: 4px 0; }
-	.ui-sortable-handle input[type="text"] { width: 500px; }
-	.ui-sortable-handle textarea { width: 500px; }
-	.btn_clip, .btn_preview, .previewspace { display: none; }
-	.casette { width: 600px; height: 66.66px; margin-bottom: 10px; font-family: arial,sans-serif; }
-		.img_from_gcs { margin-right: 10px; }
-		.prv_title { font-size: 12pt; color: blue; font-weight: bold;}
-		.prv_summary { font-size: 9pt; color: rgb(85,85,85); }
-		.prv_fyi { font-size: 8pt; color: rgb(85,85,85); }
+    .ui-sortable-handle div { background-color: #FFF; width: 100%; margin: 4px 0; }
+    .ui-sortable-handle input[type="text"] { width: 500px; }
+    .ui-sortable-handle textarea { width: 500px; }
+    .btn_clip, .btn_preview, .previewspace { display: none; }
+    .casette { width: 600px; height: 66.66px; margin-bottom: 10px; font-family: arial,sans-serif; }
+        .img_from_gcs { margin-right: 10px; }
+        .prv_title { font-size: 12pt; color: blue; font-weight: bold;}
+        .prv_summary { font-size: 9pt; color: rgb(85,85,85); }
+        .prv_fyi { font-size: 8pt; color: rgb(85,85,85); }
 .memo_box { list-style-type: none; margin: 20px; padding: 0; width: 800px; }
     .memo_box li {
         margin-bottom: 8px;
@@ -37,7 +37,7 @@ h2 { margin: 40px 0 10px 0; font-size: 12pt; }
         margin-bottom: 10px; }
     .memo_box input[type="text"] { width: 500px; }
 .add_button { text-align: right; margin-top: 0; }
-	.add_button li { margin-bottom: 10px; }
+    .add_button li { margin-bottom: 10px; }
 .delete_button { position: absolute; right: 6px; top: 6px; text-align: right; }
 
 .edit_area { margin: 20px; }
@@ -51,9 +51,9 @@ h2 { margin: 40px 0 10px 0; font-size: 12pt; }
 .margin_5 { margin: 5px 0; }
 
 .category {
-	/*background-image: url("https://kyougounl.appspot.com/images/category_base.png"); */
+    /*background-image: url("https://kyougounl.appspot.com/images/category_base.png"); */
     margin-bottom: 5px; padding-top: 1px;
-	color: white; width: 500px; height: 24px; display: inline-block; text-align: center; font-weight: 700; font-size: 1.1em;
+    color: white; width: 500px; height: 24px; display: inline-block; text-align: center; font-weight: 700; font-size: 1.1em;
     font-family: Avenir, "Open Sans", "Helvetica Neue", Helvetica, Arial, Verdana, Roboto, "游ゴシック", "Yu Gothic", "游ゴシック体", "YuGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Meiryo UI", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 
@@ -63,9 +63,9 @@ background: -moz-linear-gradient(top, #afafaf 0%, #edf1f7 5%, #bfbfbf 25%, #afaf
 background: -webkit-linear-gradient(top, #afafaf 0%,#edf1f7 5%,#bfbfbf 25%,#afafaf 50%,#bfbfbf 75%,#edf1f7 95%,#afafaf 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(to bottom, #afafaf 0%,#edf1f7 5%,#bfbfbf 25%,#afafaf 50%,#bfbfbf 75%,#edf1f7 95%,#afafaf 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 
-	border-radius: 12px;
+    border-radius: 12px;
     margin-bottom: 8px; padding-top: 1px;
-	color: white; width: 225px; height: 24px; display: inline-block; text-align: center; font-weight: 700; font-size: 1.1em;
+    color: white; width: 225px; height: 24px; display: inline-block; text-align: center; font-weight: 700; font-size: 1.1em;
     font-family: Avenir, "Open Sans", "Helvetica Neue", Helvetica, Arial, Verdana, Roboto, "游ゴシック", "Yu Gothic", "游ゴシック体", "YuGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Meiryo UI", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 
@@ -99,7 +99,7 @@ select { height: 1.6em; }
 
 .wrapper { margin: 0; width: 100%; text-align: center; }
 .nav { 
-	/*margin: 0 20px 0 0; width: 200px; height: 800px; background-color: silver; float: left; */
+    /*margin: 0 20px 0 0; width: 200px; height: 800px; background-color: silver; float: left; */
     border: 1px solid #ccc;
     border-width: 1px 0;
     list-style:none;
@@ -166,6 +166,12 @@ select { height: 1.6em; }
     padding: 10px 20px 10px 0;
     vertical-align: top;
     font-size: 14px;
+}
+.form-table td {
+    text-align: center;
+}
+.form-table td input {
+    width: 240px;
 }
 .step, th {
     text-align: left;

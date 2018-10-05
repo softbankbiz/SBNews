@@ -44,13 +44,13 @@ if ($_SESSION['auth'] !== true) {
 			    	$watson_res = dummy_watson();
 			    	if (!empty($watson_res)) {
 						$res = json_decode($watson_res);
-						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, 'dummy_watson', 'dummy_watson');
+						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, 'dummy_watson', 'dummy_watson', $_GET["news_id"]);
 						$counter++;
 					} else {
 						//echo "No data!";
 					}
 				}
-				echo "Dummy Watson Judgemant had " . $counter . " updated.";
+				echo "Dummy Watson Judgemant had " . $counter . " updated.<br>";
 		    } else {
 		    	$result = get_configuration($mysqli, $_SESSION["company_id"]);
 		    	$w_username = $result["w_username"];
@@ -67,13 +67,13 @@ if ($_SESSION['auth'] !== true) {
 
 					if (!empty($watson_res)) {
 						$res = json_decode($watson_res);
-						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, $cid_alias, $cid);
+						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, $cid_alias, $cid, $_GET["news_id"]);
 						$counter++;
 					} else {
 						echo "No data!";
 					}
 				}
-				echo "Watson Judgemant had " . $counter . " updated.";
+				echo "Watson Judgemant had " . $counter . " updated.<br>";
 		    }
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;

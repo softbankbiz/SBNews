@@ -107,6 +107,83 @@ function get_today() {
 
 
 /**
+ * パスワード総当たり攻撃を防ぐ。
+ * @param  mysqliオブジェクト, company_id, user_id, 20文字以上は削除
+ * @return 悪いやつじゃなければ true
+ */
+function bfa_check($mysqli, $company_id, $user_id) {
+	if (is_null($company_id) || is_null($user_id)) {
+		return false;
+	}
+	$_company_id = mb_strimwidth($company_id, 0, 20);
+	$_user_id = mb_strimwidth($user_id, 0, 20);
+	$max_value = 10;  // 連続して間違えるとロックされる回数
+	$interval  = 8; // ロックされる時間
+
+	try {
+		$query = "SELECT stamp FROM login_record WHERE company_id = ? AND user_id = ? ORDER BY ts DESC limit ?";
+		$stmt = $mysqli->prepare($query);
+		$stmt->bind_param("ssi", $_company_id, $_user_id, $max_value);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		// 最初のアクセスでは、レコードがないので、通過
+		if ( $result->num_rows == 0 ) {
+			return true;
+		}
+
+		// 直近で $max_value 個のアクセスに "succeed" があれば、通過
+		while ($row = $result->fetch_array(MYSQLI_NUM)) {
+			if ($row[0] == "succeed") {
+				return true;
+			}
+		}
+
+		// $max_value 個のアクセスがすべて "fail" だったら、最後の "fail" から $interval 時間を過ぎているかチェック
+		$query = "SELECT ts FROM login_record WHERE company_id = ? AND user_id = ? AND stamp = ? ORDER BY ts DESC limit 1";
+		$stmt = $mysqli->prepare($query);
+		$stamp = "fail";
+		$stmt->bind_param("sss", $_company_id, $_user_id, $stamp);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$ts = $result->fetch_array(MYSQLI_NUM);
+		$dt = new DateTime($ts[0]);  // 最後の "fail" 時刻
+		$now = new DateTime();       // 現在時刻
+		$diff = intval($dt->diff($now)->format('%h'));  // 差分時間
+		
+		if ($diff >= $interval) {
+			return true;        // ロック時間を過ぎていたら、通過
+		} else {
+			return false;       // 過ぎていなくても、"fail" は書き込まない
+		}
+	} catch (mysqli_sql_exception $e) {
+	    throw $e;
+	    die();
+	}
+}
+
+function login_record($mysqli, $company_id, $user_id, $stamp, $description) {
+	if (is_null($company_id) || is_null($user_id)) {
+		return false;
+	}
+	$_company_id = mb_strimwidth($company_id, 0, 20);
+	$_user_id = mb_strimwidth($user_id, 0, 20);
+	$_stamp = mb_strimwidth($stamp, 0, 10);
+	$_description = mb_strimwidth($description, 0, 20);
+	try {
+		$query = "INSERT INTO login_record (company_id,user_id,stamp,description) VALUES (?,?,?,?)";
+		$stmt = $mysqli->prepare($query);
+		$stmt->bind_param("ssss", $_company_id, $_user_id, $_stamp, $_description);
+		$stmt->execute();
+		$stmt->close();
+	} catch (mysqli_sql_exception $e) {
+	    throw $e;
+	    die();
+	}
+}
+
+
+/**
  * DBアクセス時に、ログイン用ID/PASSに加え
  * userIDも登録されているかチェックする。
  * @param  mysqliオブジェクト, company_id, user_id, 20文字以上は削除

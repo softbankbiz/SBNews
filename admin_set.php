@@ -75,9 +75,9 @@ if ($_SESSION['auth'] !== true) {
 				});
 			</script>
 <?php
-	} else if($_GET["task"] == "image_upload") {
+	//} else if($_GET["task"] == "image_upload") {
 ?>
-			<div class="main_area">
+			<!--div class="main_area">
 				<h3>トップ画像をアップロード</h3>
 				<p class="ope_description">
 					プレビュー画面の上部に表示される画像をアップロードします。ファイル名は何であってもかまいません。
@@ -88,7 +88,7 @@ if ($_SESSION['auth'] !== true) {
 					<table class="conf_table">
 						<tr>
 							<th>ニュースIDを選ぶ</th>
-							<td><?php echo get_news_id_as_select($mysqli, null, 'top_image'); ?></td>
+							<td><?php //echo get_news_id_as_select($mysqli, null, 'top_image'); ?></td>
 						</tr>
 						<tr>
 							<th>画像ファイルを選ぶ</th>
@@ -114,7 +114,7 @@ if ($_SESSION['auth'] !== true) {
 					<table class="conf_table">
 						<tr>
 							<th>ニュースIDを選ぶ</th>
-							<td><?php echo get_news_id_as_select($mysqli, null, 'category_icon'); ?></td>
+							<td><?php //echo get_news_id_as_select($mysqli, null, 'category_icon'); ?></td>
 						</tr>
 						<tr>
 							<th>画像ファイルを選ぶ（複数選択可）</th>
@@ -129,10 +129,10 @@ if ($_SESSION['auth'] !== true) {
 			</div>
 			<br><br>
 			<div>
-				<a href="/<?php echo BASE; ?>/?page=admin_menu"><button>戻る</button></a>
-			</div>
+				<a href="/<?php //echo BASE; ?>/?page=admin_menu"><button>戻る</button></a>
+			</div-->
 
-			<script>
+			<!--script>
 				function top_image_upload() {
 					if ($("#top_image").val() == '-- 未選択 --' || $("#top_image").val() == '') {
 						alert("ニュースIDを選んでください。");
@@ -186,7 +186,7 @@ if ($_SESSION['auth'] !== true) {
 				        alert("fail " + textStatus);
 				    });
 				}
-			</script>
+			</script-->
 <?php
 	} else {
 		echo "<br><br>パラメータが不正です。";

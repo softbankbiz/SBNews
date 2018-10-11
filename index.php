@@ -41,9 +41,17 @@ if ($_POST) {
 		exit;
 	} else {
 		try {
+			////////////////// brute-force-attack check
+			if ( ! bfa_check($mysqli, $_POST["company_id"], $_POST["user_id"]) ) {
+				// login_record はしない
+		    	echo '<script>alert("認証に失敗しました。"); location.href = "/' . BASE . '/";</script>';
+		        exit;
+		    }
+
 			////////////////// user_id 認証
-		    if (!two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
-		    	echo '<script>alert("あなたは登録されていません。"); location.href = "/' . BASE . '/";</script>';
+		    if ( ! two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"]) ) {
+		    	login_record($mysqli, $_POST["company_id"], $_POST["user_id"], "fail", "two_step_auth rejected");
+		    	echo '<script>alert("認証に失敗しました。"); location.href = "/' . BASE . '/";</script>';
 		        exit;
 		    }
 
@@ -61,6 +69,7 @@ if ($_POST) {
 
 			// 初回ログイン、ユーザーIDとパスワードが一致するなら、パスワード変更を促す
 			if (password_verify($_POST["user_id"], $password_inputed)) {
+				login_record($mysqli, $_POST["company_id"], $_POST["user_id"], "succeed", "login first time");
 				print_header("SBNews ログイン", null);
 				echo '<script src="js/utility.js"></script>';
 				echo '<div class="login">';
@@ -86,9 +95,12 @@ if ($_POST) {
 				$date_db = new DateTime($password_expires);
 				
 				if ($now >= $date_db) {
+					login_record($mysqli, $_POST["company_id"], $_POST["user_id"], "fail", "password expired");
 					echo '<script>alert("パスワードの有効期限が切れています。"); location.href = "/' . BASE . '/";</script>';
 					exit;
 				}
+
+				login_record($mysqli, $_POST["company_id"], $_POST["user_id"], "succeed", "login normal");
 
 		        // セッション固定化攻撃対策(セッションIDを変更)
 				session_regenerate_id(true);
@@ -102,6 +114,7 @@ if ($_POST) {
 
 		    // ログイン失敗
 		    } else {
+		    	login_record($mysqli, $_POST["company_id"], $_POST["user_id"], "fail", "wrong password");
 		    	print_header("SBNews ログイン", null);
 		        echo '<script>alert("認証に失敗しました。"); location.href = "/' . BASE . '/";</script>';
 		        print_footer();
@@ -581,18 +594,18 @@ if ($_SESSION['auth'] != true) {
 						echo '<tr><td colspan="4"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
 						echo '</table>';				
 					}
-					if ($_SESSION['role'] == 'admin') {
+					//if ($_SESSION['role'] == 'admin') {
 					?>
-						<h4>＜画像の管理＞</h4>
+						<!--h4>＜画像の管理＞</h4>
 						<p class="ope_description">
 						ニュースに使用するトップ画像、カテゴリアイコンをアップロードします。
 						</p>
 						<table class="ope_table">
 						<tr><th>画像のアップロード</th>
-						<td><a href="<?php echo '/' . BASE . '/' ?>admin_set.php?page=admin_menu&task=image_upload"><button>追加</button></td></tr>
-						</table>
+						<td><a href="<?php //echo '/' . BASE . '/' ?>admin_set.php?page=admin_menu&task=image_upload"><button>追加</button></td></tr>
+						</table-->
 					<?php
-					}
+					//}
 					?>
 				</div>
 			</div>

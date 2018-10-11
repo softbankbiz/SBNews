@@ -21,9 +21,12 @@ if ($_SESSION['auth'] !== true) {
 } else if (empty($_POST)) {
 	echo 'パラメータが不足しています。';
 	return;
-} else if ($_POST['news_id']) {
+} else if (! $_POST['news_id']) {
+	echo 'パラメータが不正です。';
+	return;
+} else if ($_POST['cmd'] == 'upload') {
 	$target_dir = 'images/' . $_SESSION["company_id"] . '/' . $_POST['news_id'];
-	// top image
+	// top or bottom image
 	if (count($_FILES['file']['name']) == 1) {
 		if (is_uploaded_file($_FILES ['file'] ['tmp_name'])) {
 			if (! file_exists($target_dir)) {
@@ -32,7 +35,11 @@ if ($_SESSION['auth'] !== true) {
 					exit;
 				}
 		    }
-		    $file = $target_dir . '/title_image.png'; // . $_FILES['file']['name'];
+		    if ($_POST['place'] == 'top') {
+		    	$file = $target_dir . '/title_image.png'; // . $_FILES['file']['name'];
+		    } else if ($_POST['place'] == 'bottom') {
+		    	$file = $target_dir . '/bottom_image.png';
+		    }
 		    if (move_uploaded_file($_FILES ['file'] ['tmp_name'], $file)) {
 		    	chmod($file, 0644);
 		        echo 'アップロードに成功しました。';
@@ -65,6 +72,44 @@ if ($_SESSION['auth'] !== true) {
 			echo 'アップロードに失敗しました。';
 		}
 	}
+} else if ($_POST['cmd'] == 'delete') {
+	$target_dir = 'images/' . $_SESSION["company_id"] . '/' . $_POST['news_id'];
+	if ($_POST['place'] == 'top') {
+    	$file = $target_dir . '/title_image.png';
+    	if (is_file($file)) {
+    		if (unlink($file)) {
+	    		echo 1;
+	    	} else {
+	    		echo 0;
+	    	}
+    	} else {
+    		echo 2;
+    	}
+    	
+    } else if ($_POST['place'] == 'bottom') {
+    	$file = $target_dir . '/bottom_image.png';
+    	if (is_file($file)) {
+    		if (unlink($file)) {
+	    		echo 1;
+	    	} else {
+	    		echo 0;
+	    	}
+    	} else {
+    		echo 2;
+    	}
+    } else if ($_POST['place'] == 'icons') {
+    	$count = 0;
+    	foreach(glob($target_dir . '/*') as $file){
+		    if(is_file($file)){
+		    	if ($file != ($target_dir . '/title_image.png') && $file != ($target_dir. '/bottom_image.png')) {
+			        if (unlink($file)) {
+			    		$count++;
+			    	}		    		
+		    	}
+		    }
+		}
+		echo $count;
+    }
 } else {
 	echo 'パラメータが不正です。';
 	return;

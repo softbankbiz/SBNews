@@ -12,6 +12,11 @@ var title_image_url = "";
 var category_icon_url = "";
 
 /**********************************************
+ メルマガの最下部に表示させるタイトル画像のURL。
+ **********************************************/
+var bottom_image_url = "";
+
+/**********************************************
  注目記事に付けるアイコン画像のURL。
  **********************************************/
 var check_icon_url = "images/common_icon/checkmark.png";
@@ -79,14 +84,22 @@ $( function() {
     // 画像のURL
     var company_id = $("#_company_id").val();
     var news_id = $("#_news_id").val();
-    title_image_url = "images/" + company_id + "/" + news_id + "/title_image.png";
+    title_image_url   = "images/" + company_id + "/" + news_id + "/title_image.png";
     category_icon_url = "images/" + company_id + "/" + news_id + "/";
-    
+    bottom_image_url  = "images/" + company_id + "/" + news_id + "/bottom_image.png";
+
     // オリジナルのトップ画像がなければ、デフォルトを表示させる
     var title_image = new Image();
     title_image.src = title_image_url;
     title_image.onerror = function() {
         title_image_url = "images/common_icon/title_image.png";
+    }
+
+    // オリジナルのボトム画像がなければ、仮リンク
+    var bottom_image = new Image();
+    bottom_image.src = bottom_image_url;
+    bottom_image.onerror = function() {
+        bottom_image_url = "#";
     }
 
 
@@ -263,11 +276,11 @@ function create_category() {
     $("#category_list").append('<option>' + new_category + '</option>');
     add_category(new_category);
 }
+
 function add_category(arg) {
     var cont_category = $("#tmpl_category").clone(false).removeAttr("id");
     $(cont_category).removeClass("invisible");
     $("#sortable").append(cont_category);
-
     if(arg) {
         $(cont_category).find("option").each(function(index,element){
             if($(element).text() == arg) {
@@ -281,7 +294,6 @@ function add_cassette(args) {
     var cont_cassette = $("#tmpl_cassette").clone(false).removeAttr("id");
     $(cont_cassette).removeClass("invisible");
     $("#sortable").append(cont_cassette);
-
     if(args) {
         var fyi_flag = [false, false, false];
         $(cont_cassette).find("input").each(function(index,element){
@@ -353,6 +365,7 @@ function gen_ranking() {
  追加する必要がある。サーバからは10件のタイトルを
  取得しておく。
  ***********************************************/
+
 function rebuilt() {
     var current_num = ($("#rankingtable tr").length);
     ranking_length = (current_num - 1) / 2;
@@ -510,6 +523,7 @@ function preview() {
                     }
 
                     buffer += '<div name="elem" style="width:100%">';
+
                     // set category icon 
                     if(!isSameCategory) {
                         if(isTop > 1) {
@@ -726,7 +740,11 @@ function getFooter() {
     buffer += '<div style="margin:2em 0 0.5em 0;clear:both;">';
     buffer += acImageUrl;
     buffer += '<div style="margin-bottom:1em;">※<span style="color:red;font-weight:bold;">要ログイン</span>とは掲載元のID登録により記事全文を読むことが出来るニュースです</div>';
-    buffer += signature + '</div>';
+    buffer += signature;
+    if(bottom_image_url !== '#') {
+        buffer += '<div style="width:100%;margin:1em 0 0 0;padding:0;"><img src="' + bottom_image_url + '" style="width:100%;margin:0;padding:0;" alt="Bottom Image" /></div>';
+    }
+    buffer += '</div>';
     return buffer;
 }
 
@@ -765,7 +783,3 @@ function convert_br(string) {
         return string.replace(/\n/g, '<br>');
     }
 }
-
-
-
-

@@ -52,7 +52,7 @@ if (empty($_POST)) {
         </div>
         <br><br>
         <div>
-            <a href="/<?php echo BASE; ?>/?page=admin_menu"><button>戻る</button></a>
+            <a href="/<?php echo BASE; ?>/?page=admin_menu"><button class="button_back">戻る</button></a>
         </div>
         <?php 
         print_javascript("others");
@@ -66,13 +66,18 @@ if (empty($_POST)) {
 
 } else {
     if ($_POST['company_id'] && $_POST['user_id'] && $_POST['password_expires'] && $_POST['role']) {
+        if ($_POST['company_id'] == 'root') {
+            echo '<script>alert("企業IDに「root」は使えません。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
+        } else if ($_POST['user_id'] == 'root') {
+            echo '<script>alert("ユーザーIDに「root」は使えません。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
+        }
         ////////////////// user_id の重複チェック
-        if (two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
+        else if (two_step_auth($mysqli, $_POST["company_id"], $_POST["user_id"])) {
             print_header("ユーザ情報の登録", null);
             echo '<script>alert("ユーザーIDが重複しています。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
             exit;
         }
-        if (! yyyymmdd_db($_POST['password_expires'])) {
+        else if (! yyyymmdd_db($_POST['password_expires'])) {
             print_header("ユーザ情報の登録", null);
             echo '<script>alert("パスワード有効期限の日付フォーマットが違います。"); location.href = "/' . BASE . '/?page=admin_menu";</script>';
             exit;

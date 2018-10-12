@@ -62,7 +62,7 @@ if (empty($_POST)) {
                 </form>
                 <br><br>
                 <div>
-                    <a href="/<?php echo BASE; ?>/?page=admin_menu"><button>戻る</button></a>
+                    <a href="/<?php echo BASE; ?>/?page=admin_menu"><button class="button_back">戻る</button></a>
                 </div>
             </div>
 

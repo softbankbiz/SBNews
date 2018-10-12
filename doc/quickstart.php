@@ -208,7 +208,7 @@ if ($_SESSION['auth'] == true) {
 </p>
 <div class="capture_area"><img src="../images/doc/quick/log_mgmt.png"></div>
 <p>
-	<a href="<?php echo '/'. BASE .'/' ?>?page=document"><button>戻る</button></a>
+	<a href="<?php echo '/'. BASE .'/' ?>?page=document"><button class="button_back">戻る</button></a>
 </p>
 								</div>
 							</li>

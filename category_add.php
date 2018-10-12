@@ -32,7 +32,7 @@ if ($_SESSION['auth'] !== true) {
 			</div>
 			<br><br>
 			<div>
-				<a href="/<?php echo BASE; ?>/?page=crawler_conf"><button>戻る</button></a>
+				<a href="/<?php echo BASE; ?>/?page=crawler_conf"><button class="button_back">戻る</button></a>
 			</div>
 			<script src="js/vendor/xlsx.full.min.js"></script>
 			<script>

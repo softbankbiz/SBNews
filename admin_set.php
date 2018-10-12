@@ -47,7 +47,7 @@ if ($_SESSION['auth'] !== true) {
 			</div>
 			<br><br>
 			<div>
-				<a href="/<?php echo BASE; ?>/?page=admin_menu"><button>戻る</button></a>
+				<a href="/<?php echo BASE; ?>/?page=admin_menu"><button class="button_back">戻る</button></a>
 			</div>
 			<script>
 				var watson_management = "watson_management.php";

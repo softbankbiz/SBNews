@@ -36,12 +36,15 @@ if ($_SESSION['auth'] !== true) {
       </div>
       <br><br>
       <div>
-        <a href="/<?php echo BASE; ?>/?page=crawler_conf"><button>戻る</button></a>
+        <a href="/<?php echo BASE; ?>/?page=crawler_conf"><button class="button_back">戻る</button></a>
       </div>
       <script src="js/vendor/xlsx.full.min.js"></script>
       <script>
 var rss_manage = "rss_manage.php";
 document.getElementById('delete_rss_data').addEventListener('click', function (evt) {
+  if(confirm("本当に削除しますか？　この操作は取り消しできません。") == false) {
+    return;
+  }
   $.post(rss_manage,
     {
         rss_id:     $("#_rss_id").val(),

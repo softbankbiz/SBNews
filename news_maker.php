@@ -181,7 +181,7 @@ if (! isset($_SESSION['auth'])) {
 				</div>
 
 				<div class="operation">
-					<a href="/<?php echo BASE; ?>/?page=news_make"><button>戻る</button></a>
+					<a href="/<?php echo BASE; ?>/?page=news_make"><button class="button_back">戻る</button></a>
 				</div>
 	        </div>
 	    </div>

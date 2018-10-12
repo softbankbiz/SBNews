@@ -115,10 +115,11 @@ function bfa_check($mysqli, $company_id, $user_id) {
 	if (is_null($company_id) || is_null($user_id)) {
 		return false;
 	}
+
 	$_company_id = mb_strimwidth($company_id, 0, 20);
-	$_user_id = mb_strimwidth($user_id, 0, 20);
-	$max_value = 10;  // 連続して間違えるとロックされる回数
-	$interval  = 8; // ロックされる時間
+	$_user_id    = mb_strimwidth($user_id, 0, 20);
+	$max_value   = 5;  // 連続して間違えるとロックされる回数
+	$interval    = 1;  // ロックされる時間
 
 	try {
 		$query = "SELECT stamp FROM login_record WHERE company_id = ? AND user_id = ? ORDER BY ts DESC limit ?";
@@ -127,8 +128,8 @@ function bfa_check($mysqli, $company_id, $user_id) {
 		$stmt->execute();
 		$result = $stmt->get_result();
 
-		// 最初のアクセスでは、レコードがないので、通過
-		if ( $result->num_rows == 0 ) {
+		// $max_value 未満のアクセス回数では、通過
+		if ( $result->num_rows < $max_value ) {
 			return true;
 		}
 
@@ -154,7 +155,7 @@ function bfa_check($mysqli, $company_id, $user_id) {
 		if ($diff >= $interval) {
 			return true;        // ロック時間を過ぎていたら、通過
 		} else {
-			return false;       // 過ぎていなくても、"fail" は書き込まない
+			return false;       // ロックされている。ただしDBに "fail" は書き込まない
 		}
 	} catch (mysqli_sql_exception $e) {
 	    throw $e;
@@ -455,6 +456,7 @@ function print_header($title, $session) {
 	echo '			<div class="header_title">SBNews</div>'; //  <span>' . $title . '</span>
 	if ($session) {
 	echo '			<div class="login_user">' . $session['user_id'] . '@' . $session['company_id'] . '</div>';
+	echo '			<input type="hidden" id="role" value="' . $session['role'] . '">';
 	}
 	echo '		</div>';
 	echo '		<div class="wrapper clearfix">';

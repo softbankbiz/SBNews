@@ -44,7 +44,7 @@ if ($_SESSION['auth'] !== true) {
 				</table>
 			</div>
 			<br><br>
-			<a href="/<?php echo BASE; ?>/?page=news_conf"><button>戻る</button></a>
+			<a href="/<?php echo BASE; ?>/?page=news_conf"><button class="button_back">戻る</button></a>
 		<script src="js/vendor/jquery-3.2.1.min.js"></script>
 		<script>
 var news_manage = "news_manage.php";

@@ -44,7 +44,7 @@ if ($_SESSION['auth'] !== true) {
 
 				<h4>＜既存の分類子を削除＞</h4>
 				<table class="conf_table">
-					<p class="ope_description">削除したい分類子の右側の「削除」ボタンをクリックします。削除は即座に反映されます。</p>
+					<p class="ope_description">削除したい分類子の右側の「削除」ボタンをクリックします。</p>
 					<?php
 					if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
 				        return;
@@ -68,7 +68,7 @@ if ($_SESSION['auth'] !== true) {
 				</table>
 				<br><br>
 				<div>
-					<a href="/<?php echo BASE; ?>/?page=watson_conf"><button>戻る</button></a>
+					<a href="/<?php echo BASE; ?>/?page=watson_conf"><button class="button_back">戻る</button></a>
 				</div>
 			</div>
 
@@ -77,7 +77,9 @@ if ($_SESSION['auth'] !== true) {
 			var watson_management = "watson_management.php";
 
 			function delete_cid(_cid, _cid_alias) {
-				if (! confirm('本当に削除しますか？')) { return; }
+				if(confirm("本当に削除しますか？　この操作は取り消しできません。") == false) {
+				    return;
+				}
 				$.post(watson_management,
 			    {
 			        cmd:       "delete",

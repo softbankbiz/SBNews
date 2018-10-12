@@ -44,7 +44,7 @@ if ($_POST) {
 			////////////////// brute-force-attack check
 			if ( ! bfa_check($mysqli, $_POST["company_id"], $_POST["user_id"]) ) {
 				// login_record はしない
-		    	echo '<script>alert("認証に失敗しました。"); location.href = "/' . BASE . '/";</script>';
+		    	echo '<script>alert("認証に失敗しました。アカウントはロックされています。"); location.href = "/' . BASE . '/";</script>';
 		        exit;
 		    }
 
@@ -112,12 +112,24 @@ if ($_POST) {
 		    	$_SESSION['password_expires'] = $password_expires;
 		    	$_SESSION['role'] = $role;
 
+		    	// root ユーザーは管理者メニューに着地。ログアウトのみ有効
+		    	if( $_POST["company_id"] == 'root' && $_POST["user_id"] == 'root') {
+		    		echo '<script>location.href = "/' . BASE . '/?page=admin_menu";</script>';
+		    	}
+
 		    // ログイン失敗
 		    } else {
 		    	login_record($mysqli, $_POST["company_id"], $_POST["user_id"], "fail", "wrong password");
-		    	print_header("SBNews ログイン", null);
-		        echo '<script>alert("認証に失敗しました。"); location.href = "/' . BASE . '/";</script>';
-		        print_footer();
+		    	if ( ! bfa_check($mysqli, $_POST["company_id"], $_POST["user_id"]) ) {
+					// login_record はしない
+			    	echo '<script>alert("認証に失敗しました。アカウントはロックされました。"); location.href = "/' . BASE . '/";</script>';
+			        //exit;
+			    } else {
+			    	echo '<script>alert("認証に失敗しました。"); location.href = "/' . BASE . '/";</script>';
+			    }
+		    	//print_header("SBNews ログイン", null);
+		        
+		        //print_footer();
 		        exit;
 		    }
 		} catch (mysqli_sql_exception $e) {
@@ -152,6 +164,11 @@ if ($_SESSION['auth'] != true) {
 			<div class="main_area">
 				<div class="menu_content" id="news_make">
 					<h3>ニュース作成</h3>
+					<?php
+					if ($_SESSION['role'] == 'su' || is_null($_SESSION['role'])) {
+						echo '<table class="ope_table"><tr><td> rootユーザーであるあなたには編集権限がありません。 </td></tr></table>';
+					} else {
+					?>
 					<table class="ope_table">
 						<tr>
 							<th>No</th><th>ニュース ID</th><th>最終更新時刻</th><th></th>
@@ -175,19 +192,27 @@ if ($_SESSION['auth'] != true) {
 						}
 						?>
 					</table>
+					<?php
+					}
+					?>
 				</div>
 
 				<div class="menu_content" id="news_conf">
 					<h3>ニュース設定</h3>
-					<table class="ope_table wide">
+					<?php
+					if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
+						echo '<table class="ope_table"><tr><td colspan="4"> あなたには編集権限がありません。 </td></tr></table>';
+					} else if ($_SESSION['role'] == 'su') {
+						echo '<table class="ope_table"><tr><td colspan="4"> rootユーザーであるあなたには編集権限がありません。</td></tr></table>';
+					} else {
+					?>
+					<table class="ope_table">
 						<tr>
 							<th>No</th><th>ニュース ID</th><th></th><th></th><th></th>
 						</tr>
 						<?php
 						$news_id_list = get_news_id($mysqli, $_SESSION['company_id']);
-						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
-							echo '<tr><td colspan="4"> あなたには編集権限がありません。 </td></tr>';
-						} else if ($news_id_list->num_rows == 0) {
+						if ($news_id_list->num_rows == 0) {
 							echo '<tr><td colspan="4"> ニュースはありません </td></tr>';
 							echo '<tr><td colspan=3><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';					
 						} else {
@@ -208,6 +233,9 @@ if ($_SESSION['auth'] != true) {
 						}
 						?>
 					</table>
+					<?php
+					}
+					?>
 				</div>
 				<script>
 				function update_news(_news_id) {
@@ -237,16 +265,20 @@ if ($_SESSION['auth'] != true) {
 
 				<div class="menu_content" id="watson_conf">
 					<h3>Watson設定</h3>
+					<?php
+					if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
+						echo '<table class="ope_table"><tr><td colspan="4"> あなたには編集権限がありません。 </td></tr></table>';
+					} else if ($_SESSION['role'] == 'su') {
+						echo '<table class="ope_table"><tr><td colspan="4"> rootユーザーであるあなたには編集権限がありません。</td></tr></table>';
+					} else {
+					?>
 					<table class="ope_table">
 						<tr>
 							<th>No</th><th>分類子エイリアス</th><th>分類子</th><th>状態</th>
 						</tr>
 						<?php
-						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
-							echo '<tr><td colspan="6"> あなたには編集権限がありません。 </td></tr>';
-
 						// Watson NLC に問い合わせると遅いので、このページだけURLパラメータを見る
-						} else if ($_GET['page'] == 'watson_conf') {
+						if ($_GET['page'] == 'watson_conf') {
 							$result = get_classifier_list($mysqli, $_SESSION["company_id"]);
 							$config = get_configuration($mysqli, $_SESSION["company_id"]);
 							$w_username = $config["w_username"];
@@ -276,10 +308,20 @@ if ($_SESSION['auth'] != true) {
 						}
 						?>
 					</table>
+					<?php
+					}
+					?>
 				</div>
 
 				<div class="menu_content" id="crawler_conf">
 					<h3>クローラ設定</h3>
+					<?php
+					if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
+						echo '<table class="ope_table"><tr><td colspan="4"> あなたには編集権限がありません。 </td></tr></table>';
+					} else if ($_SESSION['role'] == 'su') {
+						echo '<table class="ope_table"><tr><td colspan="4"> rootユーザーであるあなたには編集権限がありません。</td></tr></table>';
+					} else {
+					?>
 					<h4>＜RSSリストの設定＞</h4>
 					<p class="ope_description">
 						ニュースを取得するために登録したRSSリストを表示しています。ファイルの差し替え、削除をするには「設定変更」をクリックします。
@@ -290,28 +332,24 @@ if ($_SESSION['auth'] != true) {
 							<th>No</th><th>RSSリスト ID</th><th></th>
 						</tr>
 						<?php
-						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
-							echo '<tr><td colspan="6"> あなたには編集権限がありません。 </td></tr>';
-						} else {
-							$where_condition = 'WHERE company_id = "' . $_SESSION['company_id'] . '"';
-							$query_rss = 'SELECT rss_id from rss_list ' . $where_condition;
-							try {
-								$result_rss = $mysqli->query($query_rss);
-								for ($i = 0; $i < $result_rss->num_rows; $i++) {
-									echo '<tr>';
-									echo '<td>' . ($i+1) . '</td>';
-									$row_rss = $result_rss->fetch_array(MYSQLI_ASSOC);
-									if (isset($row_rss["rss_id"])) {
-										echo '<td>' . $row_rss["rss_id"] . '</td>';
-										echo '<td><a href="/' . BASE . '/rss_set.php?page=crawler_conf&rss_id=' . urlencode($row_rss["rss_id"]) . '"><button>設定変更</button></a></td>';
-									}
-									echo '</tr>';
+						$where_condition = 'WHERE company_id = "' . $_SESSION['company_id'] . '"';
+						$query_rss = 'SELECT rss_id from rss_list ' . $where_condition;
+						try {
+							$result_rss = $mysqli->query($query_rss);
+							for ($i = 0; $i < $result_rss->num_rows; $i++) {
+								echo '<tr>';
+								echo '<td>' . ($i+1) . '</td>';
+								$row_rss = $result_rss->fetch_array(MYSQLI_ASSOC);
+								if (isset($row_rss["rss_id"])) {
+									echo '<td>' . $row_rss["rss_id"] . '</td>';
+									echo '<td><a href="/' . BASE . '/rss_set.php?page=crawler_conf&rss_id=' . urlencode($row_rss["rss_id"]) . '"><button>設定変更</button></a></td>';
 								}
-								echo '<tr><td colspan=3><a href="/' . BASE . '/rss_add.php?page=crawler_conf"><button>追加</button></a></td></tr>';
-							} catch (mysqli_sql_exception $e) {
-							    throw $e;
-							    die();
-							}							
+								echo '</tr>';
+							}
+							echo '<tr><td colspan=3><a href="/' . BASE . '/rss_add.php?page=crawler_conf"><button>追加</button></a></td></tr>';
+						} catch (mysqli_sql_exception $e) {
+						    throw $e;
+						    die();
 						}
 						?>
 					</table>
@@ -326,28 +364,24 @@ if ($_SESSION['auth'] != true) {
 							<th>No</th><th>カテゴリ リスト ID</th><th></th>
 						</tr>
 						<?php
-						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
-							echo '<tr><td colspan="6"> あなたには編集権限がありません。 </td></tr>';
-						} else {
-							$where_condition = 'WHERE company_id = "' . $_SESSION['company_id'] . '"';
-							$query_cat = 'SELECT category_id from category_list ' . $where_condition;
-							try {
-								$result_cat = $mysqli->query($query_cat);
-								for ($i = 0; $i < $result_cat->num_rows; $i++) {
-									echo '<tr>';
-									echo '<td>' . ($i+1) . '</td>';
-									$row_cat = $result_cat->fetch_array(MYSQLI_ASSOC);
-									if (isset($row_cat["category_id"])) {
-										echo '<td>' . $row_cat["category_id"] . '</td>';
-										echo '<td><a href="/' . BASE . '/category_set.php?page=crawler_conf&category_id=' . urlencode($row_cat["category_id"]) . '"><button>設定変更</button></a></td>';
-									}
-									echo '</tr>';
+						$where_condition = 'WHERE company_id = "' . $_SESSION['company_id'] . '"';
+						$query_cat = 'SELECT category_id from category_list ' . $where_condition;
+						try {
+							$result_cat = $mysqli->query($query_cat);
+							for ($i = 0; $i < $result_cat->num_rows; $i++) {
+								echo '<tr>';
+								echo '<td>' . ($i+1) . '</td>';
+								$row_cat = $result_cat->fetch_array(MYSQLI_ASSOC);
+								if (isset($row_cat["category_id"])) {
+									echo '<td>' . $row_cat["category_id"] . '</td>';
+									echo '<td><a href="/' . BASE . '/category_set.php?page=crawler_conf&category_id=' . urlencode($row_cat["category_id"]) . '"><button>設定変更</button></a></td>';
 								}
-								echo '<tr><td colspan=3><a href="/' . BASE . '/category_add.php?page=crawler_conf"><button>追加</button></a></td></tr>';
-							} catch (mysqli_sql_exception $e) {
-							    throw $e;
-							    die();
+								echo '</tr>';
 							}
+							echo '<tr><td colspan=3><a href="/' . BASE . '/category_add.php?page=crawler_conf"><button>追加</button></a></td></tr>';
+						} catch (mysqli_sql_exception $e) {
+						    throw $e;
+						    die();
 						}
 						?>
 					</table>
@@ -362,35 +396,39 @@ if ($_SESSION['auth'] != true) {
 							<th>No</th><th>サイト名リスト ID</th><th></th>
 						</tr>
 						<?php
-						if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
-							echo '<tr><td colspan="6"> あなたには編集権限がありません。 </td></tr>';
-						} else {
-							$where_condition = 'WHERE company_id = "' . $_SESSION['company_id'] . '"';
-							$query_site = 'SELECT site_names_id from site_names_list ' . $where_condition;
-							try {
-								$result_site = $mysqli->query($query_site);
-								for ($i = 0; $i < $result_site->num_rows; $i++) {
-									echo '<tr>';
-									echo '<td>' . ($i+1) . '</td>';
-									$row_site = $result_site->fetch_array(MYSQLI_ASSOC);
-									if (isset($row_site["site_names_id"])) {
-										echo '<td>' . $row_site["site_names_id"] . '</td>';
-										echo '<td><a href="/' . BASE . '/site_names_set.php?page=crawler_conf&site_names_id=' . urlencode($row_site["site_names_id"]) . '"><button>設定変更</button></a></td>';
-									}
-									echo '</tr>';
+						$where_condition = 'WHERE company_id = "' . $_SESSION['company_id'] . '"';
+						$query_site = 'SELECT site_names_id from site_names_list ' . $where_condition;
+						try {
+							$result_site = $mysqli->query($query_site);
+							for ($i = 0; $i < $result_site->num_rows; $i++) {
+								echo '<tr>';
+								echo '<td>' . ($i+1) . '</td>';
+								$row_site = $result_site->fetch_array(MYSQLI_ASSOC);
+								if (isset($row_site["site_names_id"])) {
+									echo '<td>' . $row_site["site_names_id"] . '</td>';
+									echo '<td><a href="/' . BASE . '/site_names_set.php?page=crawler_conf&site_names_id=' . urlencode($row_site["site_names_id"]) . '"><button>設定変更</button></a></td>';
 								}
-								echo '<tr><td colspan=3><a href="/' . BASE . '/site_names_add.php?page=crawler_conf"><button>追加</button></a></td></tr>';
-							} catch (mysqli_sql_exception $e) {
-							    throw $e;
-							    die();
+								echo '</tr>';
 							}
+							echo '<tr><td colspan=3><a href="/' . BASE . '/site_names_add.php?page=crawler_conf"><button>追加</button></a></td></tr>';
+						} catch (mysqli_sql_exception $e) {
+						    throw $e;
+						    die();
 						}
 						?>
 					</table>
+					<?php
+					}
+					?>
 				</div>
 
 				<div class="menu_content" id="log_mgmt">
 					<h3>ログ管理</h3>
+					<?php
+					if ($_SESSION['role'] == 'su' || is_null($_SESSION['role'])) {
+						echo '<table class="ope_table"><tr><td colspan="4"> rootユーザーであるあなたには編集権限がありません。 </td></tr></table>';
+					} else {
+					?>
 					<p class="ope_description">
 						ログを出力する期間を「YYYY-MM-DD」形式で指定してダウンロードしてください。ログ取得の終了時期には、本日の日付をデフォルトで入力しています。
 					</p>
@@ -461,6 +499,9 @@ if ($_SESSION['auth'] != true) {
 							</td>
 						</tr>
 					</table>
+					<?php
+					}
+					?>
 				</div>
 
 				<div class="menu_content" id="document">
@@ -496,7 +537,6 @@ if ($_SESSION['auth'] != true) {
 
 				<div class="menu_content" id="admin_menu">
 					<h3>管理者メニュー</h3>
-					
 					<?php 
 					if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
 					?>
@@ -594,19 +634,25 @@ if ($_SESSION['auth'] != true) {
 						echo '<tr><td colspan="4"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
 						echo '</table>';				
 					}
-					//if ($_SESSION['role'] == 'admin') {
 					?>
-						<!--h4>＜画像の管理＞</h4>
-						<p class="ope_description">
-						ニュースに使用するトップ画像、カテゴリアイコンをアップロードします。
-						</p>
-						<table class="ope_table">
-						<tr><th>画像のアップロード</th>
-						<td><a href="<?php //echo '/' . BASE . '/' ?>admin_set.php?page=admin_menu&task=image_upload"><button>追加</button></td></tr>
-						</table-->
-					<?php
-					//}
-					?>
+					
+					<script>
+						// ユーザーの利用可能なメニューを制限する
+						var uid = document.getElementById("role").value;
+						var elements = document.getElementsByClassName("menu_not_selected");
+						for (var i=0; i<elements.length; i++) {
+							var param = elements.item(i).firstElementChild.getAttribute("href").split('=')[1];
+							if(uid === "su") {
+								if(param !== 'logout' && param !== 'admin_menu' && param !== 'document') {
+									elements.item(i).firstElementChild.removeAttribute("href");
+								}
+							} else if(uid === "editor") {
+								if(param !== 'logout' && param !== 'news_make' && param !== 'document' && param !== 'log_mgmt') {
+									elements.item(i).firstElementChild.removeAttribute("href");
+								}
+							}
+						}
+					</script>
 				</div>
 			</div>
 <?php

@@ -70,7 +70,7 @@ if ($_SESSION['auth'] !== true) {
                 <input type="hidden" name="news_id" id="news_id" value="<?php echo $row["news_id"]; ?>">
             </div>
             <br><br>
-            <a href="/<?php echo BASE; ?>/?page=news_conf"><button>戻る</button></a>
+            <a href="/<?php echo BASE; ?>/?page=news_conf"><button class="button_back">戻る</button></a>
             <script>
 function image_delete(arg) {
     var msg = "";

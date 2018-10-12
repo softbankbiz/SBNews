@@ -80,7 +80,7 @@ if ($_SESSION['auth'] == true) {
 							</li>
 						</ol>
 <p>
-	<a href="<?php echo '/'. BASE .'/' ?>?page=document"><button>戻る</button></a>
+	<a href="<?php echo '/'. BASE .'/' ?>?page=document"><button class="button_back">戻る</button></a>
 </p>
 					</div>
 				</div>

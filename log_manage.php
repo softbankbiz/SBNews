@@ -95,6 +95,30 @@ if ($_SESSION['auth'] !== true) {
 		    throw $e;
 		    die();
 		}
+	} else if ($_POST['cmd'] === "log_login") {
+		try {
+			$query = "SELECT user_id,stamp,description,ts FROM login_record WHERE company_id = ? AND ts > ? AND ts < ?";
+			$period_s = $_POST['year_s'] . "-" . $_POST['month_s'] . "-" . $_POST['date_s'] . " 00:00:00";
+		    $period_e = $_POST['year_e'] . "-" . $_POST['month_e'] . "-" . $_POST['date_e'] . " 23:59:59";
+		    $stmt = $mysqli->prepare($query);
+			$stmt->bind_param("sss", $_SESSION["company_id"], $period_s, $period_e);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$csv = "ユーザーID,記録,説明,タイムスタンプ\n";
+			while ($row = $result->fetch_assoc()) {
+		    	$csv .= implode(",", $row). "\r\n";
+		    }
+		    $csv = pack('C*',0xEF,0xBB,0xBF). $csv;
+		    $filename = explode(' ', $period_s)[0] . '_' . explode(' ', $period_e)[0];
+		    header('Content-Type: application/force-download');
+		    header('Content-Disposition: attachment; filename="login_record_' . $filename . '.csv"');
+		    echo trim($csv);
+		} catch (mysqli_sql_exception $e) {
+		    throw $e;
+		    die();
+		}
+	} else {
+		echo 'パラメータが不正です。';
 	}
 } else {
 	echo 'パラメータが不正です。';

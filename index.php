@@ -432,11 +432,11 @@ if ($_SESSION['auth'] != true) {
 					<p class="ope_description">
 						ログを出力する期間を「YYYY-MM-DD」形式で指定してダウンロードしてください。ログ取得の終了時期には、本日の日付をデフォルトで入力しています。
 					</p>
-					<table class="ope_table">
-						<tr class="bgcolor_gray">
+					<table class="ope_table bgcolor_gray border_none">
+						<tr class="bgcolor_white">
 							<th>No</th><th>ログ名</th><th>取得期間（YYYY-MM-DD）</th>
 						</tr>
-						<tr class="bgcolor_gray">
+						<tr class="bgcolor_white">
 							<td rowspan="2">1</td>
 							<td rowspan="2">RSSが取得したニュース一覧</td>
 							<td>
@@ -446,7 +446,7 @@ if ($_SESSION['auth'] != true) {
 									<input type="text" size="3" name="date_s" id="log_rss_date_s"> 以降 
 							</td>
 						</tr>
-						<tr class="bgcolor_gray">
+						<tr class="bgcolor_white">
 							<td>
 									<input type="text" size="6" name="year_e" id="log_rss_year_e" value="<?php echo get_today()[0]; ?>"> - 
 									<input type="text" size="3" name="month_e" id="log_rss_month_e" value="<?php echo get_today()[1]; ?>"> - 
@@ -457,7 +457,7 @@ if ($_SESSION['auth'] != true) {
 							</td>
 						</tr>
 
-						<tr class="bgcolor_gray">
+						<tr class="bgcolor_white">
 							<td rowspan="2">2</td>
 							<td rowspan="2">記事のクリックログ一覧</td>
 							<td>
@@ -467,7 +467,7 @@ if ($_SESSION['auth'] != true) {
 									<input type="text" size="3" name="date_s" id="log_click_date_s"> 以降
 							</td>
 						</tr>
-						<tr class="bgcolor_gray">
+						<tr class="bgcolor_white">
 							<td>
 									<input type="text" size="6" name="year_e" id="log_click_year_e" value="<?php echo get_today()[0]; ?>"> - 
 									<input type="text" size="3" name="month_e" id="log_click_month_e" value="<?php echo get_today()[1]; ?>"> - 
@@ -478,7 +478,7 @@ if ($_SESSION['auth'] != true) {
 							</td>
 						</tr>
 
-						<tr class="bgcolor_gray">
+						<tr class="bgcolor_white">
 							<td rowspan="2">3</td>
 							<td rowspan="2">メールの開封ログ一覧</td>
 							<td>
@@ -488,7 +488,7 @@ if ($_SESSION['auth'] != true) {
 									<input type="text" size="3" name="date_s" id="log_access_date_s"> 以降 
 							</td>
 						</tr>
-						<tr class="bgcolor_gray">
+						<tr class="bgcolor_white">
 							<td>
 									<input type="text" size="6" name="year_e" id="log_access_year_e" value="<?php echo get_today()[0]; ?>"> - 
 									<input type="text" size="3" name="month_e" id="log_access_month_e" value="<?php echo get_today()[1]; ?>"> - 
@@ -498,6 +498,33 @@ if ($_SESSION['auth'] != true) {
 								</form>
 							</td>
 						</tr>
+
+						<?php 
+						if ($_SESSION['role'] == 'admin' || is_null($_SESSION['role'])) {
+						?>
+						<tr class="bgcolor_white">
+							<td rowspan="2">4</td>
+							<td rowspan="2">ログインユーザーの記録</td>
+							<td>
+								<form method="POST" action="<?php echo '/' . BASE . '/' ?>log_manage.php">
+									<input type="text" size="6" name="year_s" id="log_login_year_s"> - 
+									<input type="text" size="3" name="month_s" id="log_login_month_s"> - 
+									<input type="text" size="3" name="date_s" id="log_login_date_s"> 以降 
+							</td>
+						</tr>
+						<tr class="bgcolor_white">
+							<td>
+									<input type="text" size="6" name="year_e" id="log_login_year_e" value="<?php echo get_today()[0]; ?>"> - 
+									<input type="text" size="3" name="month_e" id="log_login_month_e" value="<?php echo get_today()[1]; ?>"> - 
+									<input type="text" size="3" name="date_e" id="log_login_date_e" value="<?php echo get_today()[2]; ?>"> までを 
+									<input type="hidden" name="cmd" value="log_login">
+									<input type="submit" value="ダウンロード" onclick="return check_date_format('log_login')">
+								</form>
+							</td>
+						</tr>
+						<?php 
+						}
+						?>
 					</table>
 					<?php
 					}
@@ -538,7 +565,7 @@ if ($_SESSION['auth'] != true) {
 				<div class="menu_content" id="admin_menu">
 					<h3>管理者メニュー</h3>
 					<?php 
-					if ($_SESSION['role'] == 'editor' || is_null($_SESSION['role'])) {
+					if ($_SESSION['role'] != 'su' || is_null($_SESSION['role'])) {
 					?>
 						<table class="ope_table">
 						<tr><td> あなたには編集権限がありません。 </td></tr>

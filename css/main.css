@@ -113,7 +113,7 @@ select { height: 1.6em; }
     display:inline-block;
     padding: 10px 10px;
 }
-.menu_selected { background-color: #DDD; }
+.menu_selected { background-color: #9395ff; }
 
 .main_area { margin: 0 auto; width: auto; background-color: white; display: inline-block; }
 
@@ -248,14 +248,16 @@ label {
 
 
 /* Header Footer */
-.header { width: 100; padding: 8px; height: 60px; background-color: #EEE; }
+.header { width: 100; padding: 0; height: 60px; background-color: #93b0ff; }
     .header_title { text-align: left; font-size: large; font-weight: bold; }
-    .login_user { text-align: right; font-size: small; margin-top: 28px; } 
-.footer { width: 100; padding: 8px; margin-top: 10px; }
+    .login_user { text-align: right; font-size: small; margin: -14px 6px 0 0; color: #FFF; } 
+.footer { width: 100; padding: 8px; margin-top: 10px; color: #9395ff; }
 
 
 
 /* log page */
 .bgcolor_gray { background-color: #DDD; }
+.bgcolor_white { background-color: #FFF; }
+.border_none { border: none; }
 
 

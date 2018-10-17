@@ -565,7 +565,7 @@ if ($_SESSION['auth'] != true) {
 				<div class="menu_content" id="admin_menu">
 					<h3>管理者メニュー</h3>
 					<?php 
-					if ($_SESSION['role'] != 'su' || is_null($_SESSION['role'])) {
+					if (is_null($_SESSION['role'])) {
 					?>
 						<table class="ope_table">
 						<tr><td> あなたには編集権限がありません。 </td></tr>

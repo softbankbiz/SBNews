@@ -19,26 +19,22 @@ if ($_SESSION['auth'] == true) {
 				<div class="main_area">
 					<div class="docu_body_detail">
 						<h3>クイックスタート</h3>
-						<p>初めてSBNewsを使うために必要な初期設定を説明します。</p>
+						<p>初めてSBNewsを使うために必要な初期設定を説明します。この作業を行えるのは、<b>管理者ユーザー</b>に限られます。</p>
 
 						<ol>
 							<li class="docu_h1">ログイン
 								<div>
 <p>
-	<a href="<?php echo '/'. BASE .'/' ?>">SBNews</a>にアクセスするとはじめにログイン画面が表示されます。
+	<a href="<?php echo '/'. BASE .'/' ?>">SBNews</a>にアクセスするとはじめにログイン画面が表示されます。あらかじめ配布されている企業ID、ユーザーID、パスワードを入力してログインします。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/login.png"></div>
-<p>
-	あらかじめ配布されている企業ID、ユーザーID、パスワードを入力します。なお、初回ログイン時はユーザーIDとパスワードは
-	同一で、ログイン直後にパスワードの変更を求められます。
-</p>
 								</div>
 							</li>
 							<li class="docu_h1">Watson NLCを登録する
 								<div>
 <p>
-	ログインしたら、まず「Watson NLC」の「ユーザーネーム」と「パスワード」を登録します。この操作は初回ログイン時のみで必要です。
-	「<a href="<?php echo '/'. BASE .'/' ?>?page=admin_menu">管理者メニュー</a>」を開き、「Watsonアカウント」の右の
+	ログインしたら、まず「Watson NLC」の「ユーザーネーム」と「パスワード」を登録します。この操作は初回のみ必要です。
+	「<a href="<?php echo '/'. BASE .'/' ?>?page=admin_menu">管理者メニュー</a>」を開き、「Watsonアカウント登録」の右の
 	「設定」ボタンをクリックします。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/admin_menu.png"></div>
@@ -49,7 +45,7 @@ if ($_SESSION['auth'] == true) {
 <div class="capture_area"><img src="../images/doc/quick/watson_register.png"></div>
 								</div>
 							</li>
-							<li class="docu_h1">Watson NLCの分類子を設定する
+							<li class="docu_h1"><a name="set_classifier">Watson NLCの分類子を設定する</a>
 								<div>
 <p>
 	「分類子」を作成するには、あらかじめ「トレーニングデータ」を用意する必要があります。
@@ -88,7 +84,7 @@ if ($_SESSION['auth'] == true) {
 </p>
 								</div>
 							</li>
-							<li class="docu_h1">クローラを設定する
+							<li class="docu_h1"><a name="crawler_conf">クローラを設定する</a>
 								<div>
 <p>
 	インターネット上のニュース記事を収集するために「RSSリスト」「カテゴリ リスト」「サイト名リスト」という3つのExcelファイルが
@@ -104,10 +100,10 @@ if ($_SESSION['auth'] == true) {
 <div class="capture_area"><img src="../images/doc/quick/rss_list_sample.png"></div>
 <p>
 	「カテゴリリスト」はA列にカテゴリ名を入力（RSSリストのC列と整合させてください）。A列の並び順にメルマガのコンテンツが生成
-	されます。B列にはカテゴリアイコン（画像ファイル名）を指定します。独自にカテゴリアイコンを作成しない場合には、「base_icon.png」
-	と記載しておきます。
+	されます。B列にはカテゴリアイコン（画像ファイル名）を指定します（オリジナルのカテゴリアイコンは「ニュース設定」からアップロードできます）。
+	独自にカテゴリアイコンを作成しない場合には、「base_icon.png」と記載しておきます。
 	（サンプル用カテゴリリストは「<a href="<?php echo '/'. BASE .'/' ?>files/カテゴリリスト.xlsx">カテゴリリスト.xlsx</a>」
-	からダウンロードできます）
+	から、サンプル用カテゴリアイコンは「<a href="<?php echo '/'. BASE .'/' ?>files/サンプルカテゴリアイコン.zip">サンプルカテゴリアイコン.zip</a>」からダウンロードできます）
 </p>
 <div class="capture_area"><img src="../images/doc/quick/category_list_sample.png"></div>
 <p>
@@ -123,13 +119,13 @@ if ($_SESSION['auth'] == true) {
 </p>
 								</div>
 							</li>
-							<li class="docu_h1">ニュースを設定する
+							<li class="docu_h1"><a name="news_conf">ニュースを設定する</a>
 								<div>
 <p>
 	Watsonの「分類子」が利用可能となり、クローラ用の3つのファイルを設定したら、これらのファイルを組み合わせて、ニュースIDを
-	作成します。「<a href="<?php echo '/'. BASE .'/' ?>?page=news_conf">ニュース設定</a>」を開き、「追加」ボタンをクリックします。
+	作成します。「<a href="<?php echo '/'. BASE .'/' ?>?page=news_conf">ニュース設定</a>」を開き、「ニュースを追加」ボタンをクリックします。
 </p>
-<div class="capture_area"><img src="../images/doc/quick/news_config.png"></div>
+<div class="capture_area"><img src="../images/doc/quick/news_add.png"></div>
 <p>
 	「ニュースの新規追加」ページが開いたら、そのニュースの独自名称を「ニュース ID」で指定します。
 </p>
@@ -150,15 +146,44 @@ if ($_SESSION['auth'] == true) {
 	「ニュース取得数」は、候補となるニュース記事の取得数です。10から50まで、10個刻みで指定できます。
 </p>
 <p>
-	「署名」欄は、ニュースの末尾に掲載する発行部署などを記載します。各行末の「&lt;br&gt;」はHTML用の改行マークです。
+	「署名」欄は、ニュースの末尾に掲載する発行部署などを記載します。
 </p>
+<div class="capture_area"><img src="../images/doc/quick/news_config.png"></div>
 <p>
 	以上の設定が完了したら、「ニュースを追加する」ボタンをクリックして、設定内容を確定します。
+</p>
+<p>
 	ニュースを設定すると、アプリ側で毎日1時間ごとにRSSのサイトからニュース記事を収集しWatsonによる判定を実行しますが、
-	もし手動でニュースを更新したい場合は「ニュース設定」画面から「ニュース取得（手動）」「Watson判定（手動）」をクリックして
-	手動更新することも可能です。
+	もし手動でニュースを更新したい場合は「<a href="<?php echo '/'. BASE .'/' ?>?page=news_conf">ニュース設定</a>」
+	画面から「ニュース更新（手動）」をクリックして手動更新することも可能です。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/news_manual_update.png"></div>
+<p>
+	作成した各ニュースには、トップ画像、ボトム画像、カテゴリアイコンを個別に設定できます。画像をアップロードするには、
+	「<a href="<?php echo '/'. BASE .'/' ?>?page=news_conf">ニュース設定</a>」
+	メニューから、該当ニュースの「設定変更・削除」ボタンをクリックします。「ニュースの設定変更」画面の下部から、それぞれの画像を
+	アップロードできます。
+</p>
+<div class="capture_area"><img src="../images/doc/quick/image_upload.png"></div>
+<p>
+	「トップ画像」はプレビュー画面の上部に表示される画像です。ファイル名は何であってもかまいません。
+	ファイルタイプは「PNG」のみ利用可能です。
+	画像サイズは、幅：600ピクセル（固定）、高さ：120ピクセル（任意）です。
+</p>
+<p>
+	「カテゴリー画像」はプレビュー画面のカテゴリ見出しに表示させる画像です。
+	ファイル名は、該当する「カテゴリ リスト ID」に登録したファイル名と整合させてください。
+	画像サイズは、幅：360ピクセル（任意）、高さ：70ピクセル（固定）です。
+	カテゴリー画像を用意しない場合は、デフォルトの「画像＋テキスト」が使用されます。
+</p>
+<p>
+	「ボトム画像」はプレビュー画面の下部に表示させる画像（任意）です。ファイル名は何であってもかまいません。
+	ファイルタイプは「PNG」のみ利用可能です。
+	画像サイズは、幅：600ピクセル（固定）、高さ：120ピクセル（任意）です。
+</p>
+<p>
+	ファイルを選択したら、必ずその都度「送信」ボタンを押してください。
+</p>
 								</div>
 							</li>
 							<li class="docu_h1">ニュースを作成する
@@ -201,7 +226,7 @@ if ($_SESSION['auth'] == true) {
 								<div>
 <p>
 	
-	SBNewsでは、「RSSが取得したニュース一覧」「記事のクリックログ一覧」「メールの開封ログ一覧」をCSV形式でダウンロードできます。
+	SBNewsでは、「RSSが取得したニュース一覧」「記事のクリックログ一覧」「メールの開封ログ一覧」「ログインユーザーの記録」]をCSV形式でダウンロードできます。
 	「<a href="<?php echo '/'. BASE .'/' ?>?page=log_mgmt">ログ取得</a>」を開き、取得したいログの項目に、YYYY-MM-DD形式で
 	取得開始日と終了日を指定して「ダウンロード」ボタンをクリックします。CSVファイルをダウンロード後、ExcelやAccessなどを利用して、
 	ニュースIDやタイムスタンプなどの属性ごとに集計、分析を行ってください。

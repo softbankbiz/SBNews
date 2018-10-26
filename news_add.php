@@ -37,7 +37,7 @@ if ($_SESSION['auth'] !== true) {
 					echo '<tr><th>ニュース取得開始日</th><td>' . get_period_day_as_select($mysqli, null) . '</td></tr>';
 					echo '<tr><th>ニュース取得開始時刻</th><td>' . get_period_hour_as_select($mysqli, null) . '</td></tr>';
 					echo '<tr><th>ニュース取得数</th><td>' . get_fetch_num_as_select($mysqli, null) . '</td></tr>';
-					echo "<tr><th>署名</th><td><textarea rows=\"5\" cols=\"40\" name=\"signature\" id=\"signature\">XXXX株式会社<br>\nXXXX部<br>\nメルマガ送信チーム<br>\nsome@where.com</textarea></td></tr>";
+					echo "<tr><th>署名</th><td><textarea rows=\"5\" cols=\"40\" name=\"signature\" id=\"signature\">XXXX株式会社\nXXXX部\nメルマガ送信チーム\nsome@where.com</textarea></td></tr>";
 					echo '<tr><td><style="text-align: center;"><button id="add_news" style="margin-right: 20px;">ニュースを追加する</button></td><td></td></tr>';
 					echo '</td></tr>';
 					?>

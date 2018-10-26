@@ -30,7 +30,9 @@ if ($_SESSION['auth'] !== true) {
 		if ($result) {
 			// 画像格納用ディレクトリも削除
 			$target_dir = 'images/' . $_SESSION["company_id"] . '/' . $_POST['news_id'];
-			delTree($target_dir);
+			if (file_exists($target_dir)) {
+				delTree($target_dir);
+			}
 		}
 		echo $result;
 	} catch (mysqli_sql_exception $e) {

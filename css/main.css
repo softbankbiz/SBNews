@@ -1,5 +1,7 @@
 
-/*body { padding: 20px; line-height: 1.2; }*/
+/******************
+ * ニュース作成ページ
+ ******************/
 
 .newsmaker_wrapper { margin: 0; width: 100%; line-height: 1.2; font-size: 10pt; text-align: left;}
 h2 { margin: 40px 0 10px 0; font-size: 12pt; }
@@ -75,7 +77,6 @@ background: linear-gradient(to bottom, #afafaf 0%,#edf1f7 5%,#bfbfbf 25%,#afafaf
     border: solid 1px #DDD; padding: 10px; border-radius: 6px; margin: 0 0 20 0px 0; width: 800px;
 }
 
-
 .wrapper_upper  { width: 600px; font-family: "ms pgothic"; }
 .wrapper_bottom { width: 600px; font-family: "ms pgothic"; }
 
@@ -90,7 +91,16 @@ button { line-height: 1.3; }
 
 select { height: 1.6em; }
 
-/**************** index.php *******************/
+
+/******************
+ * トップページ、基本パーツ
+ ******************/
+
+/* Header Footer */
+.header { width: 100; padding: 0; height: 60px; background-color: #93b0ff; }
+    .header_title { text-align: left; font-size: large; font-weight: bold; }
+    .login_user { text-align: right; font-size: small; margin: -14px 6px 0 0; color: #FFF; } 
+.footer { width: 100; padding: 8px; margin-top: 10px; color: #0039e6; font-size: smaller; text-align: left; }
 
 .clearfix::after{
   content: "";
@@ -99,25 +109,33 @@ select { height: 1.6em; }
 }
 
 .wrapper { margin: 0; width: 100%; text-align: center; }
+
+/* メニューバー */
 .nav { 
     /*margin: 0 20px 0 0; width: 200px; height: 800px; background-color: silver; float: left; */
-    border: 1px solid #ccc;
+    border: 1px solid #93b0ff;
     border-width: 1px 0;
     list-style:none;
     margin:0;
     padding:0;
     text-align:center;
 }
-.nav ul { margin: 0; }
+.nav ul { margin: 0; padding: 0;}
 .nav li {
     display:inline-block;
-    padding: 10px 10px;
+    padding: 10px 10px; margin: 0 -3px;
 }
-.menu_selected { background-color: #9395ff; }
+.menu_selected { background-color: #4d79ff; color: #FFF; }
+.menu_not_selected:hover { background-color: #b3c6ff; }
+    .menu_not_selected > a { text-decoration: none; color: #0039e6; }
 
+/* コンテンツ枠 */
 .main_area { margin: 0 auto; width: auto; background-color: white; display: inline-block; }
+    .main_area > h3, h4 { text-align: left; }
+    .main_area > h4 { margin-bottom: 4px; }
 
-.reader-text {
+
+.leader-text {
     color: #666;
     font-size: 24px;
     font-weight: 400;
@@ -191,32 +209,13 @@ td, th {
 
 
 
-
-.main_area > h3, h4 { text-align: left; }
-.main_area > h4 { margin-bottom: 4px; }
-
 .menu_content  { margin: 20px auto; display: none; }
 .menu_content h3, h4, p  { text-align: left; }
 .menu_content h4  { margin-bottom: 4px; }
 
-/*
-.menu_content table { border: 1px solid #DDD; margin-bottom: 20px; }
-.menu_content th,td { padding: 10px 10px; }*/
 
 .conf_table { width: 650px; border: 1px solid #DDD; padding: 10px 10px; font-size: 11pt; }
 .conf_table > th,td { text-align: left; }
-
-
-/*
-label > input {
-    display:none;   /* アップロードボタンのスタイルを無効にする 
-}*/
-label {
-    color: #000;            /* ラベルテキストの色を指定する */
-    background-color: #eee; /* ラベルの背景色を指定する */
-    padding: 10px;          /* ラベルとテキスト間の余白を指定する */
-    border: solid 1px #aaa; /* ラベルのボーダーを指定する */
-}
 
 .color_red { color: red; }
 .small { font-size: small; }
@@ -231,31 +230,37 @@ label {
 
 .help_icon { margin-left: 6px; color: #555; }
 
+
 /******************
  * ドキュメントページ
  ******************/
 
-.docu_body { width: 650px; text-align: left; line-height: 1.8; }
+.docu_body { width: 480px; text-align: left; line-height: 1.8; }
 .docu_h1 { margin-bottom: 2em; font-weight: bold; }
     .docu_h1 > ol { font-weight: normal; }
     .docu_h1 > div { font-weight: normal; line-height: 1.2; }
 .docu_body_detail { width: 860px; text-align: left; line-height: 1.2; }
+    .docu_body_detail ol { margin-top: 40px; }
 .docu_h1_nodeco { margin-bottom: 2em; font-weight: bold;  list-style-type: none; }
     .docu_h1_nodeco  > div { font-weight: normal; line-height: 1.2; }
 .capture_area { margin: 30px 20px; }
     .capture_area img { box-shadow: 0 0 8px gray; }
+code { 
+    white-space: pre; 
+    font-family: Courier,Courier,monospace;
+    width: calc(100% - 40px);
+    font-weight: 400;
+    display: block;
+    padding: .5em;
+    overflow-x: auto;
+    background: #d1d9e1;
+    color: #2d2d2d;
+}
 
 
-
-/* Header Footer */
-.header { width: 100; padding: 0; height: 60px; background-color: #93b0ff; }
-    .header_title { text-align: left; font-size: large; font-weight: bold; }
-    .login_user { text-align: right; font-size: small; margin: -14px 6px 0 0; color: #FFF; } 
-.footer { width: 100; padding: 8px; margin-top: 10px; color: #9395ff; }
-
-
-
-/* log page */
+/******************
+ * ログ取得ページ
+ ******************/
 .bgcolor_gray { background-color: #DDD; }
 .bgcolor_white { background-color: #FFF; }
 .border_none { border: none; }

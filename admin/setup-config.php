@@ -22,7 +22,7 @@ $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : -1;
 switch($step) {
 	case -1:
 ?>
-<h1 class="scren-reader-text">SBNewsのセットアップ</h1>
+<h1 class="scren-leader-text">SBNewsのセットアップ</h1>
 <p>SBNews へようこそ。利用を始める前にデータベースに関する以下の情報が必要となります。</p>
 <ol>
 <li>データベース名</li>
@@ -42,7 +42,7 @@ switch($step) {
 	case 1:
 		//echo 1;
 ?>
-<h1 class="screen-reader-text">データベースのセットアップ</h1>
+<h1 class="screen-leader-text">データベースのセットアップ</h1>
 <form method="post" action="setup-config.php?step=2">
 	<p>データベースの接続情報を入力してください。</p>
 	<table class="form-table">
@@ -120,7 +120,7 @@ switch($step) {
 		die("<code>sbnews_config_sample.php</code>が存在しません。");
 	}
 ?>
-<h1 class="screen-reader-text">SBNewsのセットアップ完了</h1>
+<h1 class="screen-leader-text">SBNewsのセットアップ完了</h1>
 <p><a href="../"><button>利用開始する</button></a></p>
 
 </body>

@@ -1,4 +1,10 @@
 <?php
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version. See LICENSE.
+ */
 
 /** Define ABSPATH as this file's directory */
 define( 'ABSPATH', dirname(__FILE__) . '/' );
@@ -73,7 +79,7 @@ if ($_POST) {
 				print_header("SBNews ログイン", null);
 				echo '<script src="js/utility.js"></script>';
 				echo '<div class="login">';
-				echo '<div class="reader-text">ログインページ</div>';
+				echo '<div class="leader-text">ログインページ</div>';
 				echo '<p>初回ログインです。パスワードを変更してください。<br>パスワードは英数半角文字で6文字以上かつ12文字以内でお願いします。</p>';
 				echo '<form action="change_password.php" method="post" name="change_password_form">';
 				echo '<table class="form-table">';
@@ -144,7 +150,7 @@ if ($_SESSION['auth'] != true) {
 	print_header("SBNews ログイン", null);
 ?>
 		<div class="login">
-			<div class="reader-text">ログインページ</div>
+			<div class="leader-text">ログインページ</div>
 			<form action="<?php echo '/' . BASE . '/' ?>" method="post">
 				<table class="form-table">
 					<tr><th>企業ID：</th><td><input type="text" name="company_id" id="company_id" value="<?php echo $_GET['company_id']; ?>"></td></tr>
@@ -558,6 +564,52 @@ if ($_SESSION['auth'] != true) {
 									<li>コンテンツを利用</li>
 								</ol>
 							</li>
+							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/training.php?page=document">分類子のトレーニング方法</a>
+								<ol>
+									<li>Natural Language Classifier</li>
+									<li>分類子の作成</li>
+									<li>初めてのトレーニングデータ作成</li>
+									<li>記事ランキングを利用した分類子のチューニング</li>
+									<li>分類子のチューニング手順</li>
+								</ol>
+							</li>
+							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/rss.php?page=document">RSSリストの作成</a>
+								<ol>
+									<li>RSSフィードの探し方</li>
+									<li>Googleアラートの作成</li>
+									<li>RSSフィードの独自開発</li>
+								</ol>
+							</li>
+							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/user.php?page=document">ユーザー管理</a>
+								<ol>
+									<li>スーパーユーザー</li>
+									<li>管理者ユーザー</li>
+									<li>編集者ユーザー</li>
+								</ol>
+							</li>
+							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/security.php?page=document">セキュリティ</a>
+								<ol>
+									<li>パスワードロック</li>
+									<li>ログインユーザーの記録</li>
+								</ol>
+							</li>
+							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/log.php?page=document">ログ出力</a>
+								<ol>
+									<li>RSSが取得したニュース一覧</li>
+									<li>記事のクリックログ一覧</li>
+									<li>メールの開封ログ一覧</li>
+									<li>ログインユーザーの記録</li>
+								</ol>
+							</li>
+							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/faq.php?page=document">FAQ</a>
+								<ol>
+									<li></li>
+									<li></li>
+									<li></li>
+									<li></li>
+									<li></li>
+								</ol>
+							</li>
 						</ol>
 					</div>
 				</div>
@@ -672,10 +724,12 @@ if ($_SESSION['auth'] != true) {
 							if(uid === "su") {
 								if(param !== 'logout' && param !== 'admin_menu' && param !== 'document') {
 									elements.item(i).firstElementChild.removeAttribute("href");
+									elements.item(i).setAttribute("style","background-color: #fff;");
 								}
 							} else if(uid === "editor") {
 								if(param !== 'logout' && param !== 'news_make' && param !== 'document' && param !== 'log_mgmt') {
 									elements.item(i).firstElementChild.removeAttribute("href");
+									elements.item(i).setAttribute("style","background-color: #fff;");
 								}
 							}
 						}

@@ -453,7 +453,7 @@ function print_header($title, $session) {
 	echo '	</head>';
 	echo '	<body>';
 	echo '		<div class="header">';
-	echo '			<img src="images/top_title.png"><div class="header_title"></div>'; //  <span>' . $title . '</span>
+	echo '			<img src="/' . BASE . '/images/top_title.png"><div class="header_title"></div>';
 	if ($session) {
 	echo '			<div class="login_user">' . $session['user_id'] . '@' . $session['company_id'] . '</div>';
 	echo '			<input type="hidden" id="role" value="' . $session['role'] . '">';

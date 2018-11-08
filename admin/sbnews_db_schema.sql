@@ -24,6 +24,6 @@ INSERT INTO users_list (company_id, user_id, password, password_expires, role) V
 DROP TABLE IF EXISTS classifier_list;
 CREATE TABLE classifier_list (cid VARCHAR(24) PRIMARY KEY, cid_alias VARCHAR(100) NOT NULL, company_id VARCHAR(20) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 DROP TABLE IF EXISTS preference;
-CREATE TABLE preference (news_id VARCHAR(100) NOT NULL, cid_alias VARCHAR(100) NOT NULL, company_id VARCHAR(20) NOT NULL, category_id VARCHAR(80) NOT NULL, rss_id VARCHAR(80) NOT NULL, site_names_id VARCHAR(80) NOT NULL, default_title VARCHAR(100) NOT NULL, period_day VARCHAR(40) NOT NULL, period_hour CHAR(2) NOT NULL, fetch_num CHAR(4) NOT NULL, signature VARCHAR(200) NOT NULL);
+CREATE TABLE preference (news_id VARCHAR(100) NOT NULL, cid_alias VARCHAR(100) NOT NULL, company_id VARCHAR(20) NOT NULL, category_id VARCHAR(80) NOT NULL, rss_id VARCHAR(80) NOT NULL, site_names_id VARCHAR(80) NOT NULL, default_title VARCHAR(100) NOT NULL, period_day VARCHAR(40) NOT NULL, period_hour CHAR(2) NOT NULL, fetch_num CHAR(4) NOT NULL, signature TEXT NOT NULL);
 DROP TABLE IF EXISTS login_record;
 CREATE TABLE login_record (company_id VARCHAR(20) NOT NULL, user_id VARCHAR(20) NOT NULL, stamp VARCHAR(10) NOT NULL, description VARCHAR(20) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);

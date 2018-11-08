@@ -91,6 +91,8 @@ button { line-height: 1.3; }
 
 select { height: 1.6em; }
 
+.read_data_btn { margin-right: 20px; }
+
 
 /******************
  * トップページ、基本パーツ

@@ -59,6 +59,12 @@ var get_contents_data_url = "get_contents_data_url.php";
 
 
 /**********************************************
+ コンテンツを取り込む前に編集するためのURL。
+***********************************************/
+var get_set_contents = "get_set_contents.php";
+
+
+/**********************************************
  グローバル変数。
 ***********************************************/
 //var default_title = "";
@@ -141,7 +147,7 @@ $( function() {
                     buf_p += '<option value="' + period_day_list[j][0] + '">' + period_day_list[j][1] + '</option>';
                 }
              }
-             $("#period_day").html(buf_p);
+             $(".period_day").html(buf_p);
 
             // period_hour
             var buf_h = "";
@@ -152,7 +158,7 @@ $( function() {
                     buf_h += "<option>" + period_hour_list[k] + "</option>";
                 }
              }
-             $("#period_hour").html(buf_h);
+             $(".period_hour").html(buf_h);
 
             // fetch_num
             var buf_n = "";
@@ -163,7 +169,7 @@ $( function() {
                     buf_n += "<option>" + fetch_num_list[l] + "</option>";
                 }
              }
-             $("#fetch_num").html(buf_n);
+             $(".fetch_num").html(buf_n);
         } else {
             alert("ng");
         }
@@ -220,7 +226,7 @@ function get_issue() {
 }
 
 /**********************************************
- AJAXを使ってサーバーからコンテンツを取得。
+ AJAXを使ってサーバーからデータベースからコンテンツを取得。
 ***********************************************/
 function read_data() {
     $("#circle_icon_area").css("display","block");
@@ -249,6 +255,108 @@ function read_data() {
         }
     });
 }
+
+
+/**********************************************
+ AJAXを使ってサーバーからコンテンツを取得して、
+ いったんCSVに書き出して、Excelで編集
+***********************************************/
+function read_data_export() {
+    //alert('read_data_export()');
+    $("#circle_icon_area").css("display","block");
+
+    $.post(get_set_contents,
+    {
+        period_day:  $("#period_day_pre").val(),
+        period_hour: $("#period_hour_pre").val(),
+        news_id:     $("#_news_id").val()
+    },
+    function(data, status){
+        if(status == 'success') {
+            /////////
+            //alert(data.trim());
+            /////////
+            if(data.trim().length === 0) {
+                alert("指定した期間にはコンテンツがありません。");
+                $("#circle_icon_area").css("display","none");
+            } else {
+                $("#circle_icon_area").css("display","none");
+                var filename = get_issue() + "_article_candidate.csv";
+                var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+                var blob = new Blob([ bom, data.trim() ], { "type" : "text/csv" });
+                window.URL = window.URL || window.webkitURL;
+                $('#targetLink').attr("href", window.URL.createObjectURL(blob));
+                $('#targetLink').attr("download", filename);
+                $('#targetLink')[0].click();
+            }
+        }
+    });
+}
+
+
+/**********************************************
+ Excelで編集したコンテンツをサーバにアップロードして書き戻す
+***********************************************/
+function read_data_import() {
+    $("#circle_icon_area").css("display","block");
+    $('#import_file').click();
+    $('#import_file').change(function(evt) {
+        var file = evt.target.files[0];
+        var extension = file.name.split('.')[1];
+        if (extension === 'csv') {
+            var reader = new FileReader();
+            reader.readAsText( file );
+            reader.addEventListener( 'load', function() {
+                var _import_file = reader.result.trim();
+                $.post(get_set_contents,
+                {
+                    import_file:      _import_file,
+                    news_id:          $("#_news_id").val()
+                },
+                function(data, status){
+                    if(status == 'success') {
+                        //alert(data);
+                        if (parseInt(data) > 0) {
+                            alert(data + " 行のコンテンツ候補を書き戻しました。いったんリロードします。");
+                            location.reload();
+                        } else {
+                            alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
+                            location.reload();
+                        }
+                    } else {
+                        alert("error.");
+                        $("#circle_icon_area").css("display","none");
+                    }
+                });
+            });
+        } else {
+            var er = new ExcelJs.Reader(file, function (e, xlsx) {
+                var _import_file =  xlsx.toCsv();
+                $.post(get_set_contents,
+                {
+                    import_file:      _import_file,
+                    news_id:          $("#_news_id").val()
+                },
+                function(data, status){
+                    if(status == 'success') {
+                        //alert(data);
+                        if (parseInt(data) > 0) {
+                            alert(data + " 行のコンテンツ候補を書き戻しました。いったんリロードします。");
+                            location.reload();
+                        } else {
+                            alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
+                            location.reload();
+                        }
+                    } else {
+                        alert("error.");
+                        $("#circle_icon_area").css("display","none");
+                    }
+                });
+            }, false);
+        }
+    });
+}
+
 
 function resetElements() {
     $(".ui-sortable-handle").each(function(index, element){
@@ -777,9 +885,5 @@ function convert_br(string) {
     if(typeof string !== 'string') {
         return string;
     }
-    if(string.match(/&lt;br&gt;/g)) {
-        return string.replace(/&lt;br&gt;/g, '<br>');
-    } else {
-        return string.replace(/\n/g, '<br>');
-    }
+    return string.replace(/&lt;br&gt;\n/g, '<br>').replace(/&lt;br&gt;/g, '<br>').replace(/\n/g, '<br>');
 }

@@ -854,4 +854,41 @@ if (function_exists('mb_ereg_replace'))
         return preg_replace('~[\x00\x0A\x0D\x1A\x22\x25\x27\x5C]~u', '\\\$0', $string);
     }
 }
+
+/*
+ * ディレクトリと内部のファイルを再帰的に削除
+*/
+function delTree($dir) { 
+	$files = array_diff(scandir($dir), array('.','..')); 
+	foreach ($files as $file) { 
+		(is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file"); 
+   }
+   return rmdir($dir); 
+}
+
+/**
+ * CSVの文中「"」で囲まれた範囲に出現する「,」をセパレータとして認識させないための関数
+ */
+function csvSplit($str) {
+	$flag = false;
+	$arr = preg_split('//u', $str, null, PREG_SPLIT_NO_EMPTY);
+	$result = array();
+	$buf = array();
+	foreach($arr as $c) {
+		if ( $c == '"' && $flag == false ) {
+			$flag = true;
+		} else if ( $c == '"' && $flag == true ) {
+			$flag = false;
+		} else if ( $c == ',' && $flag == true ) {
+			$buf[] = $c;
+		} else if ( $c == ',' && $flag == false ) {
+			$result[] = implode($buf);
+			$buf = array();
+		} else {
+			$buf[] = $c;
+		}
+	}
+	$result[] = implode($buf);
+	return $result;
+}
 ?>

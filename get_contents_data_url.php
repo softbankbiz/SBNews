@@ -53,7 +53,7 @@ try {
         if (isset($orderedArray)) {
             echo json_encode($orderedArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         } else {
-            echo "ng1";
+            echo "";
         }
     } else {
         echo "ng2";

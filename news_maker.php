@@ -33,11 +33,19 @@ if (! isset($_SESSION['auth'])) {
 
 				<div class="operation">
 					<h2>Step_2　コンテンツ候補を取得</h2>
+					<div class="readbutton_area">
+						<select class="period_day" id="period_day_pre"></select> の
+		            	<select class="period_hour" id="period_hour_pre"></select> 時から現在までに更新されたコンテンツ候補を手動で編集する <a id="targetLink" style="display: none;">.</a>　＞　
+						<button class="read_data_btn" id="default_ex" onclick="read_data_export()">CSVで書き出す</button>
+						<button class="read_data_btn" id="default_im" onclick="read_data_import()">Excelから書き戻す</button>
+						<input type="file" id="import_file" style="display:none;">
+					</div>
+					<br>
 		            <div class="readbutton_area">
-		            	<select id="period_day"></select> の
-		            	<select id="period_hour"></select> 時から現在までに更新されたコンテンツを上位
-		            	<select id="fetch_num"></select> 件 
-		                <button id="default_SS" onclick="read_data()">取得</button>
+		            	<select class="period_day" id="period_day"></select> の
+		            	<select class="period_hour" id="period_hour"></select> 時から現在までに更新されたコンテンツを上位
+		            	<select class="fetch_num" id="fetch_num"></select> 件 
+		            	<button class="read_data_btn" id="default_SS" onclick="read_data()">取り込む</button>
 		            </div>
 		            <div class="circle_icon_area" id="circle_icon_area">
 		                <img src="images/circle_icon.gif" class="circle_icon">
@@ -185,7 +193,49 @@ if (! isset($_SESSION['auth'])) {
 				</div>
 	        </div>
 	    </div>
+	    <script src="js/vendor/xlsx.full.min.js"></script>
+	    <script>
+(function (window, document) {
+  window.ExcelJs = {};
+  ExcelJs.File = function (_file, _workbook) {
+    var file = _file;
+    var workbook = _workbook;
+    return {
+      toCsv: function() {
+        var result = [];
+        workbook.SheetNames.forEach(function(sheetName) {
+          var csv = XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+          if(csv.length > 0){
+            result.push(csv);
+          }
+        });
+        return result.join("\n");
+      }
+    };
+  };
 
+  ExcelJs.Reader = function (_file, onload) {
+    var file = _file;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var data = e.target.result;
+      var arr = handleCodePoints2(new Uint8Array(data));
+      if (typeof onload == 'function') {
+        onload(e, new ExcelJs.File(file, XLSX.read(btoa(arr), {type: 'base64'})));
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  };
+})(window, window.document);
+
+function handleCodePoints2(byteArray) {
+	var binStr = '';
+	for (var p = 0; p < byteArray.length; p++) {
+		binStr += String.fromCharCode(byteArray[p]);
+	}
+	return binStr;
+}
+			</script>
 <?php
 	print_footer();
 } else {

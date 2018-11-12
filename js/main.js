@@ -287,6 +287,12 @@ function read_data_export() {
                 window.URL = window.URL || window.webkitURL;
                 $('#targetLink').attr("href", window.URL.createObjectURL(blob));
                 $('#targetLink').attr("download", filename);
+                $('#targetLink').click(function(){
+                    if(window.navigator.msSaveBlob){
+                        //console.log('IE11?');
+                        window.navigator.msSaveBlob(blob, filename);
+                    }
+                });
                 $('#targetLink')[0].click();
             }
         }
@@ -300,14 +306,17 @@ function read_data_export() {
 function read_data_import() {
     $("#circle_icon_area").css("display","block");
     $('#import_file').click();
-    $('#import_file').change(function(evt) {
+    //$('#import_file').change(function(evt) {
+    document.getElementById('import_file').addEventListener('change', function (evt) {
         var file = evt.target.files[0];
         var extension = file.name.split('.')[1];
         if (extension === 'csv') {
-            var reader = new FileReader();
-            reader.readAsText( file );
-            reader.addEventListener( 'load', function() {
-                var _import_file = reader.result.trim();
+            var er = new ExcelJs.Reader(file, function (e, xlsx) {
+            //var reader = new FileReader();
+            //reader.readAsText( file );
+            //reader.addEventListener( 'load', function() {
+                //var _import_file = reader.result.trim();
+                var _import_file = xlsx.toCsv();
                 $.post(get_set_contents,
                 {
                     import_file:      _import_file,

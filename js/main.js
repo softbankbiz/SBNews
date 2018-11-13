@@ -305,65 +305,31 @@ function read_data_export() {
 ***********************************************/
 function read_data_import() {
     $("#circle_icon_area").css("display","block");
-    $('#import_file').click();
-    //$('#import_file').change(function(evt) {
+    //$('#import_file').click();
     document.getElementById('import_file').addEventListener('change', function (evt) {
         var file = evt.target.files[0];
-        var extension = file.name.split('.')[1];
-        if (extension === 'csv') {
-            var er = new ExcelJs.Reader(file, function (e, xlsx) {
-            //var reader = new FileReader();
-            //reader.readAsText( file );
-            //reader.addEventListener( 'load', function() {
-                //var _import_file = reader.result.trim();
-                var _import_file = xlsx.toCsv();
-                $.post(get_set_contents,
-                {
-                    import_file:      _import_file,
-                    news_id:          $("#_news_id").val()
-                },
-                function(data, status){
-                    if(status == 'success') {
-                        //alert(data);
-                        if (parseInt(data) > 0) {
-                            alert(data + " 行のコンテンツ候補を書き戻しました。いったんリロードします。");
-                            location.reload();
-                        } else {
-                            alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
-                            location.reload();
-                        }
+        var er = new ExcelJs.Reader(file, function (e, xlsx) {
+            var _import_file = xlsx.toCsv();
+            var fd = new FormData();
+            fd.append("import_file", _import_file);
+            fd.append("news_id", $("#_news_id").val());
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if(Number(this.responseText) > 0) {
+                        alert(this.responseText + " 行のコンテンツ候補を書き戻しました。いったんリロードしますので、改めてコンテンツを取り込んでください。");
+                        location.reload();
                     } else {
-                        alert("error.");
-                        $("#circle_icon_area").css("display","none");
+                        alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
+                        location.reload();
                     }
-                });
-            });
-        } else {
-            var er = new ExcelJs.Reader(file, function (e, xlsx) {
-                var _import_file =  xlsx.toCsv();
-                $.post(get_set_contents,
-                {
-                    import_file:      _import_file,
-                    news_id:          $("#_news_id").val()
-                },
-                function(data, status){
-                    if(status == 'success') {
-                        //alert(data);
-                        if (parseInt(data) > 0) {
-                            alert(data + " 行のコンテンツ候補を書き戻しました。いったんリロードします。");
-                            location.reload();
-                        } else {
-                            alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
-                            location.reload();
-                        }
-                    } else {
-                        alert("error.");
-                        $("#circle_icon_area").css("display","none");
-                    }
-                });
-            }, false);
-        }
+               }
+            };
+            xhttp.open("POST", get_set_contents, true);
+            xhttp.send(fd);
+        });
     });
+    $('#import_file').click();
 }
 
 

@@ -13,7 +13,7 @@ if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
 
 // Excelへの書き出し用にCSVを出力
 if ($_POST["period_day"] && $_POST["period_hour"] && $_POST["news_id"]) {
-    $query = "SELECT title,class_name,confidence,url FROM article_candidate WHERE created >= ? AND company_id = ? AND news_id = ?";
+    $query = "SELECT title,class_name,url,created,category,confidence,site_name FROM article_candidate WHERE created >= ? AND company_id = ? AND news_id = ?";
     try {
         $period = gat_period($_POST["period_day"], $_POST["period_hour"]);
         $stmt = $mysqli->prepare($query);
@@ -44,15 +44,15 @@ if ($_POST["period_day"] && $_POST["period_hour"] && $_POST["news_id"]) {
 
 // Excelからの書き戻し
 } else if ($_POST["import_file"] && $_POST["news_id"]) {
-    $query = "UPDATE article_candidate SET title = ?, class_name = ?, confidence = ?, url = ?  WHERE url = ? AND company_id = \"" . $_SESSION["company_id"] . "\" AND news_id = \"" . $_POST["news_id"] . "\"";
+    $query = "UPDATE article_candidate SET title = ?, class_name = ?, url = ?, created = ?, category = ?, confidence = ?, site_name = ?   WHERE url = ? AND company_id = \"" . $_SESSION["company_id"] . "\" AND news_id = \"" . $_POST["news_id"] . "\"";
     try {
         $stmt = $mysqli->prepare($query);
         $list = explode("\n", $_POST["import_file"]);
         $cnt = 0;
         foreach ($list as $key => $value) {
             $items = csvSplit($value);
-            if (count($items) == 4) {
-                $stmt->bind_param("ssdss", $items[0], $items[1], $items[2], $items[3], $items[3]);
+            if (count($items) == 7) {
+                $stmt->bind_param("sssssdss", $items[0], $items[1], $items[2], $items[3], $items[4], $items[5], $items[6], $items[2]);
                 $stmt->execute();
                 if ($stmt->errno == 0) { $cnt += 1; } 
             }

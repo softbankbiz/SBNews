@@ -305,6 +305,66 @@ function read_data_export() {
 ***********************************************/
 function read_data_import() {
     $("#circle_icon_area").css("display","block");
+    $('#import_file').click();
+    $('#import_file').change(function(evt) {
+        var file = evt.target.files[0];
+        var extension = file.name.split('.')[1];
+        if (extension === 'csv') {
+            var reader = new FileReader();
+            reader.readAsText( file );
+            reader.addEventListener( 'load', function() {
+                var _import_file = reader.result.trim();
+                $.post(get_set_contents,
+                {
+                    import_file:      _import_file,
+                    news_id:          $("#_news_id").val()
+                },
+                function(data, status){
+                    if(status == 'success') {
+                        //alert(data);
+                        if (parseInt(data) > 0) {
+                            alert(data + " 行のコンテンツ候補を書き戻しました。いったんリロードします。");
+                            location.reload();
+                        } else {
+                            alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
+                            location.reload();
+                        }
+                    } else {
+                        alert("error.");
+                        $("#circle_icon_area").css("display","none");
+                    }
+                });
+            });
+        } else {
+            var er = new ExcelJs.Reader(file, function (e, xlsx) {
+                var _import_file =  xlsx.toCsv();
+                $.post(get_set_contents,
+                {
+                    import_file:      _import_file,
+                    news_id:          $("#_news_id").val()
+                },
+                function(data, status){
+                    if(status == 'success') {
+                        //alert(data);
+                        if (parseInt(data) > 0) {
+                            alert(data + " 行のコンテンツ候補を書き戻しました。いったんリロードします。");
+                            location.reload();
+                        } else {
+                            alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
+                            location.reload();
+                        }
+                    } else {
+                        alert("error.");
+                        $("#circle_icon_area").css("display","none");
+                    }
+                });
+            }, false);
+        }
+    });
+}
+/*
+function read_data_import() {
+    $("#circle_icon_area").css("display","block");
     //$('#import_file').click();
     document.getElementById('import_file').addEventListener('change', function (evt) {
         var file = evt.target.files[0];
@@ -331,7 +391,7 @@ function read_data_import() {
     });
     $('#import_file').click();
 }
-
+*/
 
 function resetElements() {
     $(".ui-sortable-handle").each(function(index, element){

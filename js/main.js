@@ -305,7 +305,7 @@ function read_data_export() {
 ***********************************************/
 function read_data_import() {
     $("#circle_icon_area").css("display","block");
-    $('#import_file').click();
+    //$('#import_file').click();
     $('#import_file').change(function(evt) {
         var file = evt.target.files[0];
         var extension = file.name.split('.')[1];
@@ -361,6 +361,7 @@ function read_data_import() {
             }, false);
         }
     });
+    $('#import_file').click();
 }
 /*
 function read_data_import() {

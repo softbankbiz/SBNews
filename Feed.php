@@ -59,7 +59,7 @@ class Feed
 			return $feed;
 
 		// RSS1.0用の処理
-		} elseif($xml->item) {
+		} elseif($xml->item) { 
 		    foreach ($xml->item as $item) {
 
 				// generate 'timestamp' tag

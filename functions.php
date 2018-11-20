@@ -891,4 +891,9 @@ function csvSplit($str) {
 	$result[] = implode($buf);
 	return $result;
 }
+
+function datetimeFormatter($str) {
+	$date = new DateTime($str);
+	return $date->format('Y-m-d H:m:s');
+}
 ?>

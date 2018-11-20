@@ -39,7 +39,20 @@ if ($_SESSION['auth'] == true) {
 </p>
 <div class="capture_area"><img src="../images/doc/make/step_1.png" width="780px"></div>
 								</div>
-							<li class="docu_h1_nodeco">Step_2　コンテンツ候補を取得
+							<li class="docu_h1_nodeco">Step_2　コンテンツ候補を編集
+								<div>
+<p>
+	Watson NLCによる判定結果を確認し、必要ならば手動で変更するために、コンテンツ候補をダウンロードします。
+	「ニュース取得開始日」「ニュース取得開始時刻」を指定して「CSVで書き出す」ボタンを押すと、コンテンツ候補をCSV形式で保存できます。
+	これをExcelで開き、必要な修正（採用／非採用の書き換え、確信度の修正）を行ったら、<b>必ず「名前をつけて保存」→「Excelブック（*.xlsx）」</b>で
+	保存し、「Excelから書き戻す」ボタンを押してExcelファイルをアップロードしてください。なお、この操作はオプションです。
+</p>
+<p>
+	最後に「取得」ボタンをクリックすると「Step_3」のエリアにニュースが取り込まれます。
+</p>
+<div class="capture_area"><img src="../images/doc/make/step_2.png" width="780px"></div>
+								</div>
+							<li class="docu_h1_nodeco">Step_3　コンテンツ候補を取得
 								<div>
 <p>
 	あらかじめ登録しておいた「ニュース取得開始日」「ニュース取得開始時刻」
@@ -49,9 +62,9 @@ if ($_SESSION['auth'] == true) {
 <p>
 	最後に「取得」ボタンをクリックすると「Step_3」のエリアにニュースが取り込まれます。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_2.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_3.png" width="780px"></div>
 								</div>
-							<li class="docu_h1_nodeco">Step_3　ニュース本文を作成
+							<li class="docu_h1_nodeco">Step_4　ニュース本文を作成
 								<div>
 <p>
 	「連絡メモ欄（オプション）」に文字を入力すると、タイトル画像直下にお知らせメッセージを表示できます。
@@ -69,24 +82,24 @@ if ($_SESSION['auth'] == true) {
 	次回以降も継続して、そのカテゴリーを利用する場合は、「カテゴリ リスト」に項目を追加して、
 	「<a href="<?php echo '/'. BASE .'/' ?>?page=crawler_conf">クローラ設定</a>」から再度アップロードしてください。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_3.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_4.png" width="780px"></div>
 								</div>
-							<li class="docu_h1_nodeco"><a name="Step_4">Step_4　ランキングを作成</a>
+							<li class="docu_h1_nodeco"><a name="Step_4">Step_5　ランキングを作成</a>
 								<div>
 <p>
 	発行号を指定して記事のクリック数によるランキングを作成できます。クリックされた記事はすべて表示されます。
 	表示させる記事を絞り込む場合や、表示したくないニュースがある場合には、右の「×」ボタンで削除できます。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_4.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_5.png" width="780px"></div>
 								</div>
-							<li class="docu_h1_nodeco">Step_5　プレビューを確認
+							<li class="docu_h1_nodeco">Step_6　プレビューを確認
 								<div>
 <p>
 	「プレビュー」ボタンをクリックしてニュースの実物を確認できます。「プレビュー」ボタンの右の「並び順：...」から
 	記事とランキングの上下を入れ替えられます。デフォルトでは、記事の下にランキングが表示されます。
 	プレビューを確認して、修正が必要な場合は、前のステップに戻って修正を加え、再度「プレビュー」をクリックします。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_5.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_6.png" width="780px"></div>
 <p>
 	トップ画像を設定していない場合、上記のような仮のトップ画像が表示されます。
 	トップ画像、ボトム画像、カテゴリアイコンをオリジナル画像にするには、
@@ -95,7 +108,7 @@ if ($_SESSION['auth'] == true) {
 	それぞれの画像をアップロードします。
 </p>
 								</div>
-							<li class="docu_h1_nodeco">Step_6　コンテンツを利用
+							<li class="docu_h1_nodeco">Step_7　コンテンツを利用
 								<div>
 <p>
 	修正が完了したら、プレビューされている件名と本文をそれぞれコピーして、

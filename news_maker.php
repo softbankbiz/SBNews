@@ -32,7 +32,7 @@ if (! isset($_SESSION['auth'])) {
 		        </div>
 
 				<div class="operation">
-					<h2>Step_2　コンテンツ候補を取得</h2>
+					<h2>Step_2　コンテンツ候補を編集</h2>
 					<div class="readbutton_area">
 						<select class="period_day" id="period_day_pre"></select> の
 		            	<select class="period_hour" id="period_hour_pre"></select> 時から現在までに更新されたコンテンツ候補を手動で編集する <a id="targetLink" style="display: none;">.</a>　＞　
@@ -40,7 +40,13 @@ if (! isset($_SESSION['auth'])) {
 						<button class="read_data_btn" id="default_im" onclick="read_data_import()">Excelから書き戻す</button>
 						<input type="file" id="import_file" style="display:none;">
 					</div>
-					<br>
+					<div class="circle_icon_area" id="circle_icon_area_2">
+		                <img src="images/circle_icon.gif" class="circle_icon">
+		            </div>
+				</div>
+
+				<div class="operation">
+					<h2>Step_3　コンテンツ候補を取得</h2>
 		            <div class="readbutton_area">
 		            	<select class="period_day" id="period_day"></select> の
 		            	<select class="period_hour" id="period_hour"></select> 時から現在までに更新されたコンテンツを上位
@@ -53,7 +59,7 @@ if (! isset($_SESSION['auth'])) {
 				</div>
 
 				<div class="operation">
-					<h2>Step_3　ニュース本文を作成</h2>
+					<h2>Step_4　ニュース本文を作成</h2>
 		            <ul class="memo_box">
 		              <li>
 		                <div>
@@ -154,7 +160,7 @@ if (! isset($_SESSION['auth'])) {
 				</div>
 		        
 				<div class="operation">
-					<h2>Step_4　ランキングを作成</h2>
+					<h2>Step_5　ランキングを作成</h2>
 					<div id="Step_2" class="edit_area">
 						<div class="operation">▼発行号を指定する▼</div>
 						<select id="target_issue" style="margin-right:20px;">
@@ -165,7 +171,7 @@ if (! isset($_SESSION['auth'])) {
 				</div>
 		        
 				<div class="operation">
-					<h2>Step_5　プレビューを確認</h2>
+					<h2>Step_6　プレビューを確認</h2>
 					<div id="Step_3" class="edit_area">
 						<div>
 							<button onclick="preview()">プレビュー</button>
@@ -182,7 +188,7 @@ if (! isset($_SESSION['auth'])) {
 				</div>
 
 				<div class="operation">
-					<h2>Step_6　コンテンツを利用</h2>
+					<h2>Step_7　コンテンツを利用</h2>
 					<div id="Step_X" class="edit_area">
 						<p>件名および本文をそれぞれコピーして、お使いのメーラーなどにペーストしてご利用ください。<br>お疲れさまでした。</p>
 					</div>

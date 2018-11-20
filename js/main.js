@@ -263,7 +263,7 @@ function read_data() {
 ***********************************************/
 function read_data_export() {
     //alert('read_data_export()');
-    $("#circle_icon_area").css("display","block");
+    $("#circle_icon_area_2").css("display","block");
 
     $.post(get_set_contents,
     {
@@ -278,9 +278,9 @@ function read_data_export() {
             /////////
             if(data.trim().length === 0) {
                 alert("指定した期間にはコンテンツがありません。");
-                $("#circle_icon_area").css("display","none");
+                $("#circle_icon_area_2").css("display","none");
             } else {
-                $("#circle_icon_area").css("display","none");
+                $("#circle_icon_area_2").css("display","none");
                 var filename = get_issue() + "_article_candidate.csv";
                 var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
                 var blob = new Blob([ bom, data.trim() ], { "type" : "text/csv" });
@@ -304,7 +304,7 @@ function read_data_export() {
  Excelで編集したコンテンツをサーバにアップロードして書き戻す
 ***********************************************/
 function read_data_import() {
-    $("#circle_icon_area").css("display","block");
+    $("#circle_icon_area_2").css("display","block");
     //$('#import_file').click();
     $('#import_file').change(function(evt) {
         var file = evt.target.files[0];
@@ -323,7 +323,7 @@ function read_data_import() {
                     if(status == 'success') {
                         //alert(data);
                         if (parseInt(data) > 0) {
-                            alert(data + " 行のコンテンツ候補を書き戻しました。いったんリロードします。");
+                            alert(data + " 行のコンテンツ候補を書き戻しました。リロードします");
                             location.reload();
                         } else {
                             alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
@@ -331,7 +331,7 @@ function read_data_import() {
                         }
                     } else {
                         alert("error.");
-                        $("#circle_icon_area").css("display","none");
+                        $("#circle_icon_area_2").css("display","none");
                     }
                 });
             });
@@ -347,7 +347,7 @@ function read_data_import() {
                     if(status == 'success') {
                         //alert(data);
                         if (parseInt(data) > 0) {
-                            alert(data + " 行のコンテンツ候補を書き戻しました。いったんリロードします。");
+                            alert(data + " 行のコンテンツ候補を書き戻しました。リロードします。");
                             location.reload();
                         } else {
                             alert("コンテンツ候補の書き戻しに失敗しました。リロードします。");
@@ -355,7 +355,7 @@ function read_data_import() {
                         }
                     } else {
                         alert("error.");
-                        $("#circle_icon_area").css("display","none");
+                        $("#circle_icon_area_2").css("display","none");
                     }
                 });
             }, false);

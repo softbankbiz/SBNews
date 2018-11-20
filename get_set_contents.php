@@ -51,10 +51,11 @@ if ($_POST["period_day"] && $_POST["period_hour"] && $_POST["news_id"]) {
         $cnt = 0;
         foreach ($list as $key => $value) {
             $items = csvSplit($value);
+            $created = datetimeFormatter($items[3]);
             if (count($items) == 7) {
-                $stmt->bind_param("sssssdss", $items[0], $items[1], $items[2], $items[3], $items[4], $items[5], $items[6], $items[2]);
+                $stmt->bind_param("sssssdss", $items[0], $items[1], $items[2], $created, $items[4], $items[5], $items[6], $items[2]);
                 $stmt->execute();
-                if ($stmt->errno == 0) { $cnt += 1; } 
+                if ($stmt->errno == 0) { $cnt += 1; }
             }
         }
         if ($cnt > 0) {

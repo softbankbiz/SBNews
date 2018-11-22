@@ -185,7 +185,7 @@ document.getElementById('delete_news').addEventListener('click', function (evt) 
         cmd:     "delete",
     },
     function(data, status){
-        alert(data);
+        //alert(data);
         if(status == 'success') {
             if (data == 1) {
                 alert("このニュースを削除しました。");

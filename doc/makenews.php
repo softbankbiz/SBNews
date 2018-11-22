@@ -37,7 +37,7 @@ if ($_SESSION['auth'] == true) {
 	あらかじめ登録しておいたメール件名が表示されますが、この場で修正もできます。「20XX/XX/XX」の部分は、プレビュー表示の時に
 	年月日に変換されます。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_1.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_1.png"></div>
 								</div>
 							<li class="docu_h1_nodeco">Step_2　コンテンツ候補を編集
 								<div>
@@ -50,7 +50,7 @@ if ($_SESSION['auth'] == true) {
 <p>
 	最後に「取得」ボタンをクリックすると「Step_3」のエリアにニュースが取り込まれます。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_2.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_2.png"></div>
 								</div>
 							<li class="docu_h1_nodeco">Step_3　コンテンツ候補を取得
 								<div>
@@ -62,7 +62,7 @@ if ($_SESSION['auth'] == true) {
 <p>
 	最後に「取得」ボタンをクリックすると「Step_3」のエリアにニュースが取り込まれます。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_3.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_3.png"></div>
 								</div>
 							<li class="docu_h1_nodeco">Step_4　ニュース本文を作成
 								<div>
@@ -82,7 +82,7 @@ if ($_SESSION['auth'] == true) {
 	次回以降も継続して、そのカテゴリーを利用する場合は、「カテゴリ リスト」に項目を追加して、
 	「<a href="<?php echo '/'. BASE .'/' ?>?page=crawler_conf">クローラ設定</a>」から再度アップロードしてください。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_4.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_4.png"></div>
 								</div>
 							<li class="docu_h1_nodeco"><a name="Step_4">Step_5　ランキングを作成</a>
 								<div>
@@ -90,7 +90,7 @@ if ($_SESSION['auth'] == true) {
 	発行号を指定して記事のクリック数によるランキングを作成できます。クリックされた記事はすべて表示されます。
 	表示させる記事を絞り込む場合や、表示したくないニュースがある場合には、右の「×」ボタンで削除できます。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_5.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_5.png"></div>
 								</div>
 							<li class="docu_h1_nodeco">Step_6　プレビューを確認
 								<div>
@@ -99,7 +99,7 @@ if ($_SESSION['auth'] == true) {
 	記事とランキングの上下を入れ替えられます。デフォルトでは、記事の下にランキングが表示されます。
 	プレビューを確認して、修正が必要な場合は、前のステップに戻って修正を加え、再度「プレビュー」をクリックします。
 </p>
-<div class="capture_area"><img src="../images/doc/make/step_6.png" width="780px"></div>
+<div class="capture_area"><img src="../images/doc/make/step_6.png"></div>
 <p>
 	トップ画像を設定していない場合、上記のような仮のトップ画像が表示されます。
 	トップ画像、ボトム画像、カテゴリアイコンをオリジナル画像にするには、

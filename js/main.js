@@ -675,7 +675,10 @@ function preview() {
                         }
                         buffer += '<div name="category" value="' + category  + '" style="float:none;width:150px;height:30px;">';
                         if(category_icon[category] === "base_icon.png" || category_icon[category] !== null) {
-                            buffer += '<div alt="' + category + '" style=\'width:500px;height:30px;background-image:url("images/common_icon/base_icon.png");background-repeat:no-repeat;background-position: left center;\'><span style="padding-left:26px;font-size:large;font-weight:bold;">' + category + '</span></div></div>';
+                            //buffer += '<div alt="' + category + '" style=\'width:500px;height:30px;background-image:url("images/common_icon/base_icon.png");background-repeat:no-repeat;background-position: left center;\'><span style="padding-left:26px;font-size:large;font-weight:bold;">' + category + '</span></div></div>';
+                            buffer += '<div alt="' + category + '" style="width:500px;height:30px;">';
+                            buffer += '<span style="margin:0 8px;background-color:#ff9966;font-size:1.2em;vertical-align:baseline;">&nbsp;&nbsp;</span>';
+                            buffer += '<span style="font-size:large;font-weight:bold;">' + category + '</span></div></div>';
                         } else {
                             buffer += '<img src="' + category_icon_url + category_icon[category] + '" alt="' + category + '" style="width:100%;height:100%;" /></div>';
                         }

@@ -80,7 +80,7 @@ if ($_POST) {
 				echo '<script src="js/utility.js"></script>';
 				echo '<div class="login">';
 				echo '<div class="leader-text">ログインページ</div>';
-				echo '<p>初回ログインです。パスワードを変更してください。<br>パスワードは英数半角文字で6文字以上かつ12文字以内でお願いします。</p>';
+				echo '<p>初回ログインです。パスワードを変更してください。<br>パスワードは英数半角文字の混在、および8文字以上かつ20文字以内でお願いします。</p>';
 				echo '<form action="change_password.php" method="post" name="change_password_form">';
 				echo '<table class="form-table">';
 				echo '<input type="hidden" name="company_id" value="' . $_POST['company_id'] . '">';

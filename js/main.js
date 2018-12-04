@@ -556,7 +556,7 @@ function setDefaultColor(elm, opt) {
 function set_fyi(elem, label, error_collection) {
     if($(elem).css('display') != 'none' &&
        $(elem.firstElementChild).attr('name') == ('add_fyi_' + label) &&
-       $(elem.firstElementChild).attr('checked') == 'checked') {
+       elem.firstElementChild.checked == true) {
         if($(elem.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild).attr('name') == ('fyi_title_' + label) &&
            $(elem.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild).val() === '') {
             error_collection['fyi_title_' + label] += 1;
@@ -575,7 +575,7 @@ function set_fyi(elem, label, error_collection) {
                 setDefaultColor(elem.firstElementChild.nextElementSibling);
             }
         }
-        return '<div name="fyi" style="margin-top:3px;"><a href="' + redirect_url + '?url=' +
+        return '<div name="fyi" style="margin-top:3px;"><a href="' + // redirect_url + '?url=' +
                $(elem.firstElementChild.nextElementSibling.firstElementChild).val() +
                '" style="font-size:9pt;color:rgb(70,70,70);color:blue;text-decoration:underline;" target="_blank">' +
                $(elem.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild).val() +
@@ -591,11 +591,11 @@ function add_fyi(elem) {
         $(elem).next().next().css("display", "block");
         $(elem).parent().next().css("display", "block");
         // 以下の判定がjQueryでは動かないのでDOMしてます（propで行けることを思い出した、でも直さない）
-        if(elem.parentElement.nextElementSibling.firstElementChild.getAttribute("checked") == 'checked') {
+        if(elem.parentElement.nextElementSibling.firstElementChild.checked == true) {
           $(elem).parent().next().first().next().css("display", "block");
           $(elem).parent().next().first().next().next().css("display", "block");
           $(elem).parent().next().next().css("display", "block");
-          if(elem.parentElement.nextElementSibling.nextElementSibling.firstElementChild.getAttribute("checked") == 'checked') {
+          if(elem.parentElement.nextElementSibling.nextElementSibling.firstElementChild.checked == true) {
             $(elem).parent().next().next().first().next().css("display", "block");
             $(elem).parent().next().next().first().next().next().css("display", "block");
           }

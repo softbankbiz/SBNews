@@ -58,16 +58,16 @@ function check_date_format(id) {
 
 function check_change_password() {
   if (document.change_password_form.password_01.value != document.change_password_form.password_02.value){
-    alert("パスワードが一致しません。");
+    alert("IDまたはパスワードが違っています。");
     return false;
-  } else if (document.change_password_form.password_01.value.length < 6) {
-    alert("パスワードは6文字以上にしてください。");
+  } else if (document.change_password_form.password_01.value.length < 8) {
+    alert("IDまたはパスワードが違っています。");
     return false;
-  } else if (document.change_password_form.password_01.value.length > 12) {
-    alert("パスワードは12文字以内にしてください。");
+  } else if (document.change_password_form.password_01.value.length > 20) {
+    alert("IDまたはパスワードが違っています。");
     return false;
-  } else if (! document.change_password_form.password_01.value.match(/^[A-Za-z0-9]*$/)) {
-    alert("パスワードは英数半角文字にしてください。");
+  } else if (! document.change_password_form.password_01.value.match(/^(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,20}$/i)) {
+    alert("IDまたはパスワードが違っています。");
     return false;
   } else {
     return true;

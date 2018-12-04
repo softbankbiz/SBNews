@@ -185,7 +185,6 @@ document.getElementById('delete_news').addEventListener('click', function (evt) 
         cmd:     "delete",
     },
     function(data, status){
-        //alert(data);
         if(status == 'success') {
             if (data == 1) {
                 alert("このニュースを削除しました。");
@@ -216,7 +215,6 @@ document.getElementById('update_news').addEventListener('click', function (evt) 
         cmd:           "update",
     },
     function(data, status){
-
         if(status == 'success') {
             if (data == 1) {
                 alert("データを更新しました。");

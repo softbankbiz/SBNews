@@ -42,6 +42,7 @@ Server version: Apache/2.4.6 (CentOS)
 # cd /etc/httpd/conf.d/
 # mv welcome.conf welcome.conf.org
 # mv autoindex.conf autoindex.conf.org
+# rm -f README 
 
 // httpd.confの設定
 # vim /etc/httpd/conf/httpd.conf
@@ -57,9 +58,12 @@ AllowOverride None
 
 // ファイル最終行に追加
 TraceEnable off
-Header append X-FRAME-OPTIONS "SAMEORIGIN"
 ServerTokens ProductOnly
 ServerSignature off
+Header append X-FRAME-OPTIONS "SAMEORIGIN"
+Header set X-Content-Type-Options nosniff
+Header set X-XSS-Protection "1; mode=block"
+
 
 // Apache再起動
 # systemctl restart httpd
@@ -84,7 +88,7 @@ CentOS 7系デフォルトのレポジトリにphpの7.2系は含まれていな
 # yum -y install --enablerepo=remi,remi-php72 php php-mbstring php-xml php-xmlrpc php-gd php-pdo php-pecl-mcrypt php-mysqlnd php-pecl-mysql
 
 # php -v
-PHP 7.2.9
+PHP 7.2.12
 
 // php.iniの設定
 # vim /etc/php.ini
@@ -96,6 +100,7 @@ memory_limit = 2048M
 post_max_size = 20M
 upload_max_filesize = 20M
 date.timezone = "Asia/Tokyo"
+session.cookie_httponly = 1
 session.gc_divisor = 1
 session.gc_maxlifetime = 3600
 mbstring.language = Japanese
@@ -119,7 +124,7 @@ mbstring.substitute_character = none
 # mysql_secure_installation
 
 # mysql -V
-mysql  Ver 15.1 Distrib 10.3.9-MariaDB, for Linux (x86_64) using readline 5.1
+mysql  Ver 15.1 Distrib 10.3.11-MariaDB, for Linux (x86_64) using readline 5.1
 
 // my.cnfの設定
 # vim /etc/my.cnf

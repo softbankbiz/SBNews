@@ -88,7 +88,7 @@ CentOS 7系デフォルトのレポジトリにphpの7.2系は含まれていな
 # yum -y install --enablerepo=remi,remi-php72 php php-mbstring php-xml php-xmlrpc php-gd php-pdo php-pecl-mcrypt php-mysqlnd php-pecl-mysql
 
 # php -v
-PHP 7.2.12
+PHP 7.2.13
 
 // php.iniの設定
 # vim /etc/php.ini
@@ -206,6 +206,10 @@ crontab -e
 // SBNewsのデプロイ
 # rsync -avrP ./SBNews-master/ /var/www/html/sbnews/
 # chown -R apache:apache /var/www/html/sbnews
+
+// 不要になったファイルの削除
+# rm -f master.zip
+# rm -rdf SBNews-master
 ```
 
 ## SBNewsのセットアップ

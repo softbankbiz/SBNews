@@ -602,7 +602,7 @@ if ($_SESSION['auth'] != true) {
 									<li>ログインユーザーの記録</li>
 								</ol>
 							</li>
-							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/faq.php?page=document">FAQ</a>
+							<!--li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/faq.php?page=document">FAQ</a>
 								<ol>
 									<li></li>
 									<li></li>
@@ -610,7 +610,7 @@ if ($_SESSION['auth'] != true) {
 									<li></li>
 									<li></li>
 								</ol>
-							</li>
+							</li-->
 						</ol>
 					</div>
 				</div>

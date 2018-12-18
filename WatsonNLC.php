@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Watson NLC API rapper for PHP
- *
- * @copyright  Copyright (c) 2008 softbankbiz@gmail.com
- * @license    New BSD License
- * @version    1.0
- */
-
 define('W_GATEWAY',  'https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers');
 
 class WatsonNLC {

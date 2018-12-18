@@ -16,8 +16,18 @@ $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : -1;
 	<meta name="robots" content="noindex,nofollow" />
 	<title>Setup Configuration</title>
 	<link rel="shortcut icon" href="../favicon.ico" >
+	<style type="text/css">
+		body { width: 600px; margin: auto; }
+		.title { text-align: center; }
+		.form-table th { text-align: right; padding: 0.4em; }
+		.form-table input { width: 300px; }
+		.step { text-align: center; }
+		.button { font-size: 0.9em; background-color: #FFF; padding: 0.2em; }
+		.button:hover { background-color: #59b1eb; transition: all .3s; }
+
+	</style>
 </head>
-<body class="">
+<body>
 <?php
 switch($step) {
 	case -1:
@@ -32,7 +42,7 @@ switch($step) {
 <p>この情報は <code>sbnews_config.php</code> ファイルを作成するために使用されます。
 もしファイルが生成されない場合は、テキストエディターで <code>sbnews_config_sample.php</code> を開き、
 データベース情報を記入し、<code>sbnews_config.php</code> として保存します。</strong></p>
-<p class="step"><a href="setup-config.php?step=1"><button>セットアップを始める</button></a></p>
+<p class="step"><a href="setup-config.php?step=1"><button class="button">セットアップを始める</button></a></p>
 <?php
 		break;
 
@@ -42,9 +52,9 @@ switch($step) {
 	case 1:
 		//echo 1;
 ?>
-<h1 class="screen-leader-text">データベースのセットアップ</h1>
+<h1 class="title">データベースのセットアップ</h1>
 <form method="post" action="setup-config.php?step=2">
-	<p>データベースの接続情報を入力してください。</p>
+	<p style="text-align: center;">データベースの接続情報を入力してください。</p>
 	<table class="form-table">
 		<tr>
 			<th scope="row"><label for="dbname">データベース名</label></th>
@@ -59,7 +69,7 @@ switch($step) {
 			<td><input name="pwd" id="pwd" type="text" size="25" value="" /></td>
 		</tr>
 	</table>
-	<p class="step"><input name="submit" type="submit" value="送信" class="button button-large" /></p>
+	<p class="step"><input name="submit" type="submit" value="セットアップを実行する" class="button" /></p>
 </form>
 <?php
 	break;
@@ -73,7 +83,7 @@ switch($step) {
 	$step_1 = 'setup-config.php?step=1';
 	$install = 'install.php';
 
-	$tryagain_link = '<p class="step"><a href="' . $step_1 . '" onclick="javascript:history.go(-1);return false;" class="button button-large">Try again</a>';
+	$tryagain_link = '<p class="step"><a href="' . $step_1 . '" onclick="javascript:history.go(-1);return false;"><button class="button">やり直す</button></a>';
 
 	// Test the db connection.
 	define('DB_DATABASE', $dbname);
@@ -83,7 +93,7 @@ switch($step) {
 	$mysqli = mysqli_connect("localhost", DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
 	if(! $mysqli) {
-        die("エラー：DB接続に失敗しました！ errno: " . mysqli_connect_errno() . $tryagain_link);
+        die('<h1 class="title">データベースのセットアップ</h1><p style="text-align: center;">エラー：DB接続に失敗しました！' . $tryagain_link . '</p>');
     }
 	$config_file[ 0 ] = "<?php\r\n";
     $config_file[ 1 ] = "define('DB_DATABASE', '" . $dbname . "');\r\n";
@@ -92,7 +102,7 @@ switch($step) {
     $config_file[ 4 ] = "?>";
 
 	if ( ! is_writable(ABSPATH) ) {
-		die("<code>sbnews_config.php</code>の書き込み権限がありません。手動で作成してください。");
+		die('<h1 class="title">データベースのセットアップ</h1><p style="text-align: center;"><code>sbnews_config.php</code>の書き込み権限がありません。手動で作成してください。</p>');
 	} else if (file_exists( ABSPATH . 'sbnews_config_sample.php')) {
 		$path_to_sbnews_config = ABSPATH . 'sbnews_config.php';
 		$handle = fopen( $path_to_sbnews_config, 'w' );
@@ -114,14 +124,14 @@ switch($step) {
 				if ( ! $mysqli->query($value) ) echo "error at: " . $key . ", " .  $mysqli->error . "<br>";
 			}
 		} else {
-			echo "DBスキーマ定義ファイルがありません";
+			echo '<h1 class="title">データベースのセットアップ</h1><p style="text-align: center;">DBスキーマ定義ファイルがありません</p>';
 		}
 	} else {
-		die("<code>sbnews_config_sample.php</code>が存在しません。");
+		die('<h1 class="title">データベースのセットアップ</h1><p style="text-align: center;"><code>sbnews_config_sample.php</code>が存在しません。</p>');
 	}
 ?>
-<h1 class="screen-leader-text">SBNewsのセットアップ完了</h1>
-<p><a href="../"><button>利用開始する</button></a></p>
+<h1 class="title">SBNewsのセットアップ完了</h1>
+<p style="text-align: center;"><a href="../"><button class="button">利用開始する</button></a></p>
 
 </body>
 </html>

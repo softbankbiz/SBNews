@@ -3,7 +3,6 @@
 define('BASE', basename(dirname(__FILE__)));
 require_once dirname(__FILE__) . "/functions.php";
 
-# DB Connection
 $mysqli = getConnection();
 
 session_start();

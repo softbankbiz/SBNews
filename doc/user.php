@@ -59,54 +59,6 @@ if ($_SESSION['auth'] == true) {
 
 								</div>
 							</li>
-							<li class="docu_h1">既
-								<div>
-<p>
-	収
-</p>
-<div class="capture_area"><img src="../images/doc/rss/XXX_rss.png"></div>
-								</div>
-							</li>
-							<li class="docu_h1">既
-								<div>
-<p>
-	収
-</p>
-<div class="capture_area"><img src="../images/doc/rss/XXX_rss.png"></div>
-								</div>
-							</li>
-							<li class="docu_h1">既
-								<div>
-<p>
-	収
-</p>
-<div class="capture_area"><img src="../images/doc/rss/XXX_rss.png"></div>
-								</div>
-							</li>
-							<li class="docu_h1">既
-								<div>
-<p>
-	収
-</p>
-<div class="capture_area"><img src="../images/doc/rss/XXX_rss.png"></div>
-								</div>
-							</li>
-							<li class="docu_h1">既
-								<div>
-<p>
-	収
-</p>
-<div class="capture_area"><img src="../images/doc/rss/XXX_rss.png"></div>
-								</div>
-							</li>
-							<li class="docu_h1">既
-								<div>
-<p>
-	収
-</p>
-<div class="capture_area"><img src="../images/doc/rss/XXX_rss.png"></div>
-								</div>
-							</li>
 						</ol>
 <p>
 	<a href="<?php echo '/'. BASE .'/' ?>?page=document"><button class="button_back">戻る</button></a>

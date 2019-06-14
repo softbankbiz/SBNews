@@ -69,6 +69,21 @@ if ($_SESSION['auth'] !== true) {
 			if (! $_POST["username"] || ! $_POST["password"]) {
 				die ("パラメータが不足しています。");
 			}
+			// WatsonNLCのゲートウェイを認証方式に合わせて変更、さらにデータベースのカラム数を拡張（ID/PASSからの移行に対応）
+		    if ($_POST["username"] == "apikey") {
+		    	// GATEWAY for ApiKey        =>  'https://gateway-tok.watsonplatform.net/natural-language-classifier/api/v1/classifiers'
+		    	shell_exec('sed -i "" "s/gateway/gateway-tok/" WatsonNLC.php');
+		    	// change password column 
+		    	$query_altertable = "ALTER TABLE configuration MODIFY w_password VARCHAR(80)";
+		    	$alter_result = $mysqli->query($query_altertable);
+		    	if (! $alter_result) {
+		    		die("error: ALTER TABLE configuration MODIFY w_password");
+		    	}
+		    } else {
+		    	// GATEWAY for Username/Password =>  'https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers'
+		    	shell_exec('sed -i "" "s/gateway-tok/gateway/" WatsonNLC.php');
+		    }
+
 			////// company_idの重複テスト
 			$query_test = "SELECT count(company_id) FROM configuration WHERE company_id = ?";
 			$stmt = $mysqli->prepare($query_test);

@@ -22,6 +22,34 @@ if ($_SESSION['auth'] == true) {
 						<p>初めてSBNewsを使うために必要な初期設定を説明します。この作業を行えるのは、<b>管理者ユーザー</b>に限られます。</p>
 
 						<ol>
+							<li class="docu_h1">Watson NLCのサービス取得
+								<div>
+<p>
+	SBNewsを使い始める事前準備として、Watson NLCのサービスを作成し資格情報であるAPI鍵を取得します。<a href="https://cloud.ibm.com/" target="_blank">IBM Cloud</a>にログインします。
+</p>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_login.png"></div>
+<p>
+	IBM CloudアカウントのIBMidとパスワードを入力してログインします。
+</p>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_nlc.png"></div>
+<p>
+	ログインしたら、画面上部の①「カタログ」をクリック、続いて左ペインから②「AI」をクリックして、メインの画面に表示されるカタログのリストから
+	③「Natural Language Classifier」を見つけて、クリックします。
+</p>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_create.png"></div>
+<p>
+	「デプロイする地域/ロケーションの選択」や「タグ」を設定したら、画面下の「作成」ボタンをクリックする。これで、Watson NLCを利用する準備ができます。
+	この画面を下までスクロールするとWatson NLCの価格プランを参照できますので、確認しておくことをお勧めします。
+</p>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_apikey.png"></div>
+<p>
+	NLCサービスを作成すると、上記の画面に遷移します。左ペインの「管理」をクリックして、「資格情報」を表示させます。
+	「API鍵」欄の右端の書類アイコンをクリックすると、API鍵（44桁の英数文字）がクリップボードにコピーされますので、テキストファイルなどに保存してください。
+	これで、事前の準備は完了です。
+</p>
+								</div>
+							</li>
+
 							<li class="docu_h1">ログイン
 								<div>
 <p>
@@ -33,14 +61,15 @@ if ($_SESSION['auth'] == true) {
 							<li class="docu_h1">Watson NLCを登録する
 								<div>
 <p>
-	ログインしたら、まず「Watson NLC」の「ユーザーネーム」と「パスワード」を登録します。この操作は初回のみ必要です。
-	「<a href="<?php echo '/'. BASE .'/' ?>?page=admin_menu">管理者メニュー</a>」を開き、「Watsonアカウント登録」の右の
+	ログインしたら、まず「Watson NLC」の資格情報を登録します。この操作は初回のみ必要です。
+	「<a href="<?php echo '/'. BASE .'/' ?>?page=admin_menu">管理者メニュー</a>」を開き、「Watson NLCの資格情報を登録」の右の
 	「設定」ボタンをクリックします。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/admin_menu.png"></div>
 <p>
-	事前に取得しておいた「ユーザーネーム」と「パスワード」を入力し、「登録する」ボタンをクリックします。「Watson NLC」の
-	登録が完了すると、Watsonの頭脳に当たる「分類子」を作成できるようになります。
+	事前に取得しておいたWatson NLCの資格情報の種別にしたがって、「認証方式を選ぶ」で「API鍵」または「ユーザーネーム／パスワード」のいずれかを選択します。
+	「API鍵」、または「ユーザーネーム」と「パスワード」を入力し、「登録する」ボタンをクリックします。
+	「Watson NLC」の登録が完了すると、Watsonの頭脳に当たる「分類子」を作成できるようになります。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/watson_register.png"></div>
 								</div>

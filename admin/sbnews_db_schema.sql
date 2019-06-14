@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS access_counter;
 CREATE TABLE access_counter (company_id VARCHAR(20) NOT NULL, news_id VARCHAR(100) NOT NULL, issue CHAR(10) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 CREATE INDEX index_access_counter ON access_counter (company_id,news_id,issue);
 DROP TABLE IF EXISTS configuration;
-CREATE TABLE configuration (company_id VARCHAR(40) NOT NULL, w_username VARCHAR(80), w_password VARCHAR(20));
+CREATE TABLE configuration (company_id VARCHAR(40) NOT NULL, w_username VARCHAR(80), w_password VARCHAR(80));
 DROP TABLE IF EXISTS users_list;
 CREATE TABLE users_list (company_id VARCHAR(20) NOT NULL, user_id VARCHAR(20) NOT NULL, password VARCHAR(255) NOT NULL, password_expires DATETIME NOT NULL, role VARCHAR(10) NOT NULL);
 INSERT INTO users_list (company_id, user_id, password, password_expires, role) VALUES ( "root", "root", "root", "2060-01-01 00:00:00", "su");

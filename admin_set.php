@@ -32,13 +32,46 @@ if ($_SESSION['auth'] !== true) {
 		}
 ?>
 			<div class="main_area">
-				<h3>Watson NLCのユーザネーム／パスワードを登録</h3>
+				<h3>Watson NLCの資格情報を登録</h3>
 				<table class="conf_table">
 					<tr>
-						<th>ユーザーネーム</th><td><input type="text" name="username" id="_username" size="40" value="<?php echo $result["w_username"]; ?>"></td>
+						<th>認証方式を選ぶ</th>
+						<td>
+							<?php 
+							if ($result["w_username"] == 'apikey') {
+								echo '<input type="radio" name="auth_type" id="apikey" value="apikey" checked> API鍵　　';
+								echo '<input type="radio" name="auth_type" id="idpass" value="idpass"> ユーザーネーム／パスワード';
+							} else {
+								echo '<input type="radio" name="auth_type" id="apikey" value="apikey"> API鍵　　';
+								echo '<input type="radio" name="auth_type" id="idpass" value="idpass" checked> ユーザーネーム／パスワード';
+							}
+							?>
+						</td>
 					</tr>
 					<tr>
-						<th>パスワード</th><td><input type="password" name="password" id="_password" size="40" value="<?php echo $result["w_password"]; ?>"></td>
+						<?php 
+						if ($result["w_username"] == 'apikey') {
+							echo '<th id="label_username">ラベル（変更不可）</th>';
+							echo '<td><input type="text" name="username" id="_username" size="40" value="apikey" disabled="true"></td>';
+						} else {
+							echo '<th id="label_username">ユーザーネーム</th>';
+							echo '<td><input type="text" name="username" id="_username" size="40" value="';
+							echo $result["w_username"];
+							echo '"></td>';
+						}
+						?>
+					</tr>
+					<tr>
+						<?php 
+						if ($result["w_username"] == 'apikey') {
+							echo '<th id="label_password">API鍵</th>';
+						} else {
+							echo '<th id="label_password">パスワード</th>';
+						}
+						?>
+						<td>
+							<input type="password" name="password" id="_password" size="40" value="<?php echo $result["w_password"]; ?>">
+						</td>
 					</tr>
 					<tr>
 						<td colspan="2"><button id="submit">登録する</button></td>
@@ -62,10 +95,10 @@ if ($_SESSION['auth'] !== true) {
 				        if(status == 'success') {
 				        	//alert(data);
 				        	if (data == 1) {
-				        		alert("Watson NLCのユーザネーム／パスワードを登録しました。");
+				        		alert("Watson NLCの資格情報を登録しました。");
 				        		location.href = "/<?php echo BASE; ?>/?page=admin_menu";
 				        	} else {
-				        		alert("Watson NLCのユーザネーム／パスワードの登録に失敗しました。");
+				        		alert("Watson NLCの資格情報の登録に失敗しました。");
 				        		location.href = "/<?php echo BASE; ?>/?page=admin_menu";
 				        	}
 				        } else {
@@ -73,120 +106,23 @@ if ($_SESSION['auth'] !== true) {
 				        }
 					});
 				});
+				document.getElementById('apikey').addEventListener('click', function (evt) {
+					document.getElementById('label_username').innerHTML = 'ラベル（変更不可）';
+					document.getElementById('_username').setAttribute('value','apikey');
+					document.getElementById('_username').setAttribute('disabled','true');
+
+					document.getElementById('label_password').innerHTML = 'API鍵';
+					document.getElementById('_password').setAttribute('value','');
+				});
+				document.getElementById('idpass').addEventListener('click', function (evt) {
+					document.getElementById('label_username').innerHTML = 'ユーザーネーム';
+					document.getElementById('_username').setAttribute('value','');
+					document.getElementById('_username').removeAttribute('disabled');
+
+					document.getElementById('label_password').innerHTML = 'パスワード';
+					document.getElementById('_password').setAttribute('value','');
+				});
 			</script>
-<?php
-	//} else if($_GET["task"] == "image_upload") {
-?>
-			<!--div class="main_area">
-				<h3>トップ画像をアップロード</h3>
-				<p class="ope_description">
-					プレビュー画面の上部に表示される画像をアップロードします。ファイル名は何であってもかまいません。
-					ファイルタイプは「PNG」のみ利用可能です。
-					画像サイズは、幅：600ピクセル（固定）、高さ：120ピクセル（任意）です。
-				</p>
-				<form>
-					<table class="conf_table">
-						<tr>
-							<th>ニュースIDを選ぶ</th>
-							<td><?php //echo get_news_id_as_select($mysqli, null, 'top_image'); ?></td>
-						</tr>
-						<tr>
-							<th>画像ファイルを選ぶ</th>
-							<td><input type="file" id="add_top_image" name="add_top_image" accept="image/png"></td>
-						</tr>
-						<tr>
-							<th></th>
-							<td><button type="button" onclick="top_image_upload()">アップロード</button></td>
-						</tr>
-					</table>
-				</form>
-
-				<br><br>
-
-				<h3>カテゴリー画像をアップロード</h3>
-				<p class="ope_description">
-					プレビュー画像のカテゴリ見出しに表示させる画像をアップロードします。
-					ファイル名は、該当する「カテゴリ リスト ID」に登録したファイル名と整合させてください。
-					画像サイズは、幅：360ピクセル（任意）、高さ：70ピクセル（固定）です。
-					カテゴリー画像を用意しない場合は、デフォルトの「画像＋テキスト」が使用されます。
-				</p>
-				<form>
-					<table class="conf_table">
-						<tr>
-							<th>ニュースIDを選ぶ</th>
-							<td><?php //echo get_news_id_as_select($mysqli, null, 'category_icon'); ?></td>
-						</tr>
-						<tr>
-							<th>画像ファイルを選ぶ（複数選択可）</th>
-							<td><input type="file" id="add_category_icons" name="add_category_icons[]" accept="image/*,.png,.jpg,.jpeg,.gif" multiple></td>
-						</tr>
-						<tr>
-							<th></th>
-							<td><button type="button" onclick="category_icons_upload()">アップロード</button></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-			<br><br>
-			<div>
-				<a href="/<?php //echo BASE; ?>/?page=admin_menu"><button>戻る</button></a>
-			</div-->
-
-			<!--script>
-				function top_image_upload() {
-					if ($("#top_image").val() == '-- 未選択 --' || $("#top_image").val() == '') {
-						alert("ニュースIDを選んでください。");
-						return;
-					} else if($("#add_top_image").prop("files")[0] === undefined) {
-						alert("画像ファイルを選んでください。");
-						return;
-					}
-				    var fd = new FormData();
-				    fd.append("file", $("#add_top_image").prop("files")[0]);
-				    fd.append("news_id", $("#top_image").val());
-				    $.ajax({
-				        url  : "admin_manage.php",
-				        type : "POST",
-				        data : fd,
-				        contentType : false,
-				        processData : false,
-				    })
-				    .done(function(data, textStatus, jqXHR){
-				        alert(data);
-				    })
-				    .fail(function(jqXHR, textStatus, errorThrown){
-				        alert("fail " + textStatus);
-				    });
-				}
-				function category_icons_upload() {
-					if ($("#category_icon").val() == '-- 未選択 --' || $("#category_icon").val() == '') {
-						alert("ニュースIDを選んでください。");
-						return;
-					} else if($("#add_category_icons").prop("files")[0] === undefined) {
-						alert("画像ファイルを選んでください。");
-						return;
-					}
-				    var fd = new FormData();
-					var files = $("#add_category_icons").prop("files");
-					for (var i=0; i<files.length; i++) {
-						fd.append("file[]", files[i]);
-					}				    
-				    fd.append("news_id", $("#category_icon").val());
-				    $.ajax({
-				        url  : "admin_manage.php",
-				        type : "POST",
-				        data : fd,
-				        contentType : false,
-				        processData : false,
-				    })
-				    .done(function(data, textStatus, jqXHR){
-				        alert(data);
-				    })
-				    .fail(function(jqXHR, textStatus, errorThrown){
-				        alert("fail " + textStatus);
-				    });
-				}
-			</script-->
 <?php
 	} else {
 		echo "<br><br>パラメータが不正です。";

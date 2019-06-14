@@ -627,7 +627,7 @@ if ($_SESSION['auth'] != true) {
 					} else if ($_SESSION['role'] == 'su') {
 					?>
 						<h4>＜Watsonアカウント登録＞</h4>
-						<p class="ope_description wide">Watson NLCのユーザー名／パスワードは、管理者ユーザーが設定します。</p>
+						<p class="ope_description wide">Watson NLCの資格情報は、管理者ユーザーが設定します。</p>
 						<table class="ope_table">
 						<tr><td> -- </td></tr>
 						</table>
@@ -636,11 +636,11 @@ if ($_SESSION['auth'] != true) {
 					} else {
 					?>
 						<h4>＜Watsonアカウント登録＞</h4>
-						<p class="ope_description">Watson NLCのユーザネーム／パスワードを登録します。
+						<p class="ope_description">IBM Cloudで作成したWatson NLCの資格情報を登録します。
 						</p>
 						<table class="ope_table">
 						<tr>
-						<th>Watsonアカウント登録</th>
+						<th>Watson NLCの資格情報を登録</th>
 						<td><a href="<?php echo '/' . BASE . '/' ?>admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td>
 						</tr>
 						</table>

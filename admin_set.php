@@ -50,7 +50,7 @@ if ($_SESSION['auth'] !== true) {
 					</tr>
 					<tr>
 						<?php
-						if ($result["w_username"] == 'apikey') {
+						if ($result["w_username"] == 'apikey' || $result["w_username"] == '') {
 							echo '<th id="label_username">ラベル（変更不可）</th>';
 							echo '<td><input type="text" name="username" id="_username" size="40" value="apikey" disabled="true"></td>';
 						} else {

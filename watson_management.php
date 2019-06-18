@@ -21,7 +21,7 @@ if ($_SESSION['auth'] !== true) {
 	return;
 } else if (is_null($_POST["cmd"])) {
 	die("パラメータが足りません");
-} else {	
+} else {
 	try {
 		if (! two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
 	        die("Who?");
@@ -32,6 +32,10 @@ if ($_SESSION['auth'] !== true) {
 
 		if ($_POST["cmd"] === "create") {
 			if ($_POST["training_data"] && $_POST["training_data_name"]) {
+        // 旧（ID/Password）設定が残っている場合、WatsonNLCのゲートウェイを変更
+        if ($w_username != "apikey") {
+		    	shell_exec('sed -i "s/gateway-tok/gateway/" WatsonNLC.php');
+		    }
 				$wnlc = new WatsonNLC;
 				$watson_res = $wnlc->create_classifier($w_username, $w_password, $_POST["training_data"], $_POST["training_data_name"]);
 				if (!empty($watson_res)) {
@@ -73,7 +77,7 @@ if ($_SESSION['auth'] !== true) {
 		    if ($_POST["username"] == "apikey") {
 		    	// GATEWAY for ApiKey        =>  'https://gateway-tok.watsonplatform.net/natural-language-classifier/api/v1/classifiers'
 		    	shell_exec('sed -i "s/gateway/gateway-tok/" WatsonNLC.php');
-		    	// change password column 
+		    	// change password column
 		    	$query_altertable = "ALTER TABLE configuration MODIFY w_password VARCHAR(80)";
 		    	$alter_result = $mysqli->query($query_altertable);
 		    	if (! $alter_result) {
@@ -81,7 +85,7 @@ if ($_SESSION['auth'] !== true) {
 		    	}
 		    } else {
 		    	// GATEWAY for Username/Password =>  'https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers'
-		    	shell_exec('sed -i "" "s/gateway-tok/gateway/" WatsonNLC.php');
+		    	shell_exec('sed -i "s/gateway-tok/gateway/" WatsonNLC.php');
 		    }
 
 			////// company_idの重複テスト

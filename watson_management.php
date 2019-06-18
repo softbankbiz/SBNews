@@ -72,7 +72,7 @@ if ($_SESSION['auth'] !== true) {
 			// WatsonNLCのゲートウェイを認証方式に合わせて変更、さらにデータベースのカラム数を拡張（ID/PASSからの移行に対応）
 		    if ($_POST["username"] == "apikey") {
 		    	// GATEWAY for ApiKey        =>  'https://gateway-tok.watsonplatform.net/natural-language-classifier/api/v1/classifiers'
-		    	shell_exec('sed -i "" "s/gateway/gateway-tok/" WatsonNLC.php');
+		    	shell_exec('sed -i "s/gateway/gateway-tok/" WatsonNLC.php');
 		    	// change password column 
 		    	$query_altertable = "ALTER TABLE configuration MODIFY w_password VARCHAR(80)";
 		    	$alter_result = $mysqli->query($query_altertable);

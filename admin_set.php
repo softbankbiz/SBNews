@@ -37,8 +37,8 @@ if ($_SESSION['auth'] !== true) {
 					<tr>
 						<th>認証方式を選ぶ</th>
 						<td>
-							<?php 
-							if ($result["w_username"] == 'apikey') {
+							<?php
+							if ($result["w_username"] == 'apikey' || $result["w_username"] == '') {
 								echo '<input type="radio" name="auth_type" id="apikey" value="apikey" checked> API鍵　　';
 								echo '<input type="radio" name="auth_type" id="idpass" value="idpass"> ユーザーネーム／パスワード';
 							} else {
@@ -49,7 +49,7 @@ if ($_SESSION['auth'] !== true) {
 						</td>
 					</tr>
 					<tr>
-						<?php 
+						<?php
 						if ($result["w_username"] == 'apikey') {
 							echo '<th id="label_username">ラベル（変更不可）</th>';
 							echo '<td><input type="text" name="username" id="_username" size="40" value="apikey" disabled="true"></td>';
@@ -62,7 +62,7 @@ if ($_SESSION['auth'] !== true) {
 						?>
 					</tr>
 					<tr>
-						<?php 
+						<?php
 						if ($result["w_username"] == 'apikey') {
 							echo '<th id="label_password">API鍵</th>';
 						} else {

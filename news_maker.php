@@ -48,10 +48,14 @@ if (! isset($_SESSION['auth'])) {
 				<div class="operation">
 					<h2>Step_3　コンテンツ候補を取得</h2>
 		            <div class="readbutton_area">
-		            	<select class="period_day" id="period_day"></select> の
-		            	<select class="period_hour" id="period_hour"></select> 時から現在までに更新されたコンテンツを上位
-		            	<select class="fetch_num" id="fetch_num"></select> 件 
-		            	<button class="read_data_btn" id="default_SS" onclick="read_data()">取り込む</button>
+						<div class="readbutton_area_upper">
+							<select class="period_day" id="period_day"></select> の
+							<select class="period_hour" id="period_hour"></select> 時から現在までに更新されたコンテンツを上位
+							<select class="fetch_num" id="fetch_num"></select> 件 
+						</div>
+						<div  class="readbutton_area_lower">
+							<button class="read_data_btn" id="default_SS" onclick="read_data()">取り込む</button>
+						</div>
 		            </div>
 		            <div class="circle_icon_area" id="circle_icon_area">
 		                <img src="images/circle_icon.gif" class="circle_icon">

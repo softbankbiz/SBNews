@@ -544,6 +544,7 @@ if ($_SESSION['auth'] != true) {
 						<ol>
 							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/quickstart.php?page=document">クイックスタート</a>
 								<ol>
+									<li>Watson NLCのサービス取得</li>
 									<li>ログイン</li>
 									<li>Watson NLCを登録する</li>
 									<li>Watson NLCの分類子を設定する</li>

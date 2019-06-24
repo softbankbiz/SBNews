@@ -9,6 +9,11 @@ h2 { margin: 40px 0 10px 0; font-size: 12pt; }
 .operation { margin: 0 0 6px 0;}
 
 .readbutton_area { margin: 10px 0 10px 20px; }
+    .readbutton_area_upper { margin-bottom: 20px; }
+    .readbutton_area_lower { text-align: center; }
+        .readbutton_area_lower button { 
+            width: 200px; color: #FFF; background-color: #FFA726; font-size: 1.4em; font-weight: bold;
+        }
 .circle_icon_area { margin: 20px 0 10px 60px; height: 120px; width: 120px; padding: 10ox; display: none; }
 .circle_icon { height: 100px; width: 100px; }
 .sendmail_area { margin: 10px 0 10px 20px; }
@@ -87,11 +92,13 @@ background: linear-gradient(to bottom, #afafaf 0%,#edf1f7 5%,#bfbfbf 25%,#afafaf
 .small_cap { margin: 20px 0 4px 6px; font-size: small; }
 
 button { line-height: 1.3; }
+button:hover { cursor: pointer; }
 .button_back { width: 200px; }
 
 select { height: 1.6em; }
 
-.read_data_btn { margin-right: 20px; }
+.read_data_btn { margin-right: 20px;  }
+.read_data_btn:hover { cursor : pointer; }
 
 
 /******************

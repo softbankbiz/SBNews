@@ -47,9 +47,7 @@ if ($_SESSION['auth'] == true) {
 	これをExcelで開き、必要な修正（採用／非採用の書き換え、確信度の修正）を行ったら、<b>必ず「名前をつけて保存」→「Excelブック（*.xlsx）」</b>で
 	保存し、「Excelから書き戻す」ボタンを押してExcelファイルをアップロードしてください。なお、この操作はオプションです。
 </p>
-<p>
-	最後に「取得」ボタンをクリックすると「Step_3」のエリアにニュースが取り込まれます。
-</p>
+
 <div class="capture_area"><img src="../images/doc/make/step_2.png"></div>
 								</div>
 							<li class="docu_h1_nodeco">Step_3　コンテンツ候補を取得
@@ -60,7 +58,7 @@ if ($_SESSION['auth'] == true) {
 	先週金曜日以降のニュースを取得できます。
 </p>
 <p>
-	最後に「取得」ボタンをクリックすると「Step_3」のエリアにニュースが取り込まれます。
+	最後に「取り込む」ボタンをクリックすると「Step_4」のエリアにニュースが取り込まれます。
 </p>
 <div class="capture_area"><img src="../images/doc/make/step_3.png"></div>
 								</div>

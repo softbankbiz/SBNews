@@ -83,15 +83,13 @@ if ($_SESSION['auth'] == true) {
 <div class="capture_area"><img src="../images/doc/quick/tr_data_sample.png"></div>
 <p>
 	「トレーニングデータ」はCSV（カンマ区切り）ファイルでアップロードする必要があります。
-	Excelを使ってファイルを管理・作成している場合は、<b>「名前をつけて保存」からCSV形式を選んで保存</b>して、さらに<b>文字コードを
-	Windowsのデフォルトである「Shift-JIS」から「UTF-8」に変換</b>します。文字コードを変換できるエディターなどをお持ちで
-	ない方は、「<a href="<?php echo '/'. BASE .'/' ?>files/SBNews_encoding_tool.bat">SBNews_encoding_tool.bat</a>」
-	を任意の場所（デスクトップなど）にダウンロードし、CSVファイルをドラッグ＆ドロップしてください。すると同じ場所に
-	「XXX.csv.utf8.csv」という拡張子を持ったファイルが作成されるので、これをトレーニングデータとして利用します。
-	（サンプル用トレーニングデータは「<a href="<?php echo '/'. BASE .'/' ?>files/トレーニングデータ.csv">トレーニングデータ.csv</a>」
-	からダウンロードできます）
+	Excelを使ってファイルを管理・作成している場合は、<b>「名前をつけて保存」からCSV形式を選んで保存</b>し、
+	さらに文字コードと改行コードを変換できるエディターなどを使って、
+	<b>文字コードをWindowsのデフォルトである「Shift-JIS」から「UTF-8」、さらに改行コードを「CRLF」から「LF」に変換</b>します。
+	文字コードと改行コードを変換済みのサンプル用トレーニングデータは「<a href="<?php echo '/'. BASE .'/' ?>files/トレーニングデータ.csv">トレーニングデータ.csv</a>」
+	からダウンロードできます。
 </p>
-<div class="capture_area"><img src="../images/doc/quick/encoding_toos.png"></div>
+<!--div class="capture_area"><img src="../images/doc/quick/encoding_toos.png"></div-->
 <p>
 	「トレーニングデータ」が用意できたら、「<a href="<?php echo '/'. BASE .'/' ?>?page=watson_conf">Watson設定</a>」を開き、
 	「分類子を追加／削除」ボタンをクリックします。

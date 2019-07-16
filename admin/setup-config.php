@@ -110,7 +110,7 @@ switch($step) {
 			fwrite( $handle, $line );
 		}
 		fclose( $handle );
-		chmod( $path_to_sbnews_config, 0666 );
+		chmod( $path_to_sbnews_config, 0660 );
 
 		// create Database and tables for SBNews //
 		$path_to_sql = dirname( __FILE__ ) . '/sbnews_db_schema.sql';

@@ -135,6 +135,8 @@ sudo semanage fcontext -a -t httpd_sys_rw_content_t /var/www/html/sbnews
 sudo restorecon -v /var/www/html/sbnews
 sudo semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/sbnews/images(/.*)?"
 sudo restorecon -R -v /var/www/html/sbnews/images
+sudo semanage fcontext -a -t httpd_sys_rw_content_t /var/www/html/sbnews/WatsonNLC.php
+sudo restorecon -v /var/www/html/sbnews/WatsonNLC.php
 
 # completed
 echo ""

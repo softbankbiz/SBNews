@@ -27,7 +27,8 @@ if ($_SESSION['auth'] !== true) {
 } else if ($_POST['cmd'] == 'upload') {
 	$target_dir = 'images/' . $_SESSION["company_id"] . '/' . $_POST['news_id'];
 	// top or bottom image
-	if (count($_FILES['file']['name']) == 1) {
+	// if (count($_FILES['file']['name']) == 1) {
+	if ($_POST['place'] == 'top' || $_POST['place'] == 'bottom') {
 		if (is_uploaded_file($_FILES ['file'] ['tmp_name'])) {
 			if (! file_exists($target_dir)) {
 				if(! mkdir ($target_dir, 0775, true)) {
@@ -50,7 +51,7 @@ if ($_SESSION['auth'] !== true) {
 		    echo 'ファイルを選択してください。';
 		}
 	// category icons
-	} else if (count($_FILES['file']['name']) >= 1) {
+	} else {
 		$sucsses = 0;
 		for ($i=0; $i<count($_FILES['file']['name']); $i++) {
 			if (is_uploaded_file($_FILES ['file'] ['tmp_name'][$i])) {

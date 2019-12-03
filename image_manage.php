@@ -27,7 +27,6 @@ if ($_SESSION['auth'] !== true) {
 } else if ($_POST['cmd'] == 'upload') {
 	$target_dir = 'images/' . $_SESSION["company_id"] . '/' . $_POST['news_id'];
 	// top or bottom image
-	// if (count($_FILES['file']['name']) == 1) {
 	if ($_POST['place'] == 'top' || $_POST['place'] == 'bottom') {
 		if (is_uploaded_file($_FILES ['file'] ['tmp_name'])) {
 			if (! file_exists($target_dir)) {

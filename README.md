@@ -19,7 +19,7 @@ $ bash SBNews_install.sh
 $ password for LOGINUSERNAME:            <= パスワード入力 
 ```
 
-インストールが終わったら、Azureコンソールから<font color="Red">仮想マシンを再起動</font>します。
+インストールが終わったら、Azureコンソールから<span style="color: red; ">仮想マシンを再起動</span>します。
 
 ### インストールスクリプト
 

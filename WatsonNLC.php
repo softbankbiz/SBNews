@@ -4,7 +4,6 @@ define('W_GATEWAY',  'https://gateway-tok.watsonplatform.net/natural-language-cl
 
 class WatsonNLC {
 
-<<<<<<< HEAD
 	private static function headers($w_apikey) {
 		return array(
 	        "Content-type: text/plain",
@@ -23,26 +22,6 @@ class WatsonNLC {
 		return array(
 	        "Content-type: multipart/form-data",
 	        "Authorization: Basic " . base64_encode('apikey:' . $w_apikey)
-=======
-	private static function headers($w_username, $w_password) {
-		return array(
-	        "Content-type: text/plain",
-	        "Authorization: Basic " . base64_encode($w_username . ':' . $w_password)
-	    );
-	}
-	
-	private static function headers_for_classify($w_username, $w_password) {
-		return array(
-	        "Content-type: application/json",
-	        "Authorization: Basic " . base64_encode($w_username . ':' . $w_password)
-	    );
-	}
-
-	private static function headers_for_create($w_username, $w_password) {
-		return array(
-	        "Content-type: multipart/form-data",
-	        "Authorization: Basic " . base64_encode($w_username . ':' . $w_password)
->>>>>>> origin/master
 	    );
 	}
 
@@ -57,33 +36,20 @@ class WatsonNLC {
 		return substr($s, 0, 1024);
 	}
 
-<<<<<<< HEAD
 	public function create_classifier($w_apikey, $w_url, $training_data, $training_data_name) {
 		$W_GATEWAY = $w_url . '/v1/classifiers';
-=======
-	public function create_classifier($w_username, $w_password, $training_data, $training_data_name) {
-		$url = W_GATEWAY;
->>>>>>> origin/master
 		$training_metadata = "{\"language\":\"ja\",\"name\":\"" . $training_data_name . "\"}";
 		$data = array('training_data' => '@'.$training_data, 'training_metadata' => $training_metadata);
 
 		$curl = curl_init();
-<<<<<<< HEAD
 		curl_setopt($curl, CURLOPT_URL, $W_GATEWAY);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers_for_create($w_apikey));
-=======
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers_for_create($w_username, $w_password));
->>>>>>> origin/master
 		curl_setopt($curl, CURLOPT_TIMEOUT, 120);
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		$sts = curl_exec($curl);
-<<<<<<< HEAD
 
-=======
-		
 		if (curl_errno($curl) === 0 && curl_getinfo($curl, CURLINFO_HTTP_CODE) === 200) {
 			return $sts;
 			curl_close($curl);
@@ -93,31 +59,6 @@ class WatsonNLC {
 		}
 	}
 
-	public function create_classifier_v2($w_username, $w_password, $training_data, $training_data_name) {
-		$url = W_GATEWAY;
-		$training_metadata = "{\"language\":\"ja\",\"name\":\"" . $training_data_name . "\"}";
-		$data = array('training_data' => '@'.$training_data, 'training_metadata' => $training_metadata);
-
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers_for_create($w_username, $w_password));
-		curl_setopt($curl, CURLOPT_TIMEOUT, 120);
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$sts = curl_exec($curl);
-		
->>>>>>> origin/master
-		if (curl_errno($curl) === 0 && curl_getinfo($curl, CURLINFO_HTTP_CODE) === 200) {
-			return $sts;
-			curl_close($curl);
-		} else {
-			return $sts;
-			curl_close($curl);
-		}
-	}
-
-<<<<<<< HEAD
 	public function classify_phrase($w_apikey, $w_url, $classifier_id, $text_to_judge) {
 		$W_GATEWAY =  $w_url . '/v1/classifiers/' . $classifier_id . "/classify";
 	  $data_json = json_encode(array("text" => self::nlc_text($text_to_judge)));
@@ -125,16 +66,6 @@ class WatsonNLC {
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $W_GATEWAY);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers_for_classify($w_apikey));
-=======
-
-	public function classify_phrase($w_username, $w_password, $classifier_id, $text_to_judge) {
-		$url = W_GATEWAY . "/" . $classifier_id . "/classify";
-	    $data_json = json_encode(array("text" => self::nlc_text($text_to_judge)));
-
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers_for_classify($w_username, $w_password));
->>>>>>> origin/master
 		curl_setopt($curl, CURLOPT_TIMEOUT, 120);
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $data_json);
@@ -150,19 +81,11 @@ class WatsonNLC {
 		}
 	}
 
-<<<<<<< HEAD
 	public function list_classifiers($w_apikey, $w_url) {
 		$W_GATEWAY = $w_url . '/v1/classifiers';
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $W_GATEWAY);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers($w_apikey));
-=======
-	public function list_classifiers($w_username, $w_password) {
-		$url = W_GATEWAY;
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers($w_username, $w_password));
->>>>>>> origin/master
 		curl_setopt($curl, CURLOPT_TIMEOUT, 120);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		$sts = curl_exec($curl);
@@ -176,19 +99,11 @@ class WatsonNLC {
 		}
 	}
 
-<<<<<<< HEAD
 	public function info_classifier($w_apikey, $w_url, $classifier_id) {
 		$W_GATEWAY =  $w_url . '/v1/classifiers/' . $classifier_id;
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $W_GATEWAY);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers($w_apikey));
-=======
-	public function info_classifier($w_username, $w_password, $classifier_id) {
-		$url = W_GATEWAY . "/" . $classifier_id;
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers($w_username, $w_password));
->>>>>>> origin/master
 		curl_setopt($curl, CURLOPT_TIMEOUT, 120);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		$sts = curl_exec($curl);
@@ -202,19 +117,11 @@ class WatsonNLC {
 		}
 	}
 
-<<<<<<< HEAD
 	public function delete_classifier($w_apikey, $w_url, $classifier_id) {
 		$W_GATEWAY =  $w_url . '/v1/classifiers/' . $classifier_id;
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $W_GATEWAY);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers($w_apikey));
-=======
-	public function delete_classifier($w_username, $w_password, $classifier_id) {
-		$url = W_GATEWAY . "/" . $classifier_id;
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, self::headers($w_username, $w_password));
->>>>>>> origin/master
 		curl_setopt($curl, CURLOPT_TIMEOUT, 120);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");

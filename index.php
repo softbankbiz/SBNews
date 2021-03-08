@@ -10,11 +10,7 @@
 define( 'ABSPATH', dirname(__FILE__) . '/' );
 
 /*
-<<<<<<< HEAD
  * If sbnews_config.php exists in the root, load sbnews_config.php.
-=======
- * If sbnews_config.php exists in the root, load sbnews_config.php. 
->>>>>>> origin/master
  * If not exist, initiate loading the setup process.
  */
 if ( file_exists( ABSPATH . 'sbnews_config.php') ) {
@@ -103,11 +99,7 @@ if ($_POST) {
 				// Password 有効期限のチェク
 				$now = new DateTime();
 				$date_db = new DateTime($password_expires);
-<<<<<<< HEAD
 
-=======
-				
->>>>>>> origin/master
 				if ($now >= $date_db) {
 					login_record($mysqli, $_POST["company_id"], $_POST["user_id"], "fail", "password expired");
 					echo '<script>alert("パスワードの有効期限が切れています。"); location.href = "/' . BASE . '/";</script>';
@@ -142,11 +134,7 @@ if ($_POST) {
 			    	echo '<script>alert("認証に失敗しました。"); location.href = "/' . BASE . '/";</script>';
 			    }
 		    	//print_header("SBNews ログイン", null);
-<<<<<<< HEAD
 
-=======
-		        
->>>>>>> origin/master
 		        //print_footer();
 		        exit;
 		    }
@@ -194,11 +182,7 @@ if ($_SESSION['auth'] != true) {
 						<?php
 						$news_id_list = get_news_id($mysqli, $_SESSION['company_id']);
 						if ($news_id_list->num_rows == 0) {
-<<<<<<< HEAD
 							echo '<td colspan="2"> ニュースはありません </td>';
-=======
-							echo '<td colspan="2"> ニュースはありません </td>';						
->>>>>>> origin/master
 						} else {
 							for ($i = 0; $i < $news_id_list->num_rows; $i++) {
 								echo '<tr>';
@@ -236,15 +220,9 @@ if ($_SESSION['auth'] != true) {
 						$news_id_list = get_news_id($mysqli, $_SESSION['company_id']);
 						if ($news_id_list->num_rows == 0) {
 							echo '<tr><td colspan="4"> ニュースはありません </td></tr>';
-<<<<<<< HEAD
 							echo '<tr><td colspan=3><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';
 						} else {
 							for ($i = 0; $i < $news_id_list->num_rows; $i++) {
-=======
-							echo '<tr><td colspan=3><a href="/' . BASE . '/news_add.php?page=news_conf"><button>ニュースを追加</button></a></td></tr>';					
-						} else {
-							for ($i = 0; $i < $news_id_list->num_rows; $i++) { 
->>>>>>> origin/master
 								echo '<tr>';
 								echo '<td>' . ($i+1) . '</td>';
 								$news_id = $news_id_list->fetch_array(MYSQLI_NUM)[0];
@@ -269,7 +247,6 @@ if ($_SESSION['auth'] != true) {
 				function update_news(_news_id) {
 					var msg = '';
 					$("#bx_loader" + _news_id).css("display","block");
-<<<<<<< HEAD
 					$.get('fetch_contents.php',
 						{
 		        	news_id: _news_id
@@ -288,26 +265,6 @@ if ($_SESSION['auth'] != true) {
 			    		);
 		    		}
 			    );
-=======
-					$.get('fetch_contents.php', 
-						{
-				        	news_id: _news_id
-				        },
-				        function(data){
-				        	msg += data + '\n\n';
-				        	$.get('watson_judgement.php', 
-								{
-						        	news_id: _news_id
-						        },
-						        function(data){
-						        	msg += data;
-						        	alert(msg);
-						        	$("#bx_loader" + _news_id).css("display","none");
-						    	}
-					    	);
-				    	}
-				    );
->>>>>>> origin/master
 				}
 				</script>
 
@@ -330,13 +287,8 @@ if ($_SESSION['auth'] != true) {
 						if ($_GET['page'] == 'watson_conf') {
 							$result = get_classifier_list($mysqli, $_SESSION["company_id"]);
 							$config = get_configuration($mysqli, $_SESSION["company_id"]);
-<<<<<<< HEAD
 							$w_apikey = $config["w_apikey"];
 							$w_url = $config["w_url"];
-=======
-							$w_username = $config["w_username"];
-							$w_password = $config["w_password"];
->>>>>>> origin/master
 
 							if ($result->num_rows > 0) {
 								for ($i = 0; $i < $result->num_rows; $i++) {
@@ -346,11 +298,7 @@ if ($_SESSION['auth'] != true) {
 									if (isset($row["cid_alias"]) && isset($row["cid"])) {
 										echo '<td>' . $row["cid_alias"] . '</td>';
 										echo '<td>' . $row["cid"] . '</td>';
-<<<<<<< HEAD
 										echo '<td>' . get_cid_status($w_apikey, $w_url, $row["cid"]) . '</td>';
-=======
-										echo '<td>' . get_cid_status($w_username, $w_password, $row["cid"]) . '</td>';
->>>>>>> origin/master
 									}
 									echo '</tr>';
 								}
@@ -499,28 +447,16 @@ if ($_SESSION['auth'] != true) {
 							<td rowspan="2">RSSが取得したニュース一覧</td>
 							<td>
 								<form method="POST" action="<?php echo '/' . BASE . '/' ?>log_manage.php">
-<<<<<<< HEAD
 									<input type="text" size="6" name="year_s" id="log_rss_year_s"> -
 									<input type="text" size="3" name="month_s" id="log_rss_month_s"> -
 									<input type="text" size="3" name="date_s" id="log_rss_date_s"> 以降
-=======
-									<input type="text" size="6" name="year_s" id="log_rss_year_s"> - 
-									<input type="text" size="3" name="month_s" id="log_rss_month_s"> - 
-									<input type="text" size="3" name="date_s" id="log_rss_date_s"> 以降 
->>>>>>> origin/master
 							</td>
 						</tr>
 						<tr class="bgcolor_white">
 							<td>
-<<<<<<< HEAD
 									<input type="text" size="6" name="year_e" id="log_rss_year_e" value="<?php echo get_today()[0]; ?>"> -
 									<input type="text" size="3" name="month_e" id="log_rss_month_e" value="<?php echo get_today()[1]; ?>"> -
 									<input type="text" size="3" name="date_e" id="log_rss_date_e" value="<?php echo get_today()[2]; ?>"> までを
-=======
-									<input type="text" size="6" name="year_e" id="log_rss_year_e" value="<?php echo get_today()[0]; ?>"> - 
-									<input type="text" size="3" name="month_e" id="log_rss_month_e" value="<?php echo get_today()[1]; ?>"> - 
-									<input type="text" size="3" name="date_e" id="log_rss_date_e" value="<?php echo get_today()[2]; ?>"> までを 
->>>>>>> origin/master
 									<input type="hidden" name="cmd" value="log_rss">
 									<input type="submit" value="ダウンロード" onclick="return check_date_format('log_rss')">
 								</form>
@@ -532,27 +468,16 @@ if ($_SESSION['auth'] != true) {
 							<td rowspan="2">記事のクリックログ一覧</td>
 							<td>
 								<form method="POST" action="<?php echo '/' . BASE . '/' ?>log_manage.php">
-<<<<<<< HEAD
 									<input type="text" size="6" name="year_s" id="log_click_year_s"> -
 									<input type="text" size="3" name="month_s" id="log_click_month_s"> -
-=======
-									<input type="text" size="6" name="year_s" id="log_click_year_s"> - 
-									<input type="text" size="3" name="month_s" id="log_click_month_s"> - 
->>>>>>> origin/master
 									<input type="text" size="3" name="date_s" id="log_click_date_s"> 以降
 							</td>
 						</tr>
 						<tr class="bgcolor_white">
 							<td>
-<<<<<<< HEAD
 									<input type="text" size="6" name="year_e" id="log_click_year_e" value="<?php echo get_today()[0]; ?>"> -
 									<input type="text" size="3" name="month_e" id="log_click_month_e" value="<?php echo get_today()[1]; ?>"> -
 									<input type="text" size="3" name="date_e" id="log_click_date_e" value="<?php echo get_today()[2]; ?>"> までを
-=======
-									<input type="text" size="6" name="year_e" id="log_click_year_e" value="<?php echo get_today()[0]; ?>"> - 
-									<input type="text" size="3" name="month_e" id="log_click_month_e" value="<?php echo get_today()[1]; ?>"> - 
-									<input type="text" size="3" name="date_e" id="log_click_date_e" value="<?php echo get_today()[2]; ?>"> までを 
->>>>>>> origin/master
 									<input type="hidden" name="cmd" value="log_click">
 									<input type="submit" value="ダウンロード" onclick="return check_date_format('log_click')">
 								</form>
@@ -564,39 +489,23 @@ if ($_SESSION['auth'] != true) {
 							<td rowspan="2">メールの開封ログ一覧</td>
 							<td>
 								<form method="POST" action="<?php echo '/' . BASE . '/' ?>log_manage.php">
-<<<<<<< HEAD
 									<input type="text" size="6" name="year_s" id="log_access_year_s"> -
 									<input type="text" size="3" name="month_s" id="log_access_month_s"> -
 									<input type="text" size="3" name="date_s" id="log_access_date_s"> 以降
-=======
-									<input type="text" size="6" name="year_s" id="log_access_year_s"> - 
-									<input type="text" size="3" name="month_s" id="log_access_month_s"> - 
-									<input type="text" size="3" name="date_s" id="log_access_date_s"> 以降 
->>>>>>> origin/master
 							</td>
 						</tr>
 						<tr class="bgcolor_white">
 							<td>
-<<<<<<< HEAD
 									<input type="text" size="6" name="year_e" id="log_access_year_e" value="<?php echo get_today()[0]; ?>"> -
 									<input type="text" size="3" name="month_e" id="log_access_month_e" value="<?php echo get_today()[1]; ?>"> -
 									<input type="text" size="3" name="date_e" id="log_access_date_e" value="<?php echo get_today()[2]; ?>"> までを
-=======
-									<input type="text" size="6" name="year_e" id="log_access_year_e" value="<?php echo get_today()[0]; ?>"> - 
-									<input type="text" size="3" name="month_e" id="log_access_month_e" value="<?php echo get_today()[1]; ?>"> - 
-									<input type="text" size="3" name="date_e" id="log_access_date_e" value="<?php echo get_today()[2]; ?>"> までを 
->>>>>>> origin/master
 									<input type="hidden" name="cmd" value="log_access">
 									<input type="submit" value="ダウンロード" onclick="return check_date_format('log_access')">
 								</form>
 							</td>
 						</tr>
 
-<<<<<<< HEAD
 						<?php
-=======
-						<?php 
->>>>>>> origin/master
 						if ($_SESSION['role'] == 'admin' || is_null($_SESSION['role'])) {
 						?>
 						<tr class="bgcolor_white">
@@ -604,38 +513,22 @@ if ($_SESSION['auth'] != true) {
 							<td rowspan="2">ログインユーザーの記録</td>
 							<td>
 								<form method="POST" action="<?php echo '/' . BASE . '/' ?>log_manage.php">
-<<<<<<< HEAD
 									<input type="text" size="6" name="year_s" id="log_login_year_s"> -
 									<input type="text" size="3" name="month_s" id="log_login_month_s"> -
 									<input type="text" size="3" name="date_s" id="log_login_date_s"> 以降
-=======
-									<input type="text" size="6" name="year_s" id="log_login_year_s"> - 
-									<input type="text" size="3" name="month_s" id="log_login_month_s"> - 
-									<input type="text" size="3" name="date_s" id="log_login_date_s"> 以降 
->>>>>>> origin/master
 							</td>
 						</tr>
 						<tr class="bgcolor_white">
 							<td>
-<<<<<<< HEAD
 									<input type="text" size="6" name="year_e" id="log_login_year_e" value="<?php echo get_today()[0]; ?>"> -
 									<input type="text" size="3" name="month_e" id="log_login_month_e" value="<?php echo get_today()[1]; ?>"> -
 									<input type="text" size="3" name="date_e" id="log_login_date_e" value="<?php echo get_today()[2]; ?>"> までを
-=======
-									<input type="text" size="6" name="year_e" id="log_login_year_e" value="<?php echo get_today()[0]; ?>"> - 
-									<input type="text" size="3" name="month_e" id="log_login_month_e" value="<?php echo get_today()[1]; ?>"> - 
-									<input type="text" size="3" name="date_e" id="log_login_date_e" value="<?php echo get_today()[2]; ?>"> までを 
->>>>>>> origin/master
 									<input type="hidden" name="cmd" value="log_login">
 									<input type="submit" value="ダウンロード" onclick="return check_date_format('log_login')">
 								</form>
 							</td>
 						</tr>
-<<<<<<< HEAD
 						<?php
-=======
-						<?php 
->>>>>>> origin/master
 						}
 						?>
 					</table>
@@ -725,11 +618,7 @@ if ($_SESSION['auth'] != true) {
 
 				<div class="menu_content" id="admin_menu">
 					<h3>管理者メニュー</h3>
-<<<<<<< HEAD
 					<?php
-=======
-					<?php 
->>>>>>> origin/master
 					if (is_null($_SESSION['role'])) {
 					?>
 						<table class="ope_table">
@@ -824,17 +713,10 @@ if ($_SESSION['auth'] != true) {
 							echo '<tr><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr>';
 						}
 						echo '<tr><td colspan="4"><a href="/' . BASE . '/user_add.php?page=admin_menu"><button>ユーザー追加</button></a></td>';
-<<<<<<< HEAD
 						echo '</table>';
 					}
 					?>
 
-=======
-						echo '</table>';				
-					}
-					?>
-					
->>>>>>> origin/master
 					<script>
 						// ユーザーの利用可能なメニューを制限する
 						var uid = document.getElementById("role").value;
@@ -862,8 +744,4 @@ if ($_SESSION['auth'] != true) {
 }
 
 exit();
-<<<<<<< HEAD
 ?>
-=======
-?>
->>>>>>> origin/master

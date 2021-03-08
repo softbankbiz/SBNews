@@ -24,7 +24,6 @@ if ($_SESSION['auth'] !== true) {
 } else {
 	try {
 		if (! two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
-<<<<<<< HEAD
 	    die("Who?");
 	  }
     $result = get_configuration($mysqli, $_SESSION["company_id"]);
@@ -35,22 +34,6 @@ if ($_SESSION['auth'] !== true) {
 			if ($_POST["training_data"] && $_POST["training_data_name"]) {
 				$wnlc = new WatsonNLC;
 				$watson_res = $wnlc->create_classifier($w_apikey, $w_url, $_POST["training_data"], $_POST["training_data_name"]);
-=======
-	        die("Who?");
-	    }
-    	$result = get_configuration($mysqli, $_SESSION["company_id"]);
-    	$w_username = $result["w_username"];
-		$w_password = $result["w_password"];
-
-		if ($_POST["cmd"] === "create") {
-			if ($_POST["training_data"] && $_POST["training_data_name"]) {
-		        // 旧（ID/Password）設定が残っている場合、WatsonNLCのゲートウェイを変更
-		        if ($w_username != "apikey") {
-			    	shell_exec('sed -i -e "s/gateway-tok.watsonplatform/gateway.watsonplatform/" WatsonNLC.php');
-				}
-				$wnlc = new WatsonNLC;
-				$watson_res = $wnlc->create_classifier($w_username, $w_password, $_POST["training_data"], $_POST["training_data_name"]);
->>>>>>> origin/master
 				if (!empty($watson_res)) {
 					$res = json_decode($watson_res);
 					$cid = $res->{"classifier_id"};
@@ -76,18 +59,13 @@ if ($_SESSION['auth'] !== true) {
 			}
 		} else if ($_POST["cmd"] === "list") {
 			$wnlc = new WatsonNLC;
-<<<<<<< HEAD
 			$result_c = $wnlc->list_classifiers($w_apikey, $w_url);
-=======
-			$result_c = $wnlc->list_classifiers($w_username, $w_password);
->>>>>>> origin/master
 			if ($result_c) {
 				echo json_encode($result_c, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 			} else {
 				echo "No data!<br>";
 			}
 		} else if ($_POST["cmd"] === "configuration") {
-<<<<<<< HEAD
 			if (! $_POST["apikey"] || ! $_POST["url"]) {
 				die ("パラメータが不足しています。");
 			}
@@ -119,54 +97,6 @@ if ($_SESSION['auth'] !== true) {
 			if ($_POST["cid"] && $_POST["cid_alias"]) {
 				$wnlc = new WatsonNLC;
 				$result_e = $wnlc->delete_classifier($w_apikey, $w_url, $_POST["cid"]);
-=======
-			if (! $_POST["username"] || ! $_POST["password"]) {
-				die ("パラメータが不足しています。");
-			}
-			// WatsonNLCのゲートウェイを認証方式に合わせて変更、さらにデータベースのカラム数を拡張（ID/PASSからの移行に対応）
-		    if ($_POST["username"] == "apikey") {
-		    	// GATEWAY for ApiKey        =>  'https://gateway-tok.watsonplatform.net/natural-language-classifier/api/v1/classifiers'
-		    	shell_exec('sed -i -e "s/gateway.watsonplatform/gateway-tok.watsonplatform/" WatsonNLC.php');
-		    	// change password column
-		    	$query_altertable = "ALTER TABLE configuration MODIFY w_password VARCHAR(80)";
-		    	$alter_result = $mysqli->query($query_altertable);
-		    	if (! $alter_result) {
-		    		die("error: ALTER TABLE configuration MODIFY w_password");
-		    	}
-		    } else if ($_POST["username"] != "apikey") {
-		    	// GATEWAY for Username/Password =>  'https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers'
-		    	shell_exec('sed -i -e "s/gateway-tok.watsonplatform/gateway.watsonplatform/" WatsonNLC.php');
-		    }
-
-			////// company_idの重複テスト
-			$query_test = "SELECT count(company_id) FROM configuration WHERE company_id = ?";
-			$stmt = $mysqli->prepare($query_test);
-		    $stmt->bind_param("s", $_SESSION["company_id"]);
-		    $stmt->execute();
-
-		    $res_test = $stmt->get_result();
-		    $row = $res_test->fetch_row();
-
-		    if ($row[0] == 0) {
-		    	// 重複していないのでINSERT
-		    	$query_insert = "INSERT INTO configuration (w_username,w_password,company_id) VALUES (?,?,?)";
-		    	$stmt = $mysqli->prepare($query_insert);
-				$stmt->bind_param("sss", $_POST["username"], $_POST["password"], $_SESSION["company_id"]);
-				$result = $stmt->execute();
-		    	echo $result;
-		    } else {
-		    	// 重複しているのでUPDATE
-		    	$query_update = "UPDATE configuration SET w_username = ?, w_password = ? WHERE company_id = ?";
-		    	$stmt = $mysqli->prepare($query_update);
-		    	$stmt->bind_param("sss", $_POST["username"], $_POST["password"], $_SESSION["company_id"]);
-		    	$result = $stmt->execute();
-		    	echo $result;
-		    }
-		} else if ($_POST["cmd"] === "delete") {
-			if ($_POST["cid"] && $_POST["cid_alias"]) {
-				$wnlc = new WatsonNLC;
-				$result_e = $wnlc->delete_classifier($w_username, $w_password, $_POST["cid"]);
->>>>>>> origin/master
 				if ($result_e) {
 					$query_e = "UPDATE preference SET cid_alias = \"dummy_watson\" WHERE company_id = ? AND cid_alias = ?";
 					$query_f = "DELETE FROM classifier_list WHERE company_id = ? AND cid = ?";

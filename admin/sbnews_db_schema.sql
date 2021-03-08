@@ -17,11 +17,7 @@ DROP TABLE IF EXISTS access_counter;
 CREATE TABLE access_counter (company_id VARCHAR(20) NOT NULL, news_id VARCHAR(100) NOT NULL, issue CHAR(10) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 CREATE INDEX index_access_counter ON access_counter (company_id,news_id,issue);
 DROP TABLE IF EXISTS configuration;
-<<<<<<< HEAD
 CREATE TABLE configuration (company_id VARCHAR(40) NOT NULL, w_apikey VARCHAR (80), w_url VARCHAR (200));
-=======
-CREATE TABLE configuration (company_id VARCHAR(40) NOT NULL, w_username VARCHAR(80), w_password VARCHAR(80));
->>>>>>> origin/master
 DROP TABLE IF EXISTS users_list;
 CREATE TABLE users_list (company_id VARCHAR(20) NOT NULL, user_id VARCHAR(20) NOT NULL, password VARCHAR(255) NOT NULL, password_expires DATETIME NOT NULL, role VARCHAR(10) NOT NULL);
 INSERT INTO users_list (company_id, user_id, password, password_expires, role) VALUES ( "root", "root", "root", "2060-01-01 00:00:00", "su");
@@ -30,8 +26,4 @@ CREATE TABLE classifier_list (cid VARCHAR(24) PRIMARY KEY, cid_alias VARCHAR(100
 DROP TABLE IF EXISTS preference;
 CREATE TABLE preference (news_id VARCHAR(100) NOT NULL, cid_alias VARCHAR(100) NOT NULL, company_id VARCHAR(20) NOT NULL, category_id VARCHAR(80) NOT NULL, rss_id VARCHAR(80) NOT NULL, site_names_id VARCHAR(80) NOT NULL, default_title VARCHAR(100) NOT NULL, period_day VARCHAR(40) NOT NULL, period_hour CHAR(2) NOT NULL, fetch_num CHAR(4) NOT NULL, signature TEXT NOT NULL);
 DROP TABLE IF EXISTS login_record;
-<<<<<<< HEAD
 CREATE TABLE login_record (company_id VARCHAR(20) NOT NULL, user_id VARCHAR(20) NOT NULL, stamp VARCHAR(10) NOT NULL, description VARCHAR(20) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-=======
-CREATE TABLE login_record (company_id VARCHAR(20) NOT NULL, user_id VARCHAR(20) NOT NULL, stamp VARCHAR(10) NOT NULL, description VARCHAR(20) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
->>>>>>> origin/master

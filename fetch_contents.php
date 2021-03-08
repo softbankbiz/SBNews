@@ -50,8 +50,4 @@ if ($_SESSION['auth'] !== true) {
 		echo 'パラメータが不正です。';
 	}
 }
-<<<<<<< HEAD
 ?>
-=======
-?>
->>>>>>> origin/master

@@ -24,6 +24,7 @@ if ($_SESSION['auth'] !== true) {
 		try {
 			if (! two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
 		        die("Who?");
+<<<<<<< HEAD
 	    }
       // DBに列（w_apikey）を追加
       $query_info_apikey = "SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sbnews_db' AND TABLE_NAME = 'configuration' AND COLUMN_NAME = 'w_apikey'";
@@ -77,6 +78,59 @@ if ($_SESSION['auth'] !== true) {
 					</tr>
 					<tr>
 						<td colspan="2" style="text-align:center"><button id="submit">登録する</button></td>
+=======
+		    }
+		    $result = get_configuration($mysqli, $_SESSION["company_id"]);
+		} catch (mysqli_sql_exception $e) {
+		    throw $e;
+		    die();
+		}
+?>
+			<div class="main_area">
+				<h3>Watson NLCの資格情報を登録</h3>
+				<table class="conf_table">
+					<tr>
+						<th>認証方式を選ぶ</th>
+						<td>
+							<?php
+							if ($result["w_username"] == 'apikey' || $result["w_username"] == '') {
+								echo '<input type="radio" name="auth_type" id="apikey" value="apikey" checked> API鍵　　';
+								echo '<input type="radio" name="auth_type" id="idpass" value="idpass"> ユーザーネーム／パスワード';
+							} else {
+								echo '<input type="radio" name="auth_type" id="apikey" value="apikey"> API鍵　　';
+								echo '<input type="radio" name="auth_type" id="idpass" value="idpass" checked> ユーザーネーム／パスワード';
+							}
+							?>
+						</td>
+					</tr>
+					<tr>
+						<?php
+						if ($result["w_username"] == 'apikey' || $result["w_username"] == '') {
+							echo '<th id="label_username">ラベル（変更不可）</th>';
+							echo '<td><input type="text" name="username" id="_username" size="40" value="apikey" disabled="true"></td>';
+						} else {
+							echo '<th id="label_username">ユーザーネーム</th>';
+							echo '<td><input type="text" name="username" id="_username" size="40" value="';
+							echo $result["w_username"];
+							echo '"></td>';
+						}
+						?>
+					</tr>
+					<tr>
+						<?php
+						if ($result["w_username"] == 'apikey') {
+							echo '<th id="label_password">API鍵</th>';
+						} else {
+							echo '<th id="label_password">パスワード</th>';
+						}
+						?>
+						<td>
+							<input type="password" name="password" id="_password" size="40" value="<?php echo $result["w_password"]; ?>">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><button id="submit">登録する</button></td>
+>>>>>>> origin/master
 					</tr>
 				</table>
 			</div>
@@ -89,18 +143,31 @@ if ($_SESSION['auth'] !== true) {
 				document.getElementById('submit').addEventListener('click', function (evt) {
 					$.post(watson_management,
 				    {
+<<<<<<< HEAD
 				        apikey: $("#apikey").val(),
 				        url:    $("#url").val(),
 				        cmd:    "configuration",
+=======
+				        username:   $("#_username").val(),
+				        password:   $("#_password").val(),
+				        cmd:        "configuration",
+>>>>>>> origin/master
 				    },
 				    function(data, status){
 				        if(status == 'success') {
 				        	//alert(data);
 				        	if (data == 1) {
+<<<<<<< HEAD
 				        		alert("Watson NLCのサービス資格情報を登録しました。");
 				        		location.href = "/<?php echo BASE; ?>/?page=admin_menu";
 				        	} else {
 				        		alert("Watson NLCのサービス資格情報の登録に失敗しました。");
+=======
+				        		alert("Watson NLCの資格情報を登録しました。");
+				        		location.href = "/<?php echo BASE; ?>/?page=admin_menu";
+				        	} else {
+				        		alert("Watson NLCの資格情報の登録に失敗しました。");
+>>>>>>> origin/master
 				        		location.href = "/<?php echo BASE; ?>/?page=admin_menu";
 				        	}
 				        } else {
@@ -108,6 +175,25 @@ if ($_SESSION['auth'] !== true) {
 				        }
 					});
 				});
+<<<<<<< HEAD
+=======
+				document.getElementById('apikey').addEventListener('click', function (evt) {
+					document.getElementById('label_username').innerHTML = 'ラベル（変更不可）';
+					document.getElementById('_username').setAttribute('value','apikey');
+					document.getElementById('_username').setAttribute('disabled','true');
+
+					document.getElementById('label_password').innerHTML = 'API鍵';
+					document.getElementById('_password').setAttribute('value','');
+				});
+				document.getElementById('idpass').addEventListener('click', function (evt) {
+					document.getElementById('label_username').innerHTML = 'ユーザーネーム';
+					document.getElementById('_username').setAttribute('value','');
+					document.getElementById('_username').removeAttribute('disabled');
+
+					document.getElementById('label_password').innerHTML = 'パスワード';
+					document.getElementById('_password').setAttribute('value','');
+				});
+>>>>>>> origin/master
 			</script>
 <?php
 	} else {

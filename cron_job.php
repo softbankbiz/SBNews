@@ -11,8 +11,13 @@ try {
 	$result = $mysqli->query($query);
 	if($result) {
 		foreach ($result as $row) {
+<<<<<<< HEAD
       $query_rss = 'SELECT rss_data FROM rss_list WHERE rss_id = "' . $row["rss_id"] . '"';
       $rss_data = $mysqli->query($query_rss);
+=======
+	        $query_rss = 'SELECT rss_data FROM rss_list WHERE rss_id = "' . $row["rss_id"] . '"';
+	        $rss_data = $mysqli->query($query_rss);
+>>>>>>> origin/master
 			$rss_arr = explode("\n", $rss_data->fetch_array(MYSQLI_NUM)[0]);
 
 			$query_site_names = 'SELECT site_names_data FROM site_names_list WHERE site_names_id = "' . $row["site_names_id"] . '"';
@@ -27,10 +32,17 @@ try {
 
 			/* Watson Judgement Job */
 			// コンテンツの取得
+<<<<<<< HEAD
 	    $query_a = "SELECT url,title,summary from article_candidate WHERE class_name IS NULL AND company_id = ? AND news_id = ?";
 	    $stmt = $mysqli->prepare($query_a);
 	    $stmt->bind_param("ss", $row["company_id"], $row["news_id"]);
 	    $stmt->execute();
+=======
+		    $query_a = "SELECT url,title,summary from article_candidate WHERE class_name IS NULL AND company_id = ? AND news_id = ?";
+		    $stmt = $mysqli->prepare($query_a);
+		    $stmt->bind_param("ss", $row["company_id"], $row["news_id"]);
+		    $stmt->execute();
+>>>>>>> origin/master
 			$contents_for_judgement = $stmt->get_result();
 
 			// cid_alias の取得
@@ -38,9 +50,15 @@ try {
 
 			if ($cid_alias == 'dummy_watson') {
 				$counter = 0;
+<<<<<<< HEAD
 	    	foreach($contents_for_judgement as $content) {
 		    	$watson_res = dummy_watson();
 		    	if (!empty($watson_res)) {
+=======
+		    	foreach($contents_for_judgement as $content) {
+			    	$watson_res = dummy_watson();
+			    	if (!empty($watson_res)) {
+>>>>>>> origin/master
 						$res = json_decode($watson_res);
 						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, 'dummy_watson', 'dummy_watson', $row["news_id"]);
 						$counter++;
@@ -49,23 +67,40 @@ try {
 					}
 				}
 				echo "Dummy Watson Judgemant had " . $counter . " updated of " . $row["news_id"] . "／" . $row["company_id"] . ".<br>";
+<<<<<<< HEAD
 	    } else {
 	    	$counter = 0;
 	    	$result = get_configuration($mysqli, $row["company_id"]);
 	    	$w_apikey = $result["w_apikey"];
 				$w_url = $result["w_url"];
 
+=======
+		    } else {
+		    	$counter = 0;
+		    	$result = get_configuration($mysqli, $row["company_id"]);
+		    	$w_username = $result["w_username"];
+				$w_password = $result["w_password"];
+		
+>>>>>>> origin/master
 				$query_d = "SELECT cid FROM classifier_list WHERE company_id = ? AND cid_alias = ?";
 				$stmt = $mysqli->prepare($query_d);
 				$stmt->bind_param("ss", $row["company_id"], $cid_alias);
 				$stmt->execute();
 				$cid = $stmt->get_result()->fetch_array(MYSQLI_NUM)[0];
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> origin/master
 				$wnlc = new WatsonNLC;
 
 				foreach($contents_for_judgement as $content) {
 					$text_to_judge = $content["title"] . $content["summary"];
+<<<<<<< HEAD
 					$watson_res = $wnlc->classify_phrase($w_apikey, $w_url, $cid, $text_to_judge);
+=======
+					$watson_res = $wnlc->classify_phrase($w_username, $w_password, $cid, $text_to_judge);
+>>>>>>> origin/master
 
 					if (!empty($watson_res)) {
 						$res = json_decode($watson_res);
@@ -77,7 +112,11 @@ try {
 				}
 				echo "Watson Judgemant had " . $counter . " updated of " . $row["news_id"] . "／" . $row["company_id"] . ".<br>";
 			}
+<<<<<<< HEAD
     }
+=======
+	    }
+>>>>>>> origin/master
 	} else {
 		echo "NG: select FROM preference";
 	}
@@ -86,4 +125,8 @@ try {
 } catch (mysqli_sql_exception $e) {
     throw $e;
     die();
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master

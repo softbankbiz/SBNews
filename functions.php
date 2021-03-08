@@ -51,7 +51,11 @@ function yyyymmdd($y, $m, $d){
         //1桁の場合は 01～09
         //2桁の場合は 10の位が1と2  1の位が0-9
         //2桁の場合は 10の位が3     1の位が0が1
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> origin/master
     if (preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) {
         return true;
     } else {
@@ -74,7 +78,11 @@ function yyyymmdd_db($date){
         //1桁の場合は 01～09
         //2桁の場合は 10の位が1と2  1の位が0-9
         //2桁の場合は 10の位が3     1の位が0が1
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> origin/master
     if (preg_match('/^([1-9][0-9]{3})-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) {
         return true;
     } else {
@@ -151,7 +159,11 @@ function bfa_check($mysqli, $company_id, $user_id) {
 		$dt = new DateTime($ts[0]);  // 最後の "fail" 時刻
 		$now = new DateTime();       // 現在時刻
 		$diff = intval($dt->diff($now)->format('%h'));  // 差分時間
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> origin/master
 		if ($diff >= $interval) {
 			return true;        // ロック時間を過ぎていたら、通過
 		} else {
@@ -220,6 +232,7 @@ function two_step_auth($mysqli, $company_id, $user_id) {
 /**
  * set_news.phpでつかう<select>作成用関数
  */
+<<<<<<< HEAD
 define('PERIOD_DAY_LIST',
 		array(
 	   		array("-1 day","1日前"),
@@ -228,15 +241,33 @@ define('PERIOD_DAY_LIST',
 	   		array("-4 day","4日前"),
 	   		array("-5 day","5日前"),
 	   		array("-6 day","6日前"),
+=======
+define('PERIOD_DAY_LIST', 
+		array(
+	   		array("-1 day","1日前"), 
+	   		array("-2 day","2日前"), 
+	   		array("-3 day","3日前"), 
+	   		array("-4 day","4日前"), 
+	   		array("-5 day","5日前"), 
+	   		array("-6 day","6日前"), 
+>>>>>>> origin/master
 	   		array("-7 day","7日前")
 	   	)
 	);
 
+<<<<<<< HEAD
 define('PERIOD_HOUR_LIST',
 		array("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23")
 	);
 
 define('FETCH_NUM_LIST',
+=======
+define('PERIOD_HOUR_LIST', 
+		array("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23")
+	);
+
+define('FETCH_NUM_LIST', 
+>>>>>>> origin/master
 		array("10","20","30","40","50")
 	);
 
@@ -273,8 +304,13 @@ function get_cid_alias_as_select($mysqli, $cid_alias) {
 		$result = get_classifier_list($mysqli, $_SESSION["company_id"]);
 
 		$config = get_configuration($mysqli, $_SESSION["company_id"]);
+<<<<<<< HEAD
 		$w_apikey = $config["w_apikey"];
 		$w_url = $config["w_url"];
+=======
+		$w_username = $config["w_username"];
+		$w_password = $config["w_password"];
+>>>>>>> origin/master
 
 		$buf = '<select name="cid_alias" id="cid_alias">';
 		if ($cid_alias === 'dummy_watson') {
@@ -284,7 +320,11 @@ function get_cid_alias_as_select($mysqli, $cid_alias) {
 		}
 
 		while( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
+<<<<<<< HEAD
 			if ("利用可能" !== get_cid_status($w_apikey, $w_url, $row["cid"])) {
+=======
+			if ("利用可能" !== get_cid_status($w_username, $w_password, $row["cid"])) {
+>>>>>>> origin/master
 				continue;
 			} else if ($row["cid_alias"] === $cid_alias) {
 				$buf .= '<option selected>' . $row["cid_alias"] . '</option>';
@@ -409,11 +449,19 @@ function get_fetch_num_as_select($mysqli, $fetch_num) {
  */
 
 
+<<<<<<< HEAD
 function get_cid_status($w_apikey, $w_url, $classifier_id) {
 	require_once "./WatsonNLC.php";
 	$wnlc = new WatsonNLC;
 	$result = $wnlc->info_classifier($w_apikey, $w_url, $classifier_id);
 	$res = json_decode($result);
+=======
+function get_cid_status($w_username, $w_password, $classifier_id) {
+	require_once "./WatsonNLC.php";
+	$wnlc = new WatsonNLC;
+	$result = $wnlc->info_classifier($w_username, $w_password, $classifier_id);
+	$res = json_decode($result);	
+>>>>>>> origin/master
 	if ($res->{"status"} === "Available") {
 		return "利用可能";
 	} else if ($res->{"status"} === "Training") {
@@ -424,7 +472,11 @@ function get_cid_status($w_apikey, $w_url, $classifier_id) {
 }
 
 function get_configuration($mysqli, $company_id) {
+<<<<<<< HEAD
 	$query = "SELECT w_apikey,w_url FROM configuration WHERE company_id = ?";
+=======
+	$query = "SELECT w_username,w_password FROM configuration WHERE company_id = ?";
+>>>>>>> origin/master
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("s", $company_id);
 	$stmt->execute();
@@ -489,8 +541,13 @@ function print_javascript($opt) {
 function print_mennu($page) {
 	defined('BASE') or define('BASE', basename(dirname(__FILE__)));
 	$menu_items = array(
+<<<<<<< HEAD
 		"ニュース作成" => "news_make", "ニュース設定" => "news_conf", "Watson設定" => "watson_conf",
 		"クローラ設定" => "crawler_conf", "ログ取得" => "log_mgmt", "ドキュメント" => "document",
+=======
+		"ニュース作成" => "news_make", "ニュース設定" => "news_conf", "Watson設定" => "watson_conf", 
+		"クローラ設定" => "crawler_conf", "ログ取得" => "log_mgmt", "ドキュメント" => "document", 
+>>>>>>> origin/master
 		"管理者メニュー" => "admin_menu", "ログアウト" => "logout");
 	echo '	<div class="nav">';
 	echo '		<ul>';
@@ -653,7 +710,11 @@ function get_redirected_url($url) {
 			//echo '>>>>>>リンク先に到達できない : ' . $url_r . ' <br>';
 			return null;
 		}
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> origin/master
 	} else {
 		throw new FeedException('PHP extension CURL is not loaded.');
 	}
@@ -838,7 +899,11 @@ function translate_role($role) {
 * suitable for all statements, but especially suitable for `LIKE`.
 *
 * @param string $string String to add slashes to
+<<<<<<< HEAD
 * @return $string with `\` prepended to reserved characters
+=======
+* @return $string with `\` prepended to reserved characters 
+>>>>>>> origin/master
 *
 * @author Trevor Herselman
 */
@@ -858,12 +923,21 @@ if (function_exists('mb_ereg_replace'))
 /*
  * ディレクトリと内部のファイルを再帰的に削除
 */
+<<<<<<< HEAD
 function delTree($dir) {
 	$files = array_diff(scandir($dir), array('.','..'));
 	foreach ($files as $file) {
 		(is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
    }
    return rmdir($dir);
+=======
+function delTree($dir) { 
+	$files = array_diff(scandir($dir), array('.','..')); 
+	foreach ($files as $file) { 
+		(is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file"); 
+   }
+   return rmdir($dir); 
+>>>>>>> origin/master
 }
 
 /**
@@ -896,4 +970,8 @@ function datetimeFormatter($str) {
 	$date = new DateTime($str);
 	return $date->format('Y-m-d H:m:s');
 }
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> origin/master

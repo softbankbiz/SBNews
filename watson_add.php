@@ -195,4 +195,8 @@ if ($_SESSION['auth'] !== true) {
 }
 
 exit();
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> origin/master

@@ -33,6 +33,7 @@ if ($_SESSION['auth'] == true) {
 </p>
 <div class="capture_area"><img src="../images/doc/quick/ibmcloud_nlc.png"></div>
 <p>
+<<<<<<< HEAD
 	ログインしたら、画面上部の「カタログ」をクリック、続いて左ペインから「サービス」⇒「AI/MachineLearning」をクリックして、メインの画面に表示されるカタログのリストから
 	「Natural Language Classifier」を見つけて、クリックします。
 </p>
@@ -46,6 +47,20 @@ if ($_SESSION['auth'] == true) {
 <p>
 	NLCサービスを作成すると、上記の画面に遷移します。左ペインの「サービス資格情報」をクリックし、「Auto-generated service credentials」の矢印をクリックして詳細を表示させます。
 	「apikey」および「url」の文字列（赤枠部分、ダブルクォーテーションマークは含まない）をコピーし、テキストファイルなどに保存してください。
+=======
+	ログインしたら、画面上部の①「カタログ」をクリック、続いて左ペインから②「AI」をクリックして、メインの画面に表示されるカタログのリストから
+	③「Natural Language Classifier」を見つけて、クリックします。
+</p>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_create.png"></div>
+<p>
+	「デプロイする地域/ロケーションの選択」や「タグ」を設定したら、画面下の「作成」ボタンをクリックする。これで、Watson NLCを利用する準備ができます。
+	この画面を下までスクロールするとWatson NLCの価格プランを参照できますので、確認しておくことをお勧めします。
+</p>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_apikey.png"></div>
+<p>
+	NLCサービスを作成すると、上記の画面に遷移します。左ペインの「管理」をクリックして、「資格情報」を表示させます。
+	「API鍵」欄の右端の書類アイコンをクリックすると、API鍵（44桁の英数文字）がクリップボードにコピーされますので、テキストファイルなどに保存してください。
+>>>>>>> origin/master
 	これで、事前の準備は完了です。
 </p>
 								</div>
@@ -68,7 +83,12 @@ if ($_SESSION['auth'] == true) {
 </p>
 <div class="capture_area"><img src="../images/doc/quick/admin_menu.png"></div>
 <p>
+<<<<<<< HEAD
 	事前に取得しておいたWatson NLCのサービス資格情報の文字列を、それぞれ「apikey」および「url」に入力し、「登録する」ボタンをクリックします。
+=======
+	事前に取得しておいたWatson NLCの資格情報の種別にしたがって、「認証方式を選ぶ」で「API鍵」または「ユーザーネーム／パスワード」のいずれかを選択します。
+	「API鍵」、または「ユーザーネーム」と「パスワード」を入力し、「登録する」ボタンをクリックします。
+>>>>>>> origin/master
 	「Watson NLC」の登録が完了すると、Watsonの頭脳に当たる「分類子」を作成できるようになります。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/watson_register.png"></div>
@@ -258,7 +278,11 @@ if ($_SESSION['auth'] == true) {
 							<li class="docu_h1">ログを取得する
 								<div>
 <p>
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> origin/master
 	SBNewsでは、「RSSが取得したニュース一覧」「記事のクリックログ一覧」「メールの開封ログ一覧」「ログインユーザーの記録」]をCSV形式でダウンロードできます。
 	「<a href="<?php echo '/'. BASE .'/' ?>?page=log_mgmt">ログ取得</a>」を開き、取得したいログの項目に、YYYY-MM-DD形式で
 	取得開始日と終了日を指定して「ダウンロード」ボタンをクリックします。CSVファイルをダウンロード後、ExcelやAccessなどを利用して、
@@ -281,4 +305,8 @@ if ($_SESSION['auth'] == true) {
 }
 
 exit();
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> origin/master

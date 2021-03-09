@@ -112,6 +112,7 @@ sudo mysql -uroot -p$DBRootPassword < /tmp/setup.mysql
 sudo rm -f /tmp/setup.mysql
 
 # install utilitiy tools
+sudo yum -y install wget
 sudo yum -y install unzip
 sudo yum -y install rsync
 

@@ -131,13 +131,11 @@ sudo echo '0 * * * * php -f /var/www/html/sbnews/cron_job.php' > cron.conf
 sudo crontab ./cron.conf
 
 # setup SELinux
-sudo yum -y install policycoreutils-python-2.5-29.el7_6.1.x86_64
+sudo yum -y install policycoreutils-python.x86_64
 sudo semanage fcontext -a -t httpd_sys_rw_content_t /var/www/html/sbnews
 sudo restorecon -v /var/www/html/sbnews
 sudo semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/sbnews/images(/.*)?"
 sudo restorecon -R -v /var/www/html/sbnews/images
-sudo semanage fcontext -a -t httpd_sys_rw_content_t /var/www/html/sbnews/WatsonNLC.php
-sudo restorecon -v /var/www/html/sbnews/WatsonNLC.php
 
 # completed
 echo ""

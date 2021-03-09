@@ -1,7 +1,5 @@
 <?php
 
-define('W_GATEWAY',  'https://gateway-tok.watsonplatform.net/natural-language-classifier/api/v1/classifiers');
-
 class WatsonNLC {
 
 	private static function headers($w_apikey) {

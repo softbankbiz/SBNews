@@ -73,7 +73,7 @@ if ($_SESSION['auth'] !== true) {
 						// echo "No data!";
 					}
 				}
-				echo "Watson Judgemant had " . $counter . " updated.<br>";
+				echo "Watson Judgemant had " . $counter . " updated.";
 	    }
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;

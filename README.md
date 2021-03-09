@@ -118,14 +118,14 @@ sudo yum -y install rsync
 # install SBNews
 sudo mkdir /var/www/html/sbnews
 sudo chmod 774 /var/www/html/sbnews
-sudo cd /var/tmp/
+cd /var/tmp/
 sudo wget https://github.com/softbankbiz/SBNews/archive/master.zip
 sudo unzip master.zip
 sudo rsync -avrP ./SBNews-master/ /var/www/html/sbnews/
 sudo chown -R apache:apache /var/www/html/sbnews
 sudo rm -f master.zip
 sudo rm -rdf SBNews-master
-sudo cd
+cd
 sudo echo '0 * * * * php -f /var/www/html/sbnews/cron_job.php' > cron.conf
 sudo crontab ./cron.conf
 

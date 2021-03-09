@@ -68,7 +68,7 @@ if ($_SESSION['auth'] !== true) {
 					if (!empty($watson_res)) {
 						$res = json_decode($watson_res);
 						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, $cid_alias, $cid, $_GET["news_id"]);
-						$counter++;
+						$counter = $counter + 1;
 					} else {
 						// echo "No data!";
 					}

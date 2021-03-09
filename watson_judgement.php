@@ -70,7 +70,7 @@ if ($_SESSION['auth'] !== true) {
 						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, $cid_alias, $cid, $_GET["news_id"]);
 						$counter++;
 					} else {
-						echo "No data!";
+						// echo "No data!";
 					}
 				}
 				echo "Watson Judgemant had " . $counter . " updated.<br>";

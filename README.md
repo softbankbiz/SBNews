@@ -16,7 +16,7 @@ $ sudo vi SBNews_install.sh
 
 ```
 $ bash SBNews_install.sh
-$ password for LOGINUSERNAME:            <= パスワード入力 
+$ password for LOGINUSERNAME:            <= パスワード入力
 ```
 
 インストールが終わったら、Azureコンソールから<span style="color: red; ">仮想マシンを再起動</span>します。
@@ -169,7 +169,7 @@ SBNewsをアップデートするには、仮想マシンにログインして�
 
 ```
 // SBNewsのソース取得
-$ sudo cd /var/tmp/
+$ cd /var/tmp/
 $ sudo wget https://github.com/softbankbiz/SBNews/archive/master.zip
 $ sudo unzip master.zip
 

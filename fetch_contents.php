@@ -38,9 +38,10 @@ if ($_SESSION['auth'] !== true) {
 
 			$insert_suffix = '","' . $_SESSION["company_id"] . '","' . $_GET["news_id"] . '"';
 
-			do_fetch($mysqli, $rss_arr, $site_names_arr, $insert_suffix);
-
+			$msg = do_fetch($mysqli, $rss_arr, $site_names_arr, $insert_suffix);
 			$mysqli->close();
+
+      echo $msg;
 
 		} catch (mysqli_sql_exception $e) {
 		    throw $e;

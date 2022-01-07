@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS article_candidate;
-CREATE TABLE article_candidate (url VARCHAR(255) NOT NULL, title VARCHAR(100) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP, created DATETIME, summary VARCHAR(924), category VARCHAR(80), class_name VARCHAR(40), confidence FLOAT(10), site_name VARCHAR(80), company_id VARCHAR(20) NOT NULL, news_id VARCHAR(100) NOT NULL, cid VARCHAR(24), cid_alias VARCHAR(100));
+CREATE TABLE article_candidate (url VARCHAR(255) NOT NULL, title VARCHAR(100) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP, created DATETIME, summary VARCHAR(924), category VARCHAR(80), class_name VARCHAR(40), confidence FLOAT(10), site_name VARCHAR(80), company_id VARCHAR(20) NOT NULL, news_id VARCHAR(100) NOT NULL, cid VARCHAR(36), cid_alias VARCHAR(100));
 CREATE UNIQUE INDEX index_url_newsid ON article_candidate (url, news_id);
 CREATE INDEX index_article_candidate ON article_candidate (company_id,news_id,created);
 DROP TABLE IF EXISTS category_list;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS users_list;
 CREATE TABLE users_list (company_id VARCHAR(20) NOT NULL, user_id VARCHAR(20) NOT NULL, password VARCHAR(255) NOT NULL, password_expires DATETIME NOT NULL, role VARCHAR(10) NOT NULL);
 INSERT INTO users_list (company_id, user_id, password, password_expires, role) VALUES ( "root", "root", "root", "2060-01-01 00:00:00", "su");
 DROP TABLE IF EXISTS classifier_list;
-CREATE TABLE classifier_list (cid VARCHAR(24) PRIMARY KEY, cid_alias VARCHAR(100) NOT NULL, company_id VARCHAR(20) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE classifier_list (cid VARCHAR(36) PRIMARY KEY, cid_alias VARCHAR(100) NOT NULL, company_id VARCHAR(20) NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 DROP TABLE IF EXISTS preference;
 CREATE TABLE preference (news_id VARCHAR(100) NOT NULL, cid_alias VARCHAR(100) NOT NULL, company_id VARCHAR(20) NOT NULL, category_id VARCHAR(80) NOT NULL, rss_id VARCHAR(80) NOT NULL, site_names_id VARCHAR(80) NOT NULL, default_title VARCHAR(100) NOT NULL, period_day VARCHAR(40) NOT NULL, period_hour CHAR(2) NOT NULL, fetch_num CHAR(4) NOT NULL, signature TEXT NOT NULL);
 DROP TABLE IF EXISTS login_record;

@@ -410,18 +410,35 @@ function get_fetch_num_as_select($mysqli, $fetch_num) {
 
 
 function get_cid_status($w_apikey, $w_url, $classifier_id) {
-	require_once "./WatsonNLC.php";
-	$wnlc = new WatsonNLC;
-	$result = $wnlc->info_classifier($w_apikey, $w_url, $classifier_id);
+	require_once "./WatsonNLU.php";
+	$wnlc = new WatsonNLU;
+	$result = $wnlc->info_model($w_apikey, $w_url, $classifier_id);
 	$res = json_decode($result);
-	if ($res->{"status"} === "Available") {
+	if ($res->{"status"} === "available") {
 		return "利用可能";
-	} else if ($res->{"status"} === "Training") {
+	} else if ($res->{"status"} === "starting") {
+		return "<span style='color:red;'>学習を開始しました。まだ利用できません</span>";
+	} else if ($res->{"status"} === "training") {
 		return "<span style='color:red;'>学習中につき、まだ利用できません</span>";
+	} else if ($res->{"status"} === "standby") {
+		return "<span style='color:red;'>スタンバイ中につき、まだ利用できません</span>";
+	} else if ($res->{"status"} === "deploying") {
+		return "<span style='color:red;'>デプロイ中につき、まだ利用できません</span>";
+	} else if ($res->{"status"} === "error") {
+		$error_msg = '';
+		$notice = json_decode($res->{"notices"});
+		foreach ( $notice as $msg ) {
+		  $error_msg .= $msg->{"message"} . ' ';
+		}
+		return "<span style='color:red;'>エラーが発生しました。　エラーメッセージ：　" . $error_msg . "</span>";
+	} else if ($res->{"status"} === "deleted") {
+		return "<span style='color:red;'>削除されました</span>";
 	} else {
 		return $res->{"status"} . ' : ' . $res->{"status_description"};
 	}
 }
+
+
 
 function get_configuration($mysqli, $company_id) {
 	$query = "SELECT w_apikey,w_url FROM configuration WHERE company_id = ?";
@@ -590,8 +607,8 @@ function do_fetch($mysqli, $rss_arr, $site_names_arr, $insert_suffix) {
 	$timedistance = time() - $start;
 	$minutes = intdiv($timedistance, 60);
 	$seconds = $timedistance % 60;
-	echo "Finished, " . $counter . " lines inserted. " . $minutes . " min " . $seconds . " sec.";
-	//$mysqli->close();
+	$result = "Finished, " . strval($counter) . " lines inserted. " . strval($minutes) . " min " . strval($seconds) . " sec.";
+	return $result;
 }
 
 function get_sitename($url, $site_names_arr) {

@@ -2,7 +2,8 @@
 
 define('BASE', basename(dirname(__FILE__)));
 require_once dirname(__FILE__) . "/functions.php";
-require_once dirname(__FILE__) . "/WatsonNLC.php";
+require_once dirname(__FILE__) . "/WatsonNLU.php";
+// require_once dirname(__FILE__) . "/WatsonNLC.php";
 
 session_start();
 
@@ -32,11 +33,28 @@ if ($_SESSION['auth'] !== true) {
 
 		if ($_POST["cmd"] === "create") {
 			if ($_POST["training_data"] && $_POST["training_data_name"]) {
-				$wnlc = new WatsonNLC;
-				$watson_res = $wnlc->create_classifier($w_apikey, $w_url, $_POST["training_data"], $_POST["training_data_name"]);
+
+        //  先頭行を削除し、いったんファイルとして保存する
+        $text = str_replace(["\r\n", "\r", "\n"], "\n", $_POST["training_data"]);
+        $text = str_replace("\'", "", $text);
+        $arr = explode("\n", $text);
+        array_shift($arr);
+        $training_data = implode("\n", $arr);
+        $myfile = fopen('./training_data/' . $_POST["training_data_name"], "w") or die("Unable to open file!");
+        fwrite($myfile, $training_data);
+        fclose($myfile);
+
+        // NLU用のモジュールを読み込む
+        $wnlu = new WatsonNLU;
+
+        // 第3引数に、上で作成したファイル名を指定
+        $training_file = "@./training_data/" . $_POST["training_data_name"];
+
+        $watson_res = $wnlu->create_model($w_apikey, $w_url, $training_file, $_POST["training_data_name"]);
+
 				if (!empty($watson_res)) {
-					$res = json_decode($watson_res);
-					$cid = $res->{"classifier_id"};
+					$res = json_decode($watson_res[0]);
+					$cid = $res->{"model_id"};
 					try {
 						$query_b = "INSERT INTO classifier_list (cid,cid_alias,company_id) VALUES (?,?,?)";
 						$stmt_b = $mysqli->prepare($query_b);
@@ -95,8 +113,8 @@ if ($_SESSION['auth'] !== true) {
 		   }
 		} else if ($_POST["cmd"] === "delete") {
 			if ($_POST["cid"] && $_POST["cid_alias"]) {
-				$wnlc = new WatsonNLC;
-				$result_e = $wnlc->delete_classifier($w_apikey, $w_url, $_POST["cid"]);
+				$wnlu = new WatsonNLU;
+				$result_e = $wnlu->delete_model($w_apikey, $w_url, $_POST["cid"]);
 				if ($result_e) {
 					$query_e = "UPDATE preference SET cid_alias = \"dummy_watson\" WHERE company_id = ? AND cid_alias = ?";
 					$query_f = "DELETE FROM classifier_list WHERE company_id = ? AND cid = ?";

@@ -19,13 +19,13 @@ if ($_SESSION['auth'] !== true) {
 	echo '<script>alert("あなたには編集権限がありません。"); location.href = "/' . BASE . '/";</script>';
 	return;
 } else {
-	print_header("Watson NLC 分類子の追加／削除", $_SESSION);
+	print_header("Watson NLU モデルの追加／削除", $_SESSION);
 	print_mennu($_GET['page']);
 ?>
 			<div class="main_area">
-				<h3>Watson NLC 分類子の追加／削除</h3>
-				<h4>＜分類子を新規に追加＞</h4>
-				<p class="ope_description">トレーニングデータ（CSVファイル、UTF-8）をアップロードすることで分類子を作成します。</p>
+				<h3>Watson NLU モデルの追加／削除</h3>
+				<h4>＜モデルを新規に追加＞</h4>
+				<p class="ope_description">トレーニングデータ（CSVファイル、UTF-8）をアップロードすることでモデルを作成します。</p>
 				<table class="conf_table">
 					<tr>
 						<td>
@@ -42,9 +42,9 @@ if ($_SESSION['auth'] !== true) {
 
 			    <br><br>
 
-				<h4>＜既存の分類子を削除＞</h4>
+				<h4>＜既存のモデルを削除＞</h4>
 				<table class="conf_table">
-					<p class="ope_description">削除したい分類子の右側の「削除」ボタンをクリックします。</p>
+					<p class="ope_description">削除したいモデルの右側の「削除」ボタンをクリックします。</p>
 					<?php
 					if (!two_step_auth($mysqli, $_SESSION["company_id"], $_SESSION["user_id"])) {
 				        return;
@@ -62,7 +62,7 @@ if ($_SESSION['auth'] !== true) {
 							echo '</tr>';
 						}
 					} else {
-						echo '<tr><td colspan="3">既存の分類はありません。</td></tr>';
+						echo '<tr><td colspan="3">既存のモデルはありません。</td></tr>';
 					}
 					?>
 				</table>
@@ -88,10 +88,10 @@ if ($_SESSION['auth'] !== true) {
 			    },
 			    function(data, status){
 			        if(status == 'success' && data.trim() == 'deleted') {
-		        		alert("Watson分類子を削除しました。この分類子は「dummy_watson」に差し替えられました。");
+		        		alert("Watsonモデルを削除しました。このモデルは「dummy_watson」に差し替えられました。");
 		        		location.href = "/<?php echo BASE; ?>/?page=watson_conf";
 			        } else {
-			        	alert("Watson分類子の削除に失敗しました。");
+			        	alert("Watsonモデルの削除に失敗しました。");
 			        	//alert(data.trim());
 			        }
 				});
@@ -112,12 +112,12 @@ if ($_SESSION['auth'] !== true) {
 			    function(data, status){
 			    	//alert(data);
 			        if(status == 'success' && data.trim() == 'ok') {
-			        	alert("Watson分類子を作成しました。");
+			        	alert("Watsonモデルを作成しました。");
 			        	//alert(data.trim());
 			        	$("#bx_loader_create").css("display","none");
 			        	location.href = "/<?php echo BASE; ?>/?page=watson_conf";
 			        } else {
-			        	alert("Watson分類子の作成に失敗しました。\n" + data);
+			        	alert("Watsonモデルの作成に失敗しました。\n" + data);
 			        	//alert(data.trim());
 			        	$("#bx_loader_create").css("display","none");
 			        }

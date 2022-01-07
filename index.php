@@ -245,26 +245,27 @@ if ($_SESSION['auth'] != true) {
 				</div>
 				<script>
 				function update_news(_news_id) {
-					var msg = '';
-					$("#bx_loader" + _news_id).css("display","block");
-					$.get('fetch_contents.php',
-						{
-		        	news_id: _news_id
-		        },
-		        function(data) {
-		        	msg += data + '\n\n';
-		        	$.get('watson_judgement.php',
-								{
-				        	news_id: _news_id
-				        },
-				        function(data) {
-				        	msg += data;
-				        	alert(msg);
-				        	$("#bx_loader" + _news_id).css("display","none");
-				    		}
-			    		);
-		    		}
-			    );
+						var msg = '';
+						$("#bx_loader" + _news_id).css("display","block");
+						$.get('fetch_contents.php', { news_id: _news_id })
+				        .done(function(data) {
+					        	msg += data + '\n\n';
+					        	$.get('watson_judgement.php', { news_id: _news_id })
+					        			.done(function(data) {
+									        	msg += data;
+									        	alert(msg);
+								    		})
+												.fail(function() {
+														alert("error at watson_judgement.");
+												})
+												.always(function() {
+														$("#bx_loader" + _news_id).css("display","none");
+												});
+								})
+								.fail(function() {
+										alert("error at fetch_contents.");
+										$("#bx_loader" + _news_id).css("display","none");
+								});
 				}
 				</script>
 
@@ -280,10 +281,10 @@ if ($_SESSION['auth'] != true) {
 					?>
 					<table class="ope_table">
 						<tr>
-							<th>No</th><th>分類子エイリアス</th><th>分類子</th><th>状態</th>
+							<th>No</th><th>モデルエイリアス</th><th>モデル名</th><th>状態</th>
 						</tr>
 						<?php
-						// Watson NLC に問い合わせると遅いので、このページだけURLパラメータを見る
+						// Watson NLU に問い合わせると遅いので、このページだけURLパラメータを見る
 						if ($_GET['page'] == 'watson_conf') {
 							$result = get_classifier_list($mysqli, $_SESSION["company_id"]);
 							$config = get_configuration($mysqli, $_SESSION["company_id"]);
@@ -310,7 +311,7 @@ if ($_SESSION['auth'] != true) {
 								echo '<td> -- </td>';
 								echo '</tr>';
 							}
-							echo '<tr><td colspan=3><a href="/' . BASE . '/watson_add.php?page=watson_conf"><button>分類子を追加／削除</button></a></td></tr>';
+							echo '<tr><td colspan=3><a href="/' . BASE . '/watson_add.php?page=watson_conf"><button>モデルを追加／削除</button></a></td></tr>';
 						}
 						?>
 					</table>
@@ -547,7 +548,7 @@ if ($_SESSION['auth'] != true) {
 									<li>Watson NLCのサービス取得</li>
 									<li>ログイン</li>
 									<li>Watson NLCを登録する</li>
-									<li>Watson NLCの分類子を設定する</li>
+									<li>Watson NLCのモデルを設定する</li>
 									<li>クローラを設定する</li>
 									<li>ニュースを設定する</li>
 									<li>ニュースを作成する</li>
@@ -566,13 +567,13 @@ if ($_SESSION['auth'] != true) {
 									<li>コンテンツを利用</li>
 								</ol>
 							</li>
-							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/training.php?page=document">分類子のトレーニング方法</a>
+							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/training.php?page=document">モデルのトレーニング方法</a>
 								<ol>
 									<li>Natural Language Classifier</li>
-									<li>分類子の作成</li>
+									<li>モデルの作成</li>
 									<li>初めてのトレーニングデータ作成</li>
-									<li>記事ランキングを利用した分類子のチューニング</li>
-									<li>分類子のチューニング手順</li>
+									<li>記事ランキングを利用したモデルのチューニング</li>
+									<li>モデルのチューニング手順</li>
 								</ol>
 							</li>
 							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/rss.php?page=document">RSSリストの作成</a>
@@ -634,14 +635,14 @@ if ($_SESSION['auth'] != true) {
 						</table>
 						<h4>＜ユーザー管理＞</h4>
 					<?php
-					} else {
+					} else if ($_SESSION['role'] == 'admin') {
 					?>
 						<h4>＜Watsonアカウント登録＞</h4>
-						<p class="ope_description">IBM Cloudで作成したWatson NLCの資格情報を登録します。
+						<p class="ope_description">IBM Cloudで作成したWatson NLUの資格情報を登録します。
 						</p>
 						<table class="ope_table">
 						<tr>
-						<th>Watson NLCの資格情報を登録</th>
+						<th>Watson NLUの資格情報を登録</th>
 						<td><a href="<?php echo '/' . BASE . '/' ?>admin_set.php?page=admin_menu&task=watson_account"><button>設定</button></a></td>
 						</tr>
 						</table>

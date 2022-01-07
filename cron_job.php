@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . "/functions.php";
 require_once dirname(__FILE__) . "/Feed.php";
-require_once dirname(__FILE__) . "/WatsonNLC.php";
+require_once dirname(__FILE__) . "/WatsonNLU.php";
 
 $mysqli = getConnection();
 
@@ -59,17 +59,19 @@ try {
 				$stmt = $mysqli->prepare($query_d);
 				$stmt->bind_param("ss", $row["company_id"], $cid_alias);
 				$stmt->execute();
-				$cid = $stmt->get_result()->fetch_array(MYSQLI_NUM)[0];
 
-				$wnlc = new WatsonNLC;
+				$model_id = $stmt->get_result()->fetch_array(MYSQLI_NUM)[0];
+				$wnlu = new WatsonNLU;
 
 				foreach($contents_for_judgement as $content) {
 					$text_to_judge = $content["title"] . $content["summary"];
-					$watson_res = $wnlc->classify_phrase($w_apikey, $w_url, $cid, $text_to_judge);
+					// $watson_res = $wnlc->classify_phrase($w_apikey, $w_url, $cid, $text_to_judge);
+					$watson_res = $wnlu->analize_phrase($w_apikey, $w_url, $model_id, $text_to_judge);
 
 					if (!empty($watson_res)) {
 						$res = json_decode($watson_res);
-						update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, $cid_alias, $cid, $row["news_id"]);
+						// update_watson_res($mysqli, $content["url"], $res->{"classes"}[0]->{"class_name"}, $res->{"classes"}[0]->{"confidence"}, $cid_alias, $cid, $row["news_id"]);
+						update_watson_res($mysqli, $content["url"], $res->{"classifications"}[0]->{"class_name"}, $res->{"classifications"}[0]->{"confidence"}, $cid_alias, $model_id, $row["news_id"]);
 						$counter++;
 					} else {
 						echo "No data!";

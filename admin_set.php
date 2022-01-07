@@ -55,13 +55,41 @@ if ($_SESSION['auth'] !== true) {
       }
       //
 	    $result = get_configuration($mysqli, $_SESSION["company_id"]);
+
+      // 2つのテーブル(classifier_list, article_candidate)に、cidのDBカラムを32に増量
+      $query_info_cid = "SELECT CHARACTER_MAXIMUM_LENGTH FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sbnews_db' AND TABLE_NAME = 'classifier_list' AND COLUMN_NAME = 'cid'";
+      $result_cid = $mysqli->query($query_info_cid)->fetch_row()[0];
+      if ($result_cid == 24) {
+        // echo($result_cid);
+        $query = "ALTER TABLE classifier_list MODIFY cid VARCHAR(36)";
+        $result = $mysqli->query($query);
+        if ($result) {
+          // echo "changed cid to 36.";
+        } else {
+          die("classifier_list: could not change cid to 36.");
+        }
+      }
+      $query_info_cid = "SELECT CHARACTER_MAXIMUM_LENGTH FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sbnews_db' AND TABLE_NAME = 'article_candidate' AND COLUMN_NAME = 'cid'";
+      $result_cid = $mysqli->query($query_info_cid)->fetch_row()[0];
+      if ($result_cid == 24) {
+        // echo($result_cid);
+        $query = "ALTER TABLE article_candidate MODIFY cid VARCHAR(36)";
+        $result = $mysqli->query($query);
+        if ($result) {
+          // echo "changed cid to 36.";
+        } else {
+          die("article_candidate: could not change cid to 36.");
+        }
+      }
+
+
 		} catch (mysqli_sql_exception $e) {
 	    throw $e;
 	    die();
 		}
 ?>
 			<div class="main_area">
-				<h3>Watson NLC（Natural Language Classifier）のサービス資格情報を登録</h3>
+				<h3>Watson NLU（Natural Language Understanding）のサービス資格情報を登録</h3>
 				<table class="conf_table">
 					<tr>
 						<th id="label_apikey">apikey</th>

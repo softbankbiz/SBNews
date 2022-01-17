@@ -76,8 +76,8 @@ if ($_SESSION['auth'] !== true) {
 				echo "No data!";
 			}
 		} else if ($_POST["cmd"] === "list") {
-			$wnlc = new WatsonNLC;
-			$result_c = $wnlc->list_classifiers($w_apikey, $w_url);
+			$wnlu = new WatsonNLU;
+			$result_c = $wnlu->list_model($w_apikey, $w_url);
 			if ($result_c) {
 				echo json_encode($result_c, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 			} else {

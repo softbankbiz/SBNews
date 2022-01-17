@@ -37,7 +37,7 @@ if ($_SESSION['auth'] !== true) {
 			$stmt->bind_param("sss", $_SESSION["company_id"], $period_s, $period_e);
 			$stmt->execute();
 			$result = $stmt->get_result();
-		    $csv = "記事タイトル,分類名,url,記事作成日,カテゴリー,確信度,サイト名,ニュースID,分類子,分類子エイリアス\r\n";
+		    $csv = "記事タイトル,分類名,url,記事作成日,カテゴリー,確信度,サイト名,ニュースID,モデル,モデルエイリアス\r\n";
 		    while ($row = $result->fetch_assoc()) {
 		    	$row["title"] = str_replace(',', '', $row["title"]);
 		    	$csv .= implode(",", $row). "\r\n";

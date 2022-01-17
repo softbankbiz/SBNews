@@ -92,13 +92,13 @@ if ($_SESSION['auth'] !== true) {
 				<h3>Watson NLU（Natural Language Understanding）のサービス資格情報を登録</h3>
 				<table class="conf_table">
 					<tr>
-						<th id="label_apikey">apikey</th>
+						<th id="label_apikey">API鍵</th>
             <td>
               <input type="text" name="apikey" id="apikey" size="58" value="<?php echo $result["w_apikey"]; ?>">
             </td>
 					</tr>
 					<tr>
-						<th id="label_url">url</th>
+						<th id="label_url">URL</th>
 						<td>
 							<input type="text" name="url" id="url" size="58" value="<?php echo $result["w_url"]; ?>">
 						</td>
@@ -125,10 +125,10 @@ if ($_SESSION['auth'] !== true) {
 				        if(status == 'success') {
 				        	//alert(data);
 				        	if (data == 1) {
-				        		alert("Watson NLCのサービス資格情報を登録しました。");
+				        		alert("Watson NLUのサービス資格情報を登録しました。");
 				        		location.href = "/<?php echo BASE; ?>/?page=admin_menu";
 				        	} else {
-				        		alert("Watson NLCのサービス資格情報の登録に失敗しました。");
+				        		alert("Watson NLUのサービス資格情報の登録に失敗しました。");
 				        		location.href = "/<?php echo BASE; ?>/?page=admin_menu";
 				        	}
 				        } else {

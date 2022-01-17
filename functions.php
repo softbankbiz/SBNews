@@ -411,8 +411,8 @@ function get_fetch_num_as_select($mysqli, $fetch_num) {
 
 function get_cid_status($w_apikey, $w_url, $classifier_id) {
 	require_once "./WatsonNLU.php";
-	$wnlc = new WatsonNLU;
-	$result = $wnlc->info_model($w_apikey, $w_url, $classifier_id);
+	$wnlu = new WatsonNLU;
+	$result = $wnlu->info_model($w_apikey, $w_url, $classifier_id);
 	$res = json_decode($result);
 	if ($res->{"status"} === "available") {
 		return "利用可能";

@@ -2,7 +2,7 @@
 
 define('BASE', basename(dirname(__FILE__)));
 require_once dirname(__FILE__) . "/functions.php";
-require_once dirname(__FILE__) . "/WatsonNLC.php";
+// require_once dirname(__FILE__) . "/WatsonNLC.php";
 
 session_start();
 

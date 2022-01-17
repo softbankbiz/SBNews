@@ -545,10 +545,10 @@ if ($_SESSION['auth'] != true) {
 						<ol>
 							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/quickstart.php?page=document">クイックスタート</a>
 								<ol>
-									<li>Watson NLCのサービス取得</li>
+									<li>Watson NLUのサービス取得</li>
 									<li>ログイン</li>
-									<li>Watson NLCを登録する</li>
-									<li>Watson NLCのモデルを設定する</li>
+									<li>Watson NLUを登録する</li>
+									<li>Watson NLUのモデルを設定する</li>
 									<li>クローラを設定する</li>
 									<li>ニュースを設定する</li>
 									<li>ニュースを作成する</li>
@@ -569,7 +569,7 @@ if ($_SESSION['auth'] != true) {
 							</li>
 							<li class="docu_h1"><a href="<?php echo '/' . BASE . '/' ?>doc/training.php?page=document">モデルのトレーニング方法</a>
 								<ol>
-									<li>Natural Language Classifier</li>
+									<li>Natural Language Understanding</li>
 									<li>モデルの作成</li>
 									<li>初めてのトレーニングデータ作成</li>
 									<li>記事ランキングを利用したモデルのチューニング</li>
@@ -629,7 +629,7 @@ if ($_SESSION['auth'] != true) {
 					} else if ($_SESSION['role'] == 'su') {
 					?>
 						<h4>＜Watsonアカウント登録＞</h4>
-						<p class="ope_description wide">Watson NLCの資格情報は、管理者ユーザーが設定します。</p>
+						<p class="ope_description wide">Watson NLUの資格情報は、管理者ユーザーが設定します。</p>
 						<table class="ope_table">
 						<tr><td> -- </td></tr>
 						</table>

@@ -27,7 +27,7 @@ if ($_SESSION['auth'] !== true) {
                 <table class="conf_table">
                     <tr><th>企業 ID</th><td><?php echo $_SESSION['company_id']; ?></td></tr>
                     <tr><th>ニュース ID</th><td><?php echo $_GET['news_id']; ?></td></tr>
-                    <tr><th>分類子エイリアス</th><td><?php echo get_cid_alias_as_select($mysqli, $row["cid_alias"]); ?></td></tr>
+                    <tr><th>モデルエイリアス</th><td><?php echo get_cid_alias_as_select($mysqli, $row["cid_alias"]); ?></td></tr>
                     <tr><th>RSSリスト ID</th><td><?php echo get_rss_id_as_select($mysqli, $row["rss_id"]); ?></td></tr>
                     <tr><th>カテゴリ リスト ID</th><td><?php echo get_category_id_as_select($mysqli, $row["category_id"]); ?></td></tr>
                     <tr><th>サイト名リスト ID</th><td><?php echo get_site_names_id_as_select($mysqli, $row["site_names_id"]); ?></td></tr>
@@ -74,7 +74,7 @@ if ($_SESSION['auth'] !== true) {
             <script>
 function image_delete(arg) {
     var msg = "";
-    if (arg === "top") { msg = "トップ画像を削除しますか？"} 
+    if (arg === "top") { msg = "トップ画像を削除しますか？"}
     else if (arg === "bottom") { msg = "ボトム画像を削除しますか？"}
     if (! confirm(msg)) {
         return;
@@ -155,7 +155,7 @@ function category_icons_upload() {
     var files = $("#add_category_icons").prop("files");
     for (var i=0; i<files.length; i++) {
         fd.append("file[]", files[i]);
-    }                   
+    }
     fd.append("news_id", $("#news_id").val());
     fd.append("cmd", "upload");
     $.ajax({

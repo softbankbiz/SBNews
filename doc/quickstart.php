@@ -22,30 +22,30 @@ if ($_SESSION['auth'] == true) {
 						<p>初めてSBNewsを使うために必要な初期設定を説明します。この作業を行えるのは、<b>管理者ユーザー</b>に限られます。</p>
 
 						<ol>
-							<li class="docu_h1">Watson NLCのサービス取得
+							<li class="docu_h1">Watson NLUのサービス取得
 								<div>
 <p>
-	SBNewsを使い始める事前準備として、Watson NLCのサービスを作成し資格情報であるAPI鍵を取得します。<a href="https://cloud.ibm.com/" target="_blank">IBM Cloud</a>にログインします。
+	SBNewsを使い始める事前準備として、Watson NLUのサービスを作成し資格情報であるAPI鍵とURLを取得します。<a href="https://cloud.ibm.com/" target="_blank">IBM Cloud</a>にログインします。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/ibmcloud_login.png"></div>
 <p>
 	IBM CloudアカウントのIBMidとパスワードを入力してログインします。
 </p>
-<div class="capture_area"><img src="../images/doc/quick/ibmcloud_nlc.png"></div>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_nlu.png" style="width:750px"></div>
 <p>
-	ログインしたら、画面上部の「カタログ」をクリック、続いて左ペインから「サービス」⇒「AI/MachineLearning」をクリックして、メインの画面に表示されるカタログのリストから
-	「Natural Language Classifier」を見つけて、クリックします。
+	ログインしたら、画面上部の「カタログ」をクリック、続いて左ペインから「カテゴリー」⇒「AI/MachineLearning」をクリックして、メインの画面に表示されるカタログのリストから
+	「Natural Language Understanding」を見つけて、クリックします。
 </p>
-<div class="capture_area"><img src="../images/doc/quick/ibmcloud_create.png"></div>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_create_nlu.png" style="width:750px"></div>
 <p>
-	「ロケーションの選択」や「サービス名」、「タグ」などを任意の値に設定し、下までスクロールして「Service Endpoint」で「public network」を選び、画面右の「作成」ボタンをクリックする。
-  これで、Watson NLCを利用する準備ができます。
-	この画面にはWatson NLCの価格プランを参照できますので、確認しておくことをお勧めします。
+	「ロケーションの選択」や「料金プランの選択」、「リソースの構成」などを設定し、右側画面で「以下のご使用条件を読み、同意します」にチェックを入れ、「作成」ボタンをクリック。
+  これで、Watson NLUを利用する準備ができます。
+	この画面にはWatson NLUの価格プランを参照できますので、確認しておくことをお勧めします。
 </p>
-<div class="capture_area"><img src="../images/doc/quick/ibmcloud_apikey.png"></div>
+<div class="capture_area"><img src="../images/doc/quick/ibmcloud_apikey_url.png" style="width:750px"></div>
 <p>
-	NLCサービスを作成すると、上記の画面に遷移します。左ペインの「サービス資格情報」をクリックし、「Auto-generated service credentials」の矢印をクリックして詳細を表示させます。
-	「apikey」および「url」の文字列（赤枠部分、ダブルクォーテーションマークは含まない）をコピーし、テキストファイルなどに保存してください。
+	NLUサービスを作成すると、上記の画面に遷移します。左ペインの「管理」をクリックし、画面中央の「資格情報」のエリアから
+	「API鍵」および「URL」の文字列をコピーし（画像の赤枠のコピーアイコンをクリックします）、テキストファイルなどに保存してください。
 	これで、事前の準備は完了です。
 </p>
 								</div>
@@ -59,25 +59,25 @@ if ($_SESSION['auth'] == true) {
 <div class="capture_area"><img src="../images/doc/quick/login.png"></div>
 								</div>
 							</li>
-							<li class="docu_h1">Watson NLCを登録する
+							<li class="docu_h1">Watson NLUを登録する
 								<div>
 <p>
-	ログインしたら、まず「Watson NLC」の資格情報を登録します。この操作は初回のみ必要です。
-	「<a href="<?php echo '/'. BASE .'/' ?>?page=admin_menu">管理者メニュー</a>」を開き、「Watson NLCの資格情報を登録」の右の
+	ログインしたら、まず「Watson NLU」の資格情報を登録します。この操作は初回のみ必要です。
+	「<a href="<?php echo '/'. BASE .'/' ?>?page=admin_menu">管理者メニュー</a>」を開き、「Watson NLUの資格情報を登録」の右の
 	「設定」ボタンをクリックします。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/admin_menu.png"></div>
 <p>
-	事前に取得しておいたWatson NLCのサービス資格情報の文字列を、それぞれ「apikey」および「url」に入力し、「登録する」ボタンをクリックします。
-	「Watson NLC」の登録が完了すると、Watsonの頭脳に当たる「分類子」を作成できるようになります。
+	事前に取得しておいたWatson NLUのサービス資格情報の文字列を、それぞれ「API鍵」および「URL」に入力し、「登録する」ボタンをクリックします。
+	「Watson NLU」の登録が完了すると、Watsonの頭脳に当たる「モデル」を作成できるようになります。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/watson_register.png"></div>
 								</div>
 							</li>
-							<li class="docu_h1"><a name="set_classifier">Watson NLCの分類子を設定する</a>
+							<li class="docu_h1"><a name="set_classifier">Watson NLUのモデルを設定する</a>
 								<div>
 <p>
-	「分類子」を作成するには、あらかじめ「トレーニングデータ」を用意する必要があります。
+	「モデル」を作成するには、あらかじめ「トレーニングデータ」を用意する必要があります。
 	ExcelファイルのA列にメディア記事のタイトルを列記し、B列で「採用」または「非採用」のフラグを立てます（下記画像参照）。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/tr_data_sample.png"></div>
@@ -92,22 +92,22 @@ if ($_SESSION['auth'] == true) {
 <!--div class="capture_area"><img src="../images/doc/quick/encoding_toos.png"></div-->
 <p>
 	「トレーニングデータ」が用意できたら、「<a href="<?php echo '/'. BASE .'/' ?>?page=watson_conf">Watson設定</a>」を開き、
-	「分類子を追加／削除」ボタンをクリックします。
+	「モデルを追加／削除」ボタンをクリックします。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/set_watson.png"></div>
 <p>
-	「分類子を新規に追加」のエリアから、「ファイルを選択」ボタンをクリックし、用意しておいたCSVファイルを選択します。
+	「モデルを新規に追加」のエリアから、「ファイルを選択」ボタンをクリックし、用意しておいたCSVファイルを選択します。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/tr_data_register.png"></div>
 <p>
-	ファイルの読み込みが完了し、右側の「追加する」ボタンが有効なったらクリックします。なお「分類子」の正式なIDは18桁の英数文字
-	となり覚えにくいため、Excelのファイル名を「分類子エイリアス」として登録しますので、以降は「分類子エイリアス」によって
-	「分類子」を識別してください。「Watson設定」画面に戻ると、「No」「分類子エイリアス」「分類子」「状態」が表示されます。
+	ファイルの読み込みが完了し、右側の「追加する」ボタンが有効なったらクリックします。なお「モデル」の正式なIDは36桁の英数文字
+	となり覚えにくいため、Excelのファイル名を「モデルエイリアス」として登録しますので、以降は「モデルエイリアス」によって
+	「モデル」を識別してください。「Watson設定」画面に戻ると、「No」「モデルエイリアス」「モデル」「状態」が表示されます。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/tr_data_notaberable.png"></div>
 <p>
-	「分類子」の作成直後は「状態」に赤字で「<span style='color:red;'>学習中につき、まだ利用できません</span>」と表示されます。
-	学習が完了するまでの所用時間は「トレーニングデータ」の行数によって増減します。「状態」が「利用可能」と表示されるまで、その「分類子」は使えません。
+	「モデル」の作成直後は「状態」に赤字で「<span style='color:red;'>学習中につき、まだ利用できません</span>」などと表示されます。
+	学習が完了するまでの所用時間は「トレーニングデータ」の行数によって増減します。「状態」が「利用可能」と表示されるまで、その「モデル」は使えません。
 </p>
 								</div>
 							</li>
@@ -149,7 +149,7 @@ if ($_SESSION['auth'] == true) {
 							<li class="docu_h1"><a name="news_conf">ニュースを設定する</a>
 								<div>
 <p>
-	Watsonの「分類子」が利用可能となり、クローラ用の3つのファイルを設定したら、これらのファイルを組み合わせて、ニュースIDを
+	Watsonの「モデル」が利用可能となり、クローラ用の3つのファイルを設定したら、これらのファイルを組み合わせて、ニュースIDを
 	作成します。「<a href="<?php echo '/'. BASE .'/' ?>?page=news_conf">ニュース設定</a>」を開き、「ニュースを追加」ボタンをクリックします。
 </p>
 <div class="capture_area"><img src="../images/doc/quick/news_add.png"></div>
@@ -157,8 +157,8 @@ if ($_SESSION['auth'] == true) {
 	「ニュースの新規追加」ページが開いたら、そのニュースの独自名称を「ニュース ID」で指定します。
 </p>
 <p>
-	「分類子エイリアス」「RSSリスト」「カテゴリ リスト」「サイト名リスト」をそれぞれドロップダウンリストから選択します。
-	「分類子エイリアス」にはWatson NLCを利用せずランダムに記事を選択する「dummy watson」が登録されていますが、これは
+	「モデルエイリアス」「RSSリスト」「カテゴリ リスト」「サイト名リスト」をそれぞれドロップダウンリストから選択します。
+	「モデルエイリアス」にはWatson NLUを利用せずランダムに記事を選択する「dummy watson」が登録されていますが、これは
 	あくまでもテスト用途のものですので、実運用時には使用しないでください。
 </p>
 <p>
@@ -223,7 +223,7 @@ if ($_SESSION['auth'] == true) {
 	<b>Step_1 メール件名を編集</b><br>あらかじめ登録しておいたメール件名が表示されますが、この場で修正もできます。
 </p>
 <p>
-	<b>Step_2　コンテンツ候補を編集</b><br>Watson NLCによる判定結果を確認し、必要ならば手動で変更するために、コンテンツ候補をダウンロードします。
+	<b>Step_2　コンテンツ候補を編集</b><br>Watson NLUによる判定結果を確認し、必要ならば手動で変更するために、コンテンツ候補をダウンロードします。
 	「ニュース取得開始日」「ニュース取得開始時刻」を指定して「CSVで書き出す」ボタンを押すと、コンテンツ候補をCSV形式で保存できます。
 	これをExcelで開き、必要な修正（採用／非採用の書き換え、確信度の修正）を行ったら、<b>必ず「名前をつけて保存」→「Excelブック（*.xlsx）」</b>で
 	保存し、「Excelから書き戻す」ボタンを押してExcelファイルをアップロードしてください。なお、この操作はオプションです。

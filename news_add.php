@@ -29,7 +29,7 @@ if ($_SESSION['auth'] !== true) {
 				    }
 					echo '<tr><th>企業 ID</th><td>' . $_SESSION['company_id'] . '<span class="color_red small left_padding">※変更不可</span></td></tr>';
 					echo '<tr><th>ニュース ID</th><td><input type="text" size="40" name="news_id" id="news_id"><span class="color_red small left_padding">※必須</span></td></tr>';
-					echo '<tr><th>分類子エイリアス</th><td>' . get_cid_alias_as_select($mysqli, null) . '</td></tr>';
+					echo '<tr><th>モデルエイリアス</th><td>' . get_cid_alias_as_select($mysqli, null) . '</td></tr>';
 					echo '<tr><th>RSSリスト ID</th><td>' . get_rss_id_as_select($mysqli, null) . '</td></tr>';
 					echo '<tr><th>カテゴリ リスト ID</th><td>' . get_category_id_as_select($mysqli, null) . '</td></tr>';
 					echo '<tr><th>サイト名リスト ID</th><td>' . get_site_names_id_as_select($mysqli, null) . '</td></tr>';

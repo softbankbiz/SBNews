@@ -174,6 +174,7 @@ $ sudo unzip master.zip
 
 // SBNewsのデプロイ
 $ sudo rsync -avrP ./SBNews-master/ /var/www/html/sbnews/
+$ sudo mkdir /var/www/html/sbnews/training_data
 $ sudo chown -R apache:apache /var/www/html/sbnews
 
 // 不要になったファイルの削除

@@ -133,7 +133,15 @@ if ($_SESSION['auth'] !== true) {
 			        var buf = "";
 			        var arr = data.split("\n");
 			        for (var i=0; i<arr.length; i++) {
-			        	var line = arr[i].split(',');
+                var line = arr[i].split(',');
+                ////////////////////////////////////////////////////////////////////////////////
+                // 2022/01/25
+                // Excelで作成したCSVで、ダブルクオート内にカンマが混ざる件、カンマを全角モノに変換
+                if (line.length > 2) {
+                  var last_element = line.pop();
+                  line = [line.join('，'),last_element];
+                }
+                //////////////////////////////////////////////////////////////////////////////////////////////
 			        	if(line[0].length < 1024) {
 			        		buf += line[0] + ',' + line[1] + "\n";
 			        	} else {

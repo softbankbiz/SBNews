@@ -63,7 +63,8 @@ if ($_SESSION['auth'] !== true) {
 						if ($result == 1) {
 							echo "ok";
 						} else {
-							echo $watson_res;
+							// echo $watson_res;
+              var_dump($watson_res);
 						}
 					} catch (mysqli_sql_exception $e) {
 					    throw $e;

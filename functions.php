@@ -426,7 +426,7 @@ function get_cid_status($w_apikey, $w_url, $classifier_id) {
 		return "<span style='color:red;'>デプロイ中につき、まだ利用できません</span>";
 	} else if ($res->{"status"} === "error") {
 		$error_msg = '';
-		$notice = json_decode($res->{"notices"});
+		$notice = $res->{"notices"};
 		foreach ( $notice as $msg ) {
 		  $error_msg .= $msg->{"message"} . ' ';
 		}
